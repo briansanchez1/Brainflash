@@ -19,9 +19,14 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authManager;
-    
-    public AuthenticationResponse register(RegisterRequest request) {
+    private final AuthenticationManager authManager ;
+
+    public AuthenticationResponse register( RegisterRequest request ) {
+
+        if ( repository.existsByEmail( request.getEmail() ) ) {
+            throw new IllegalArgumentException( "Email is already registered" ) ;
+            }
+        
         var user = User.builder()
             .name(request.getName())
             .email(request.getEmail())
@@ -29,6 +34,7 @@ public class AuthenticationService {
             .role(Role.USER)
             .build();
         
+      
         repository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
