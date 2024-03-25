@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/brainflash
     username: root
-    password: Patriots2023!!
+    password: admin123
   jpa:
     hibernate:
       ddl-auto: create-drop
