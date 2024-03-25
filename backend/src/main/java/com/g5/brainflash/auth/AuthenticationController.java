@@ -32,7 +32,6 @@ public class AuthenticationController {
      * details or an error response if email is already registered or
      * request properties are missing
      */
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(
        @Valid @RequestBody RegisterRequest request, BindingResult bindingResult
@@ -51,7 +50,7 @@ public class AuthenticationController {
         }
         
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
         @RequestBody AuthenticationRequest request
