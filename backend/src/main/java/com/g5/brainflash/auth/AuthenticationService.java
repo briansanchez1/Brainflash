@@ -1,8 +1,5 @@
 package com.g5.brainflash.auth;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
