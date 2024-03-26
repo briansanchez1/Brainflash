@@ -78,12 +78,8 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
             .orElseThrow();
 
-        // Create a map to hold extra claims to be included in the JWT token
-        Map<String, Object> extraClaims = new HashMap<>();    
-        extraClaims.put("userId", user.getId());
-
         // Generate a JWT token with the extra claims and user detail
-        var jwtToken = jwtService.generateToken(extraClaims, user);
+        var jwtToken = jwtService.generateToken(user);
 
         // Build and return an AuthenticationResponse object containing the 
         // generated JWT token
