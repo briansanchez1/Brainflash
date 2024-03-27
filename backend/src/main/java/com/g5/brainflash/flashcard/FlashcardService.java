@@ -65,6 +65,42 @@ public class FlashcardService {
     }
 
     /**
+     * Get all flashcards for a category
+     * @param categoryId The ID of the category
+     * @return List of all flashcard DTOs
+     */
+    @Transactional
+    public List<FlashcardDTO> getAllFlashcardsByCategoryId(Integer categoryId) {
+        List<Flashcard> flashcards = flashcardRepository.findAllByCategoryId(categoryId);
+        return flashcards.stream()
+                        .map(flashcard -> new FlashcardDTO(
+                            flashcard.getId(), 
+                            flashcard.getQuestion(),
+                            flashcard.getAnswer(),
+                            flashcard.getCategory(),
+                            flashcard.getDeck()))
+                        .collect(Collectors.toList());        
+    }
+
+    /**
+     * Get all flashcards for a deck
+     * @param deckId The ID of the deck
+     * @return List of all flashcard DTOs
+     */
+    @Transactional
+    public List<FlashcardDTO> getAllFlashcardsByDeckId(Integer deckId) {
+        List<Flashcard> flashcards = flashcardRepository.findAllByDeckId(deckId);
+        return flashcards.stream()
+                        .map(flashcard -> new FlashcardDTO(
+                            flashcard.getId(), 
+                            flashcard.getQuestion(),
+                            flashcard.getAnswer(),
+                            flashcard.getCategory(),
+                            flashcard.getDeck()))
+                        .collect(Collectors.toList());        
+    }
+
+    /**
      * Delete a flashcard from the database
      * @param userId The ID of the user
      * @param id The ID of the flashcard to delete

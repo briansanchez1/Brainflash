@@ -93,4 +93,38 @@ public class FlashcardController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
         }
     }
+
+    /**
+     * Get all flashcards for a specified Category
+     * @param categoryId The ID of the category to get flashcards for
+     * @return Response with list of flashcards
+     */
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> getFlashcardsByCategory(
+        @AuthenticationPrincipal User user, @PathVariable Integer categoryId
+    ) {
+        try {
+            return ResponseEntity.ok(flashcardService.getAllFlashcardsByCategoryId(categoryId));
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    /**
+     * Get all flashcards for a specified Deck
+     * @param deckId The ID of the deck to get flashcards for
+     * @return Response with list of flashcards
+     */
+    @GetMapping("/deck/{deckId}")
+    public ResponseEntity<?> getFlashcardsByDeck(
+        @AuthenticationPrincipal User user, @PathVariable Integer deckId
+    ) {
+        try {
+            return ResponseEntity.ok(flashcardService.getAllFlashcardsByDeckId(deckId));
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
+        }
+    }
 }
