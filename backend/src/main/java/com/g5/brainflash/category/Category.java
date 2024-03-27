@@ -2,7 +2,6 @@ package com.g5.brainflash.category;
 
 import com.g5.brainflash.user.User;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,13 +37,12 @@ public class Category {
      */    
     private String title;
 
-    /**
+   /**
      * The user who created this category.
+     * Many-to-one relationship where "user" is the owning side
      * A category is associated with exactly one user.
-     * CascadeType.REMOVE ensures that if the associated user is deleted, 
-     * all categories associated with that user will also be removed.
      */    
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
