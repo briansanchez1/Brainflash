@@ -11,11 +11,20 @@ import com.g5.brainflash.user.User;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Category service class. Handles logic relating to categories in system
+ */
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository; 
 
+    /**
+     * Build category DTO to be saved
+     * @param user The user creating/editing category
+     * @param request The category request object
+     * @return The category DTO to be saved
+     */
     @Transactional
     public CategoryDTO saveCategory(User user, CategoryRequest request ) {
         Category category = Category.builder().title(request.getTitle()).user(user).build();
@@ -28,6 +37,11 @@ public class CategoryService {
             .build();
     }    
 
+    /**
+     * Get all categories for a user
+     * @param userId The ID of the user
+     * @return List of all category DTOs
+     */
     @Transactional
     public List<CategoryDTO> getAllCategoriesByUserId(Integer userId) {
         List<Category> categories = categoryRepository.findAllByUserId(userId);
@@ -38,6 +52,12 @@ public class CategoryService {
                         .collect(Collectors.toList());        
     }     
     
+    /**
+     * Delete a category from the database
+     * @param userId The ID of the user deleting the category
+     * @param id ID of the category to delete
+     * @return Response with result of deleting category
+     */
     @Transactional
     public String deleteCategory(Integer userId, Integer id) {
         Optional<Category> optCategory = categoryRepository.findById(id);
@@ -58,6 +78,13 @@ public class CategoryService {
         
     }   
     
+    /**
+     * Update a category's information in the database
+     * @param userId The ID of the user updating the category
+     * @param id ID of the category to update
+     * @param request The category request object
+     * @return Response with result of updating category
+     */
     @Transactional
     public String updateCategory(Integer userId, Integer id, CategoryRequest request) {
         Optional<Category> optCategory = categoryRepository.findById(id);

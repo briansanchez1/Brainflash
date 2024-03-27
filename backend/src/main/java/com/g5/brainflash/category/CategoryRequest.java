@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Category request object. Used to create and update categories
+ */
 @Data
 @Builder
 @NoArgsConstructor

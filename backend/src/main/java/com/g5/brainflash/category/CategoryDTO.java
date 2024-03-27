@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Category DTO class. Represents a category object in the system.
+ */
 @Data
 @Builder
 @NoArgsConstructor
