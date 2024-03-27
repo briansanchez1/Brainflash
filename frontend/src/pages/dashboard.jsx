@@ -8,6 +8,7 @@ import {
   Box, TextField
 } from "@mui/material";
 import logo from "../assets/logo.png";
+import Navbar from "../components/navbar"
 
 const defaultTheme = createTheme();
 
@@ -23,6 +24,7 @@ export default function forgotpassword() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Navbar/>
       <Container
         component="main"
         maxWidth="xs"

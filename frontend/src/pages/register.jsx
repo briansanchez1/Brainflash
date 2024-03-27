@@ -66,6 +66,8 @@ export default function Registration() {
         sx={{
           background: "#fff",
           borderRadius: 10,
+          width: { xs: 300, sm: 350, md: 450, lg: 550 },
+          height: { xs: 525, sm: 550},
         }}
       >
         <Box
@@ -143,7 +145,8 @@ export default function Registration() {
                     cursor: "pointer",
                     textDecoration: "none",
                     color: "#797979",
-                    fontSize: 17,
+                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
                     ":hover": {
                       textDecoration: "underline",
                       color: "black",
@@ -167,7 +170,9 @@ export default function Registration() {
                 color: "black",
                 borderRadius: 5,
                 fontFamily: "Trebuchet MS",
-                fontSize: 30,
+                fontSize: { xs: 17, lg: 18 },
+                width: { xs: 200, sm: 275, md: 300, lg: 350 },
+                height: { xs: 40, md: 50 },
                 fontWeight: 700,
                 ":hover": {
                   bgcolor: "pink",
