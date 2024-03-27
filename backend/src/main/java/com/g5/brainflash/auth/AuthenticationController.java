@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g5.brainflash.auth.exceptions.EmailAlreadyRegisteredException;
-import com.g5.brainflash.common.ErrorResponse;
+import com.g5.brainflash.common.responses.ErrorResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

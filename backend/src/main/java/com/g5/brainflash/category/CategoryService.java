@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.g5.brainflash.common.exceptions.NotFoundException;
+import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
+import com.g5.brainflash.common.responses.DeleteResponse;
+import com.g5.brainflash.common.responses.UpdateResponse;
 import com.g5.brainflash.user.User;
 
 import lombok.RequiredArgsConstructor;
@@ -59,22 +63,22 @@ public class CategoryService {
      * @return Response with result of deleting category
      */
     @Transactional
-    public String deleteCategory(Integer userId, Integer id) {
+    public DeleteResponse deleteCategory(Integer userId, Integer id) {
         Optional<Category> optCategory = categoryRepository.findById(id);
 
         // Checks if the category exists
         if(!optCategory.isPresent()){
-            return "Category not found.";
+            throw new NotFoundException("Category not found.");
         }
 
         Category category = optCategory.get();
         // Checks if the user has permission to delete the category
         if(!category.getUser().getId().equals(userId)){
-            return "Unauthorized: You do not have permission to delete this category.";
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to delete this category.");
         }
 
         categoryRepository.deleteById(id);
-        return "Category deleted."; 
+        return new DeleteResponse("Category deleted."); 
         
     }   
     
@@ -86,23 +90,23 @@ public class CategoryService {
      * @return Response with result of updating category
      */
     @Transactional
-    public String updateCategory(Integer userId, Integer id, CategoryRequest request) {
+    public UpdateResponse updateCategory(Integer userId, Integer id, CategoryRequest request) {
         Optional<Category> optCategory = categoryRepository.findById(id);
 
         // Checks if the category exists
         if(!optCategory.isPresent()){
-            return "Category not found.";
+            throw new NotFoundException("Category not found.");
         }
 
         Category category = optCategory.get();
         // Checks if the user has permission to delete the category
         if(!category.getUser().getId().equals(userId)){
-            return "Unauthorized: You do not have permission to update this category.";
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to delete this category.");
         }        
 
         category.setTitle(request.getTitle());
         categoryRepository.save(category);
-        return "Category Updated."; 
+        return new UpdateResponse("Category updated.");
     }       
 
 }

@@ -1,4 +1,4 @@
-package com.g5.brainflash.common;
+package com.g5.brainflash.common.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
