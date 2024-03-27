@@ -1,6 +1,5 @@
 package com.g5.brainflash.flashcard;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +22,7 @@ public class FlashcardRequest {
     private String answer;
 
     @NotBlank(message = "Category is required")
-    private String categoryId;
+    private Category category;
 
-    @NotBlank(message = "User is required")
-    private Integer userId;
-
-    @Nullable
-    private Integer deckId;
+    private Deck deck;
 }

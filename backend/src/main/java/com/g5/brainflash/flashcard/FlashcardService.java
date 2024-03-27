@@ -1,11 +1,18 @@
 package com.g5.brainflash.flashcard;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.g5.brainflash.user.User;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Flashcard service class. Handles logic relating to flashcards in system
+ */
 @Service
 @RequiredArgsConstructor
 public class FlashcardService {
@@ -13,57 +20,107 @@ public class FlashcardService {
     private final FlashcardRepository flashcardRepository;
 
     /**
-     * This method returns all flashcards in the database.
-     * 
-     * @return List of Flashcard objects
+     * Build flashcard DTO to be saved
+     * @param user The user creating/editing flashcard
+     * @param request The flashcard request object
+     * @return The flashcard DTO to be saved
      */
-    public List<Flashcard> getAllFlashcards() {
-        return flashcardRepository.findAll();
-    }
-
-    /**
-     * This method returns all flashcards by a user.
-     * @param id The id of the user
-     * @return List of Flashcard objects created by the user
-     */
-    public List<Flashcard> getFlashcardsByUserId(Integer id) {
-        return flashcardRepository.findByUserId(id);
-    }
-
-    /**
-     * This method returns a flashcard by its id.
-     * 
-     * @param id The id of the flashcard to be retrieved
-     * @return Flashcard object
-     */
-    public Flashcard getFlashcardById(Integer id) {
-        return flashcardRepository.findById(id).orElse(null);
-    }
-
-    /**
-     * This method saves a flashcard in the database.
-     * @param request The FlashcardRequest object containing the flashcard details
-     * @return Flashcard object
-     */
-    public Flashcard saveFlashcard(FlashcardRequest request) {
+    @Transactional
+    public FlashcardDTO saveFlashcard(User user, FlashcardRequest request) {
         Flashcard flashcard = Flashcard.builder()
             .question(request.getQuestion())
             .answer(request.getAnswer())
+            .category(request.getCategory())
+            .deck(request.getDeck())
+            .user(user)
             .build();
 
-        
-        if(flashcard instanceof Flashcard) {
-            return flashcardRepository.save(flashcard);
-        }  
-        
-        return null;
+        flashcardRepository.save(flashcard);
+
+        return FlashcardDTO.builder()
+            .id(flashcard.getId())
+            .question(flashcard.getQuestion())
+            .answer(flashcard.getAnswer())
+            .category(flashcard.getCategory())
+            .deck(flashcard.getDeck())
+            .build();
     }
 
     /**
-     * This method deletes a flashcard from the database.
-     * @param id ID of the flashcard to be deleted
+     * Get all flashcards for a user
+     * @param userId The ID of the user
+     * @return List of all flashcard DTOs
      */
-    public void deleteFlashcard(Integer id) {
-        flashcardRepository.deleteById(id);
+    @Transactional
+    public List<FlashcardDTO> getAllFlashcardsByUserId(Integer userId) {
+        List<Flashcard> flashcards = flashcardRepository.findAllByUserId(userId);
+        return flashcards.stream()
+                        .map(flashcard -> new FlashcardDTO(
+                            flashcard.getId(), 
+                            flashcard.getQuestion(),
+                            flashcard.getAnswer(),
+                            flashcard.getCategory(),
+                            flashcard.getDeck()))
+                        .collect(Collectors.toList());        
+    }
+
+    /**
+     * Delete a flashcard from the database
+     * @param userId The ID of the user
+     * @param id The ID of the flashcard to delete
+     * @return Response with result of deleting flashcard
+     */
+    @Transactional
+    public DeleteResponse deleteFlashcard(Integer userId, Integer id) {
+        Optional<Flashcard> optFlashcard = flashcardRepository.findById(id);
+
+        // Checks if the flashcard exists
+        if(!optFlashcard.isPresent()){
+            throw new NotFoundException("Flashcard not found.");
+        }
+
+        Flashcard flashcard = optFlashcard.get();
+
+        // Checks if the user owns the flashcard
+        if(flashcard.getUser().getId() != userId){
+            throw new UnauthorizedUserException("User is not authorized to delete this flashcard.");
+        }
+
+        flashcardRepository.delete(flashcard);
+
+        return new DeleteResponse("Flashcard deleted successfully.");
+    }
+
+    /**
+     * Update a flashcard in the database
+     * @param userId The ID of the user
+     * @param id The ID of the flashcard to update
+     * @param request The flashcard request object
+     * @return Response with result of updating flashcard
+     */
+    @Transactional
+    public UpdateResponse updateFlashcard(Integer userId, Integer id, FlashcardRequest request) {
+        Optional<Flashcard> optFlashcard = flashcardRepository.findById(id);
+
+        // Checks if the flashcard exists
+        if(!optFlashcard.isPresent()){
+            throw new NotFoundException("Flashcard not found.");
+        }
+
+        Flashcard flashcard = optFlashcard.get();
+
+        // Checks if the user owns the flashcard
+        if(flashcard.getUser().getId() != userId){
+            throw new UnauthorizedUserException("User is not authorized to update this flashcard.");
+        }
+
+        flashcard.setQuestion(request.getQuestion());
+        flashcard.setAnswer(request.getAnswer());
+        flashcard.setCategory(request.getCategory());
+        flashcard.setDeck(request.getDeck());
+
+        flashcardRepository.save(flashcard);
+
+        return new UpdateResponse("Flashcard updated successfully.");
     }
 }

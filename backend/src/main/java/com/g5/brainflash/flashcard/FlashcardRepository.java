@@ -5,13 +5,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * Flashcard repository interface. Used to interact with the database for flashcard-related purposes.
+ */
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer>{
-    /**
-     * Find all flashcards
-     * @return List of all flashcards
-     */
-    List<Flashcard> findAll();
-
     /**
      * Find single flashcard by ID
      * @param id ID of the requested flashcard
@@ -24,13 +21,21 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, Integer>{
      * @param userId ID of the user
      * @return List of all flashcards by the user
      */
-    List<Flashcard> findByUserId(Integer userId);
+    List<Flashcard> findAllByUserId(Integer userId);
 
     /**
-     * Save flashcard to database
+     * Find all flashcards by deck ID
+     * @param deckId ID of the deck
+     * @return List of all flashcards in the deck
      */
-    @SuppressWarnings("unchecked")
-    Flashcard save(Flashcard flashcard);
+    List<Flashcard> findAllByDeckId(Integer deckId);
+
+    /**
+     * Find all flashcards by category ID
+     * @param categoryId ID of the category
+     * @return List of all flashcards in the category
+     */
+    List<Flashcard> findAllByCategoryId(Integer categoryId);
 
     /**
      * Delete flashcard with specific ID
