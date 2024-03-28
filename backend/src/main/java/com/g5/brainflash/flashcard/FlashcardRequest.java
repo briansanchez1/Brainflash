@@ -1,6 +1,5 @@
 package com.g5.brainflash.flashcard;
-
-import com.g5.brainflash.category.Category;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +22,8 @@ public class FlashcardRequest {
     private String answer;
 
     @NotBlank(message = "Category is required")
-    private Category category;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     //private Deck deck;
 }

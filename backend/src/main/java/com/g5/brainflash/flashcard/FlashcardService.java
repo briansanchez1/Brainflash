@@ -6,12 +6,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.g5.brainflash.category.Category;
+import com.g5.brainflash.category.CategoryRepository;
 import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.common.responses.UpdateResponse;
 import com.g5.brainflash.user.User;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Build flashcard DTO to be saved
@@ -32,11 +36,14 @@ public class FlashcardService {
      */
     @Transactional
     public FlashcardDTO saveFlashcard(User user, FlashcardRequest request) {
+        Category category = categoryRepository.findById(request.getCategoryId())
+                            .orElseThrow(() -> new EntityNotFoundException("Category not found."));
+
         Flashcard flashcard = Flashcard.builder()
             .question(request.getQuestion())
             .answer(request.getAnswer())
             .user(user)
-            .category(request.getCategory())
+            .category(category)
             //.deck(request.getDeck())
             .build();
 
@@ -155,9 +162,12 @@ public class FlashcardService {
             throw new UnauthorizedUserException("User is not authorized to update this flashcard.");
         }
 
+        Category category = categoryRepository.findById(request.getCategoryId())
+                            .orElseThrow(() -> new EntityNotFoundException("Category not found."));
+
         flashcard.setQuestion(request.getQuestion());
         flashcard.setAnswer(request.getAnswer());
-        flashcard.setCategory(request.getCategory());
+        flashcard.setCategory(category);
         //flashcard.setDeck(request.getDeck());
 
         flashcardRepository.save(flashcard);
