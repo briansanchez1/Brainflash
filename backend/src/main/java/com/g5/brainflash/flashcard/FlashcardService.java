@@ -1,10 +1,15 @@
 package com.g5.brainflash.flashcard;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.g5.brainflash.common.exceptions.NotFoundException;
+import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
+import com.g5.brainflash.common.responses.DeleteResponse;
+import com.g5.brainflash.common.responses.UpdateResponse;
 import com.g5.brainflash.user.User;
 
 import jakarta.transaction.Transactional;
@@ -118,9 +123,9 @@ public class FlashcardService {
         Flashcard flashcard = optFlashcard.get();
 
         // Checks if the user owns the flashcard
-        if(flashcard.getUser().getId() != userId){
+        /*if(flashcard.getUser().getId() != userId){
             throw new UnauthorizedUserException("User is not authorized to delete this flashcard.");
-        }
+        }*/
 
         flashcardRepository.delete(flashcard);
 
@@ -146,9 +151,9 @@ public class FlashcardService {
         Flashcard flashcard = optFlashcard.get();
 
         // Checks if the user owns the flashcard
-        if(flashcard.getUser().getId() != userId){
+        /*if(flashcard.getUser().getId() != userId){
             throw new UnauthorizedUserException("User is not authorized to update this flashcard.");
-        }
+        }*/
 
         flashcard.setQuestion(request.getQuestion());
         flashcard.setAnswer(request.getAnswer());

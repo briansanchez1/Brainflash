@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.g5.brainflash.common.ErrorResponse;
+import com.g5.brainflash.common.responses.ErrorResponse;
 import com.g5.brainflash.user.User;
 
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,7 @@ public class FlashcardController {
         @AuthenticationPrincipal User user, @PathVariable Integer id, @RequestBody FlashcardRequest request
     ) {
         try {
-            return ResponseEntity.ok(flashcardService.updateFlashcard(user, id, request));
+            return ResponseEntity.ok(flashcardService.updateFlashcard(user.getId(), id, request));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));

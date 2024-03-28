@@ -1,5 +1,6 @@
 package com.g5.brainflash.flashcard;
 
+import com.g5.brainflash.category.Category;
 import com.g5.brainflash.user.User;
 
 import jakarta.persistence.Entity;

@@ -54,9 +54,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "flashcard", orphanRemoval = true)
     private List<Flashcard> flashcards;
 
-    @OneToMany(mappedBy = "category", orphanRemoval = true)
-    private List<Category> categories;
-
     @OneToMany(mappedBy = "deck")
     private List<Deck> decks;
     
