@@ -12,8 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.g5.brainflash.category.Category;
 
+import com.g5.brainflash.flashcard.Flashcard;
+import com.g5.brainflash.category.Category;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,6 +50,12 @@ public class User implements UserDetails {
     
     /** The password of the user. */
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flashcard> flashcards;
+
+    /*@OneToMany(mappedBy = "deck")
+    private List<Deck> decks;*/
     
     /** 
      * The list of categories associated with the user.
