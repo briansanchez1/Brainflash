@@ -31,14 +31,16 @@ public class FlashcardController {
      * @return Response with result of saving flashcard
      */
     @PostMapping("/add")
-    public ResponseEntity<?> saveFlashcard(@RequestBody FlashcardRequest request
+    public ResponseEntity<?> saveFlashcard(
+        @AuthenticationPrincipal User user, @RequestBody FlashcardRequest request
     ) {
-        try {
-            return ResponseEntity.ok(flashcardService.saveFlashcard(request));
+        return ResponseEntity.ok(flashcardService.saveFlashcard(user, request));
+        /*try {
+            return ResponseEntity.ok(flashcardService.saveFlashcard(user, request));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 
     /**
@@ -51,12 +53,13 @@ public class FlashcardController {
     public ResponseEntity<?> deleteFlashcard(
         @AuthenticationPrincipal User user, @PathVariable Integer id
     ) {
-        try {
+        return ResponseEntity.ok(flashcardService.deleteFlashcard(user.getId(), id));
+        /*try {
             return ResponseEntity.ok(flashcardService.deleteFlashcard(user.getId(), id));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 
     /**
@@ -70,12 +73,13 @@ public class FlashcardController {
     public ResponseEntity<?> updateFlashcard(
         @AuthenticationPrincipal User user, @PathVariable Integer id, @RequestBody FlashcardRequest request
     ) {
-        try {
+        return ResponseEntity.ok(flashcardService.updateFlashcard(user.getId(), id, request));
+        /*try {
             return ResponseEntity.ok(flashcardService.updateFlashcard(user.getId(), id, request));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 
     /**
@@ -84,13 +88,14 @@ public class FlashcardController {
      * @return Response with list of flashcards
      */
     @GetMapping
-    public ResponseEntity<?> getFlashcards(@AuthenticationPrincipal User user) {
-        try {
+    public ResponseEntity<?> getAllFlashcards(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(flashcardService.getAllFlashcardsByUserId(user.getId()));
+        /*try {
             return ResponseEntity.ok(flashcardService.getAllFlashcardsByUserId(user.getId()));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 
     /**
@@ -102,12 +107,13 @@ public class FlashcardController {
     public ResponseEntity<?> getFlashcardsByCategory(
         @AuthenticationPrincipal User user, @PathVariable Integer categoryId
     ) {
-        try {
+        return ResponseEntity.ok(flashcardService.getAllFlashcardsByCategoryId(categoryId));
+        /*try {
             return ResponseEntity.ok(flashcardService.getAllFlashcardsByCategoryId(categoryId));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 
     /**
@@ -119,11 +125,12 @@ public class FlashcardController {
     public ResponseEntity<?> getFlashcardsByDeck(
         @AuthenticationPrincipal User user, @PathVariable Integer deckId
     ) {
-        try {
+        return ResponseEntity.ok(flashcardService.getAllFlashcardsByDeckId(deckId));
+        /*try {
             return ResponseEntity.ok(flashcardService.getAllFlashcardsByDeckId(deckId));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        }*/
     }
 }
