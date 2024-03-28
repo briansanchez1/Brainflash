@@ -46,7 +46,7 @@ public class FlashcardService {
             .id(flashcard.getId())
             .question(flashcard.getQuestion())
             .answer(flashcard.getAnswer())
-            .categoryId(flashcard.getCategoryId())
+            .categoryId(flashcard.getCategory().getId())
             //.deck(flashcard.getDeck())
             .build();
     }
@@ -64,7 +64,7 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategoryId()))
+                            flashcard.getCategory().getId()))
                             //flashcard.getDeck()))
                         .collect(Collectors.toList());        
     }
@@ -82,7 +82,7 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategoryId()))
+                            flashcard.getCategory().getId()))
                             //flashcard.getDeck()))
                         .collect(Collectors.toList());        
     }
@@ -92,7 +92,7 @@ public class FlashcardService {
      * @param deckId The ID of the deck
      * @return List of all flashcard DTOs
      */
-    @Transactional
+    /*@Transactional
     public List<FlashcardDTO> getAllFlashcardsByDeckId(Integer deckId) {
         List<Flashcard> flashcards = flashcardRepository.findAllByDeckId(deckId);
         return flashcards.stream()
@@ -103,7 +103,7 @@ public class FlashcardService {
                             flashcard.getCategoryId()))
                             //flashcard.getDeck()))
                         .collect(Collectors.toList());        
-    }
+    }*/
 
     /**
      * Delete a flashcard from the database

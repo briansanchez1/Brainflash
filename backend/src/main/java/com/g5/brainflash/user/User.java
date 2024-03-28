@@ -51,7 +51,7 @@ public class User implements UserDetails {
     /** The password of the user. */
     private String password;
 
-    @OneToMany(mappedBy = "flashcard", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flashcard> flashcards;
 
     /*@OneToMany(mappedBy = "deck")

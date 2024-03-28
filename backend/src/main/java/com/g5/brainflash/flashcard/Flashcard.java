@@ -44,8 +44,4 @@ public class Flashcard {
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
-
-    public Integer getCategoryId() {
-        return this.category.getId();
-    }
 }
