@@ -101,7 +101,7 @@ public class CategoryService {
         Category category = optCategory.get();
         // Checks if the user has permission to delete the category
         if(!category.getUser().getId().equals(userId)){
-            throw new UnauthorizedUserException("Unauthorized: You do not have permission to delete this category.");
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update this category.");
         }        
 
         category.setTitle(request.getTitle());

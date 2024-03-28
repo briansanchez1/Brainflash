@@ -1,6 +1,5 @@
 package com.g5.brainflash.category;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.g5.brainflash.common.exceptions.NotFoundException;
-import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.ErrorResponse;
 import com.g5.brainflash.user.User;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -36,14 +34,9 @@ public class CategoryController {
      */
     @PostMapping("/add")
     public ResponseEntity<?> saveCategory(
-        @AuthenticationPrincipal User user, @RequestBody CategoryRequest request
+        @AuthenticationPrincipal User user, @Valid @RequestBody CategoryRequest request
     ) {
-        try {
-            return ResponseEntity.ok(categoryService.saveCategory(user, request));
-        }
-        catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        return ResponseEntity.ok(categoryService.saveCategory(user, request));
     }    
 
     /**
@@ -56,15 +49,7 @@ public class CategoryController {
     public ResponseEntity<?> deleteCategory(
         @AuthenticationPrincipal User user, @PathVariable Integer id
     ) {
-        try {
-            return ResponseEntity.ok(categoryService.deleteCategory(user.getId(), id));
-        }
-        catch(NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
-        }
-        catch(UnauthorizedUserException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        return ResponseEntity.ok(categoryService.deleteCategory(user.getId(), id));
     }
 
     /**
@@ -80,15 +65,7 @@ public class CategoryController {
         @PathVariable Integer id, 
         @RequestBody CategoryRequest request
     ) {
-        try {
-            return ResponseEntity.ok(categoryService.updateCategory(user.getId(), id, request));
-        }
-        catch(NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
-        }
-        catch(UnauthorizedUserException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        return ResponseEntity.ok(categoryService.updateCategory(user.getId(), id, request));
     }    
     
     /**

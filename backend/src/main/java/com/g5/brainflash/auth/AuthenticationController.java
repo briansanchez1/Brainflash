@@ -1,15 +1,10 @@
 package com.g5.brainflash.auth;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.g5.brainflash.auth.exceptions.EmailAlreadyRegisteredException;
-import com.g5.brainflash.common.responses.ErrorResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,21 +28,9 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(
-       @Valid @RequestBody RegisterRequest request, BindingResult bindingResult
+       @Valid @RequestBody RegisterRequest request
     ) {
-        // Handles validation errors
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-
-        try {
-            return ResponseEntity.ok(service.register(request));
-        } catch (EmailAlreadyRegisteredException e) {
-            return ResponseEntity
-            .status(HttpStatus.CONFLICT)
-            .body(new ErrorResponse(e.getMessage()));
-        }
-        
+        return ResponseEntity.ok(service.register(request));
     }
     
     @PostMapping("/authenticate")
