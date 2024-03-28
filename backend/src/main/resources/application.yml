@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/brainflash
-    username: root
-    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create-drop

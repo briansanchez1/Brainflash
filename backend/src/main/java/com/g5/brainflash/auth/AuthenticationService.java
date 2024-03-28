@@ -51,16 +51,35 @@ public class AuthenticationService {
 
     }
 
+    /**
+     * Authenticates a user using the provided credentials and generates a 
+     * JWT token upon successful authentication.
+     * 
+     * @param request The authentication request containing the user's email 
+     * and password.
+     * @return An AuthenticationResponse object containing the generated 
+     * JWT token.
+     * @throws AuthenticationException If authentication fails.
+     */    
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        // Authenticate the user using the provided credentials
         authManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 request.getEmail(), 
                 request.getPassword())
         );
 
+        // Retrieve user information from the UserRepository 
+        // based on the provided email
         var user = userRepository.findByEmail(request.getEmail())
             .orElseThrow();
+
+        // Generate a JWT token with the extra claims and user detail
         var jwtToken = jwtService.generateToken(user);
+
+        // Build and return an AuthenticationResponse object containing the 
+        // generated JWT token
         return AuthenticationResponse
             .builder()
             .token(jwtToken)

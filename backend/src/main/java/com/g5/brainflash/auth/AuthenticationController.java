@@ -3,14 +3,13 @@ package com.g5.brainflash.auth;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin ;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g5.brainflash.auth.exceptions.EmailAlreadyRegisteredException;
-import com.g5.brainflash.common.ErrorResponse;
+import com.g5.brainflash.common.responses.ErrorResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,6 @@ public class AuthenticationController {
      * details or an error response if email is already registered or
      * request properties are missing
      */
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> register(
        @Valid @RequestBody RegisterRequest request, BindingResult bindingResult
@@ -51,7 +49,7 @@ public class AuthenticationController {
         }
         
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
         @RequestBody AuthenticationRequest request
