@@ -56,10 +56,11 @@ const Login = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container
         component="main"
-        maxWidth="xs"
         sx={{
           background: "#fff",
           borderRadius: 10,
+          width: { xs: 300, sm: 350, md: 450, lg: 550 },
+          height: { xs: 500, lg: 475 },
         }}
       >
         <Box
@@ -108,12 +109,14 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              
             />
             {message && (
               <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
                 {message}
               </Box>
             )}
+
             <Grid
               container
               justifyContent={"space-between"}
@@ -127,7 +130,8 @@ const Login = () => {
                     cursor: "pointer",
                     textDecoration: "none",
                     color: "#797979",
-                    fontSize: 17,
+                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
                     ":hover": {
                       textDecoration: "underline",
                       color: "black",
@@ -147,7 +151,7 @@ const Login = () => {
                     cursor: "pointer",
                     textDecoration: "none",
                     color: "#797979",
-                    fontSize: 17,
+                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
 
                     ":hover": {
                       textDecoration: "underline",
@@ -173,7 +177,9 @@ const Login = () => {
                 color: "black",
                 borderRadius: 5,
                 fontFamily: "Trebuchet MS",
-                fontSize: 30,
+                fontSize: { xs: 17, lg: 18 },
+                width: { xs: 200, sm: 275, md: 300, lg: 350 },
+                height: { xs: 40, md: 50 },
                 fontWeight: 700,
                 ":hover": {
                   bgcolor: "pink",
