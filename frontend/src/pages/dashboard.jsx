@@ -2,95 +2,94 @@ import * as React from "react";
 import {
   createTheme,
   ThemeProvider,
-  Container,
-  Avatar,
+  Typography,
+  Stack,
   Button,
-  Box, TextField
 } from "@mui/material";
-import logo from "../assets/logo.png";
-import Navbar from "../components/navbar"
+import { Add } from "@mui/icons-material";
+import Navbar from "../components/navbar";
+import Categories from "../components/card";
+import ReviewSessions from "../components/card";
+import Grid from "@mui/material/Unstable_Grid2";
 
 const defaultTheme = createTheme();
+const categoriereire = [1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 2, 2, 2];
 
 export default function forgotpassword() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Navbar/>
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          background: "#fff",
-          borderRadius: 10,
-        }}
-      >
-        <Box
+      <Navbar />
+      <Stack>
+        {/* Categories */}
+        <Typography variant="h4" mt={"56px"} ml={2} textAlign={"left"}>
+          Your Categories{" "}
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#fff",
+              color: "#000",
+              borderRadius: 5,
+              maxwidth: "1",
+              fontWeight: 700,
+            }}
+          >
+            <Add />
+          </Button>
+        </Typography>
+        <Grid
+          mt={5}
+          mx={3}
+          py={2}
+          container
+          direction={"row"}
+          wrap="nowrap"
           sx={{
-            marginTop: 8,
+            overflowX: "auto",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            gap: "10px",
+            maxWidth: "100%",
           }}
         >
-          <Avatar
-            alt="Brainflash"
-            src={logo}
-            variant="square"
-            sx={{ width: 128, height: 128, m: 2 }}
-          />
+          {categoriereire.map((categoriereire) => (
+            <Categories title={"cat"} />
+          ))}
+        </Grid>
 
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+        {/* Review Sessions */}
+        <Typography variant="h4" mt={"56px"} ml={2} textAlign={"left"}>
+          Your Review Sessions{" "}
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#fff",
+              color: "#000",
+              borderRadius: 5,
+              maxwidth: "1",
+              fontWeight: 700,
+            }}
           >
-            <TextField
-              margin="normal"
-              fullWidth
-              disabled={true}
-              id="name"
-              label="DASHBOARD ---- STILL WIP"
-              
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
-            <Button
-              href="/login"
-              type="submit"
-              className="submit"
-              variant="contained"
-              sx={{
-                m: "auto",
-                mb: 2,
-                bgcolor: "pink",
-                color: "black",
-                borderRadius: 5,
-                fontFamily: "Trebuchet MS",
-                fontSize: 30,
-                fontWeight: 700,
-                ":hover": {
-                  bgcolor: "pink",
-                  color: "black",
-                  transition: "0s",
-                },
-              }}
-            >
-              {"Go To Login"}
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+            <Add />
+          </Button>
+        </Typography>
+        <Grid
+          mt={5}
+          mx={3}
+          py={2}
+          container
+          direction={"row"}
+          wrap="nowrap"
+          sx={{
+            overflowX: "auto",
+            display: "flex",
+            gap: "10px",
+            maxWidth: "100%",
+          }}
+        >
+          {categoriereire.map((categoriereire) => (
+            <ReviewSessions title={"abcdefghijklmnopqrstuv"} />
+          ))}
+        </Grid>
+      </Stack>
     </ThemeProvider>
   );
 }

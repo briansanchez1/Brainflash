@@ -4,18 +4,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Add } from "@mui/icons-material";
-import {
-  Grid,
-  TextField,
-  Select,
-  ToggleButtonGroup,
-  ToggleButton,
-  Stack,
-  MenuItem,
-  Chip,
-  OutlinedInput, 
-} from "@mui/material";
-
+import { Grid, ToggleButtonGroup, ToggleButton, Stack } from "@mui/material";
+import FlashcardView from "../components/modal_components/flashcard_focus";
+import DeckView from "../components/modal_components/deck_focus";
+import CategoryView from "../components/modal_components/category_focus";
+import PFEView from "../components/modal_components/PFE_focus";
 
 const style = {
   position: "absolute",
@@ -39,45 +32,22 @@ const btnStyle = {
 export default function ModalComponent() {
   const [active, setActive] = useState("flashcard");
   const [open, setOpen] = useState(false);
-  const [deck, setDeck] = React.useState("");
-  const [personName, setPersonName] = React.useState([]);
-  const names = [
-    "Deck 1",
-    "Deck 2",
-    "Deck 3",
-    "Deck 4",
-    "Deck 5",
-    "Deck 6",
-    "Deck 7",
-    "Deck 8",
-    "Deck 9",
-    "Deck 10",
-    "Deck 11",
-  ];
+
   const handleChange = (event, newActive) => {
     if (newActive !== null) {
       setActive(newActive);
     }
   };
-
-  const handleChangeSelect = (event) => {
-    setDeck(event.target.value);
-  };
-  const handleChangeChip = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
     setActive("flashcard");
   };
 
-  const handleSubmit = () => setOpen(false);
+  const handleSubmit = () => {
+    setOpen(false);
+  };
 
   const children = [
     <ToggleButton
@@ -135,146 +105,14 @@ export default function ModalComponent() {
               {children}
             </ToggleButtonGroup>
             <Grid container spacing={2}>
-              {/* eventually we want these to be Chip and not Select */}
-
-              {active === "flashcard" && (
-                <Grid item xs={11} alignContent={"center"}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Enter Question"
-                    name="Question"
-                    autoFocus
-                  />
-
-                  <TextField
-                    required
-                    fullWidth
-                    label="Enter Answer"
-                    name="Answer"
-                    sx={{ mt: 3 }}
-                  />
-
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={deck}
-                    label="deck"
-                    required
-                    onChange={handleChangeSelect}
-                    sx={{ width: 340, mt: 3 }}
-                  >
-                    <MenuItem value={"None"}>None</MenuItem>
-
-                    <MenuItem value={"deck 1"}>Deck 1</MenuItem>
-                  </Select>
-                </Grid>
-              )}
-              {active === "deck" && (
-                <Grid
-                  item
-                  xs={11}
-                  alignContent={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <TextField
-                    required
-                    fullWidth
-                    label="Enter Deck Name"
-                    name="deckName"
-                    autoFocus
-                  />
-                  <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    sx={{ mt: 3 }}
-                    onChange={handleChangeChip}
-                    value={personName}
-                    input={
-                      <OutlinedInput id="select-multiple-chip" label="Chip" />
-                    }
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {names.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              )}
-              {active === "category" && (
-                <Grid
-                  item
-                  xs={11}
-                  alignContent={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <TextField
-                    required
-                    fullWidth
-                    label="Enter Question"
-                    name="Question"
-                    autoFocus
-                  />
-
-                  <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    sx={{ mt: 3 }}
-                    onChange={handleChangeChip}
-                    value={personName}
-                    input={
-                      <OutlinedInput id="select-multiple-chip" label="Chip" />
-                    }
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {names.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              )}
-              {active === "review" && (
-                <Grid
-                  item
-                  xs={11}
-                  alignContent={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <TextField
-                    required
-                    fullWidth
-                    label="Review Session Name"
-                    name="reviewName"
-                    autoFocus
-                  />
-
-                </Grid>
-              )}
+              {active === "flashcard" && <FlashcardView />}
+              {active === "deck" && <DeckView />}
+              {active === "category" && <CategoryView />}
+              {active === "review" && <PFEView />}
             </Grid>
 
             <Grid item xs={12} textAlign={"center"}>
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-              >
+              <Button variant="contained" onClick={handleSubmit}>
                 Create
               </Button>
             </Grid>
