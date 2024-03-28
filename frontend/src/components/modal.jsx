@@ -18,7 +18,7 @@ const style = {
   width: { xs: 250, sm: 350, md: 500, lg: 700 },
   height: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+
   boxShadow: 24,
   p: 4,
 };
@@ -29,7 +29,7 @@ const btnStyle = {
   fontSize: { xs: 10, md: 15, lg: 15 },
 };
 
-export default function ModalComponent({focus}) {
+export default function ModalComponent({ focus }) {
   const [active, setActive] = useState(focus);
   const [open, setOpen] = useState(false);
 
@@ -79,16 +79,23 @@ export default function ModalComponent({focus}) {
     <div>
       <Button
         onClick={handleOpen}
-        sx={{ textDecoration: "none", color: "#fff" }}
+        sx={{
+          textDecoration: "none",
+          color: "#000",
+          bgcolor: "#BDBDBD",
+          
+          borderRadius: "20px",
+          width: "20px",
+          transition: "0.2s",
+          ":hover": {
+            bgcolor: "#656565",
+            color: "#fff"
+          },
+        }}
       >
         <Add />
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Stack spacing={2}>
             <Typography

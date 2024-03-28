@@ -5,9 +5,7 @@ import {
   Typography,
   Stack,
   Button,
-  IconButton,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
 import Navbar from "../components/navbar";
 import Categories from "../components/card";
 import ReviewSessions from "../components/card";
@@ -15,8 +13,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 
 const defaultTheme = createTheme();
-const categoriereire = [1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 2, 2, 2];
-
+const cards = ["card1",2,3,4,5,6,7,8]
 export default function forgotpassword() {
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -31,17 +28,14 @@ export default function forgotpassword() {
           sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
         >
           Your Categories
-          <IconButton
+          {/* temporary solution */}
+          <Button
             sx={{
               ml: 2,
-              bgcolor: "#BDBDBD",
-              color: "#fff",
-              width: 36,
-              height: 36,
             }}
           >
             <NewModal focus="category" />
-          </IconButton>
+          </Button>
         </Typography>
         <Grid
           mt={5}
@@ -57,8 +51,8 @@ export default function forgotpassword() {
             maxWidth: "100%",
           }}
         >
-          {categoriereire.map((categoriereire) => (
-            <Categories title={"cat"} />
+          {cards.map((cards) => (
+            <Categories title={"Lorem Ipsum"} />
           ))}
         </Grid>
 
@@ -70,18 +64,16 @@ export default function forgotpassword() {
           textAlign={"left"}
           sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
         >
-          Your Review Sessions{" "}
-          <IconButton
+          Your Review Sessions
+          {/* temporary solution */}
+          <Button
             sx={{
-              mr: 2,
-              bgcolor: "#BDBDBD",
-              color: "",
-              width: 36,
-              height: 36,
+              
+              ml: 2,
             }}
           >
-            <NewModal focus="review" />
-          </IconButton>
+            <NewModal focus="category" />
+          </Button>
         </Typography>
         <Grid
           mt={5}
@@ -91,14 +83,15 @@ export default function forgotpassword() {
           direction={"row"}
           wrap="nowrap"
           sx={{
+            
             overflowX: "auto",
             display: "flex",
             gap: "10px",
             maxWidth: "100%",
           }}
         >
-          {categoriereire.map((categoriereire) => (
-            <ReviewSessions title={"abcdefghijklmnopqrstuv"} />
+          {cards.map((cards) => (
+            <ReviewSessions title={"Lorem Ipsum"} />
           ))}
         </Grid>
       </Stack>

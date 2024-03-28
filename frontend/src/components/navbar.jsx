@@ -38,6 +38,8 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -129,15 +131,16 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Create">
               <IconButton
+              
                  sx={{
-                  mr: 2,
+                  mr: 3,
                   bgcolor: "#BDBDBD",
                   color: "#fff",
                   width: 36,
                   height: 36
                 }}
               >
-               <NewModal focus={"flashcard"}/>
+               <NewModal id="modal" focus={"flashcard"} />
                 
               </IconButton>
             </Tooltip>
@@ -145,8 +148,8 @@ function ResponsiveAppBar() {
         
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0,  }}>
-                <Avatar alt="User" src=" " />
+              <IconButton onClick={handleOpenUserMenu} >
+                <Avatar alt="User" src=" " sx={{ color: "#000" }} />
               </IconButton>
             </Tooltip>
 
