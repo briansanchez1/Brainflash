@@ -1,5 +1,7 @@
 package com.g5.brainflash.flashcard;
 
+import com.g5.brainflash.category.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +18,5 @@ public class FlashcardDTO {
     private Integer id;
     private String question;
     private String answer;
+    private Category category;
 }

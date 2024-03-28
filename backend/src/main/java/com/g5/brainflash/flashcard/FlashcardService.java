@@ -10,7 +10,6 @@ import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.common.responses.UpdateResponse;
-import com.g5.brainflash.user.User;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +30,12 @@ public class FlashcardService {
      * @return The flashcard DTO to be saved
      */
     @Transactional
-    public FlashcardDTO saveFlashcard(User user, FlashcardRequest request) {
+    public FlashcardDTO saveFlashcard(FlashcardRequest request) {
         Flashcard flashcard = Flashcard.builder()
             .question(request.getQuestion())
             .answer(request.getAnswer())
             .category(request.getCategory())
-            .deck(request.getDeck())
-            .user(user)
+            //.deck(request.getDeck())
             .build();
 
         flashcardRepository.save(flashcard);
@@ -47,7 +45,7 @@ public class FlashcardService {
             .question(flashcard.getQuestion())
             .answer(flashcard.getAnswer())
             .category(flashcard.getCategory())
-            .deck(flashcard.getDeck())
+            //.deck(flashcard.getDeck())
             .build();
     }
 
@@ -64,8 +62,8 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategory(),
-                            flashcard.getDeck()))
+                            flashcard.getCategory()))
+                            //flashcard.getDeck()))
                         .collect(Collectors.toList());        
     }
 
@@ -82,8 +80,8 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategory(),
-                            flashcard.getDeck()))
+                            flashcard.getCategory()))
+                            //flashcard.getDeck()))
                         .collect(Collectors.toList());        
     }
 
@@ -100,8 +98,8 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategory(),
-                            flashcard.getDeck()))
+                            flashcard.getCategory()))
+                            //flashcard.getDeck()))
                         .collect(Collectors.toList());        
     }
 
@@ -158,7 +156,7 @@ public class FlashcardService {
         flashcard.setQuestion(request.getQuestion());
         flashcard.setAnswer(request.getAnswer());
         flashcard.setCategory(request.getCategory());
-        flashcard.setDeck(request.getDeck());
+        //flashcard.setDeck(request.getDeck());
 
         flashcardRepository.save(flashcard);
 

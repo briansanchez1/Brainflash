@@ -25,5 +25,9 @@ public class FlashcardRequest {
     @NotBlank(message = "Category is required")
     private Category category;
 
-    private Deck deck;
+    public Integer getCategoryId() {
+        return this.category.getId();
+    }
+
+    //private Deck deck;
 }

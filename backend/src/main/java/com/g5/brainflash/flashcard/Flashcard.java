@@ -1,7 +1,6 @@
 package com.g5.brainflash.flashcard;
 
 import com.g5.brainflash.category.Category;
-import com.g5.brainflash.user.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,9 +32,9 @@ public class Flashcard {
     private String question;
     private String answer;
     
-    @ManyToOne(optional = true)
+    /*@ManyToOne(optional = true)
     @JoinColumn(name = "deck_id", referencedColumnName = "id")
-    private Deck deck;
+    private Deck deck;*/
     
 
     @ManyToOne(optional = false)

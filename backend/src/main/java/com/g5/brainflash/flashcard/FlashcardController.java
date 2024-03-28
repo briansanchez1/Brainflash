@@ -31,11 +31,10 @@ public class FlashcardController {
      * @return Response with result of saving flashcard
      */
     @PostMapping("/add")
-    public ResponseEntity<?> saveFlashcard(
-        @AuthenticationPrincipal User user, @RequestBody FlashcardRequest request
+    public ResponseEntity<?> saveFlashcard(@RequestBody FlashcardRequest request
     ) {
         try {
-            return ResponseEntity.ok(flashcardService.saveFlashcard(user, request));
+            return ResponseEntity.ok(flashcardService.saveFlashcard(request));
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
