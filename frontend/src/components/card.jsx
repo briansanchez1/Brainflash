@@ -7,8 +7,8 @@ export default function card_component({ title, cardNum }) {
     <div>
       <Card
         sx={{
-          width: "250px",
-          height: "200px",
+          width: {xs: "150px",lg: "250px"},
+          height: {xs: "100px",lg:"200px"},
           border: "1px solid black",
 
           ":hover": {

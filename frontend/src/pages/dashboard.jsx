@@ -5,12 +5,14 @@ import {
   Typography,
   Stack,
   Button,
+  IconButton,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Navbar from "../components/navbar";
 import Categories from "../components/card";
 import ReviewSessions from "../components/card";
 import Grid from "@mui/material/Unstable_Grid2";
+import NewModal from "../components/modal";
 
 const defaultTheme = createTheme();
 const categoriereire = [1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 2, 2, 2];
@@ -21,20 +23,25 @@ export default function forgotpassword() {
       <Navbar />
       <Stack>
         {/* Categories */}
-        <Typography variant="h4" mt={"56px"} ml={2} textAlign={"left"}>
-          Your Categories{" "}
-          <Button
-            variant="contained"
+        <Typography
+          variant="h4"
+          mt={"56px"}
+          ml={2}
+          textAlign={"left"}
+          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
+        >
+          Your Categories
+          <IconButton
             sx={{
-              bgcolor: "#fff",
-              color: "#000",
-              borderRadius: 5,
-              maxwidth: "1",
-              fontWeight: 700,
+              ml: 2,
+              bgcolor: "#BDBDBD",
+              color: "#fff",
+              width: 36,
+              height: 36,
             }}
           >
-            <Add />
-          </Button>
+            <NewModal focus="category" />
+          </IconButton>
         </Typography>
         <Grid
           mt={5}
@@ -56,20 +63,25 @@ export default function forgotpassword() {
         </Grid>
 
         {/* Review Sessions */}
-        <Typography variant="h4" mt={"56px"} ml={2} textAlign={"left"}>
+        <Typography
+          variant="h4"
+          mt={"56px"}
+          ml={2}
+          textAlign={"left"}
+          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
+        >
           Your Review Sessions{" "}
-          <Button
-            variant="contained"
+          <IconButton
             sx={{
-              bgcolor: "#fff",
-              color: "#000",
-              borderRadius: 5,
-              maxwidth: "1",
-              fontWeight: 700,
+              mr: 2,
+              bgcolor: "#BDBDBD",
+              color: "",
+              width: 36,
+              height: 36,
             }}
           >
-            <Add />
-          </Button>
+            <NewModal focus="review" />
+          </IconButton>
         </Typography>
         <Grid
           mt={5}

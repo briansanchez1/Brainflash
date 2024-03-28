@@ -137,7 +137,7 @@ function ResponsiveAppBar() {
                   height: 36
                 }}
               >
-               <NewModal />
+               <NewModal focus={"flashcard"}/>
                 
               </IconButton>
             </Tooltip>

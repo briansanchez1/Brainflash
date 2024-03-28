@@ -56,6 +56,9 @@ export default function Registration() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    if (formData.password.length > 16) {
+      
+    }
   };
 
   return (
@@ -128,6 +131,9 @@ export default function Registration() {
               label="Password"
               type="password"
               id="password"
+              inputProps={{ minLength: 6,maxLength: 16, }}
+              helperText={"6-16 characters."}
+              
               autoComplete="current-password"
             />
             {message && (

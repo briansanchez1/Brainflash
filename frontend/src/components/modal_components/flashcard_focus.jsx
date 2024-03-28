@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { TextField, Grid, Select, MenuItem } from "@mui/material";
 
+
 export default function FlashcardView() {
   return (
     <Grid item xs={11} alignContent={"center"}>
@@ -10,7 +11,9 @@ export default function FlashcardView() {
         fullWidth
         label="Enter Question"
         name="Question"
+        helperText= "3-19 characters"
         autoFocus
+        inputProps={{ maxLength: 19, minLength: 3}}
       />
 
       <TextField
@@ -18,6 +21,7 @@ export default function FlashcardView() {
         fullWidth
         label="Enter Answer"
         name="Answer"
+        
         sx={{ mt: 3 }}
       />
 

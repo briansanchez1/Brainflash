@@ -29,8 +29,8 @@ const btnStyle = {
   fontSize: { xs: 10, md: 15, lg: 15 },
 };
 
-export default function ModalComponent() {
-  const [active, setActive] = useState("flashcard");
+export default function ModalComponent({focus}) {
+  const [active, setActive] = useState(focus);
   const [open, setOpen] = useState(false);
 
   const handleChange = (event, newActive) => {
