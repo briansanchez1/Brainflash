@@ -31,7 +31,7 @@ public class JwtService {
     public String generateToken(
         Map<String, Object> extraClaims, 
         UserDetails userDetails){
-            final int oneDay = 1000 * 60 * 24;
+            final int oneDay = 1000 * 60 * 60 * 24;
             return Jwts
             .builder()
             .setClaims(extraClaims)
