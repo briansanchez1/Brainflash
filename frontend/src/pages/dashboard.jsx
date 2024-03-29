@@ -11,10 +11,20 @@ import Categories from "../components/card";
 import ReviewSessions from "../components/card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
+import {getAllCategories, isValidated, setAuthHeader, verifyAuth} from "../helpers/axios_helper"
+
+
 
 const defaultTheme = createTheme();
-const cards = ["card1",2,3,4,5,6,7,8]
-export default function forgotpassword() {
+
+
+const cards = ["1","1","1","1","1","1",];
+
+console.log(
+  verifyAuth());
+
+
+export default function dashboard() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Navbar />
@@ -37,6 +47,7 @@ export default function forgotpassword() {
             <NewModal focus="category" />
           </Button>
         </Typography>
+
         <Grid
           mt={5}
           mx={3}
@@ -51,8 +62,9 @@ export default function forgotpassword() {
             maxWidth: "100%",
           }}
         >
+          
           {cards.map((cards) => (
-            <Categories title={"Lorem Ipsum"} />
+            <Categories title={cards} />
           ))}
         </Grid>
 
@@ -68,7 +80,6 @@ export default function forgotpassword() {
           {/* temporary solution */}
           <Button
             sx={{
-              
               ml: 2,
             }}
           >
@@ -83,7 +94,6 @@ export default function forgotpassword() {
           direction={"row"}
           wrap="nowrap"
           sx={{
-            
             overflowX: "auto",
             display: "flex",
             gap: "10px",

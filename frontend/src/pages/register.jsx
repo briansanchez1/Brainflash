@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { setAuthHeader } from "../helpers/axios_helper";
 import {
   createTheme,
   ThemeProvider,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme({
   palette: {
@@ -23,20 +25,29 @@ const defaultTheme = createTheme({
 });
 
 export default function Registration() {
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  // handles changes to the text in the text boxes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // clears the text fields
   const clearFields = () => {
     setFormData({ name: "", email: "", password: "" });
   };
 
-  const [message, setMessage] = useState("");
-
+  // handles clicking the sign up button
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setMessage("");
     axios
       .post("http://localhost:8080/api/v1/auth/register", {
         name: formData.name,
@@ -44,21 +55,13 @@ export default function Registration() {
         password: formData.password,
       })
       .then(function (response) {
-        console.log(response);
+        setAuthHeader(response.data.token);
         clearFields();
-        setMessage("Account Successfully created!");
+        navigate("/");
       })
       .catch(function (error) {
-        setMessage("An account with this email already exists");
+        setMessage(error.response.data.message);
       });
-  };
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    if (formData.password.length > 16) {
-      
-    }
   };
 
   return (
@@ -70,7 +73,7 @@ export default function Registration() {
           background: "#fff",
           borderRadius: 10,
           width: { xs: 300, sm: 350, md: 450, lg: 550 },
-          height: { xs: 525, sm: 550},
+          height: { xs: 525, sm: 550 },
         }}
       >
         <Box
@@ -131,9 +134,8 @@ export default function Registration() {
               label="Password"
               type="password"
               id="password"
-              inputProps={{ minLength: 6,maxLength: 16, }}
+              inputProps={{ minLength: 6, maxLength: 16 }}
               helperText={"6-16 characters."}
-              
               autoComplete="current-password"
             />
             {message && (
