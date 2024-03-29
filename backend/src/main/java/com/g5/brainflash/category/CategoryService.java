@@ -33,7 +33,7 @@ public class CategoryService {
     public CategoryDTO saveCategory(User user, CategoryRequest request ) {
         Category category = Category.builder().title(request.getTitle()).user(user).build();
 
-        categoryRepository.save(category);
+        category = categoryRepository.save(category);
 
         return CategoryDTO.builder()
             .id(category.getId())
