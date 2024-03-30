@@ -11,100 +11,108 @@ import Categories from "../components/card";
 import ReviewSessions from "../components/card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import {getAllCategories, isValidated, setAuthHeader, verifyAuth} from "../helpers/axios_helper"
-
-
+import { useNavigate } from "react-router-dom";
+import { verifyAuth, } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme();
+const cards = ["1", "1", "1", "1", "1", "1"]; // testing values
 
+const Dashboard = () => {
+  const navigate = useNavigate();
 
-const cards = ["1","1","1","1","1","1",];
+  const redirectUser = async () => {
+    const authenticated = await verifyAuth();
+    if (!authenticated) {
+      navigate("/login");
+    }
+  };
 
-console.log(
-  verifyAuth());
-
-
-export default function dashboard() {
+  React.useEffect(() => {
+    redirectUser();
+  }); // Run once on component mount
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Navbar />
-      <Stack>
-        {/* Categories */}
-        <Typography
-          variant="h4"
-          mt={"56px"}
-          ml={2}
-          textAlign={"left"}
-          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-        >
-          Your Categories
-          {/* temporary solution */}
-          <Button
+    <div onLoad={redirectUser}>
+      <ThemeProvider theme={defaultTheme}>
+        <Navbar />
+        <Stack>
+          <Button  sx={{bgcolor: "gray", height: "40px", width: "40px"}}></Button>
+          {/* Categories */}
+          <Typography
+            variant="h4"
+            mt={"56px"}
+            ml={2}
+            textAlign={"left"}
+            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
+          >
+            Your Categories
+            {/* temporary solution */}
+            <Button
+              sx={{
+                ml: 2,
+              }}
+            >
+              <NewModal focus="category" />
+            </Button>
+          </Typography>
+
+          <Grid
+            mt={5}
+            mx={3}
+            py={2}
+            container
+            direction={"row"}
+            wrap="nowrap"
             sx={{
-              ml: 2,
+              overflowX: "auto",
+              display: "flex",
+              gap: "10px",
+              maxWidth: "100%",
             }}
           >
-            <NewModal focus="category" />
-          </Button>
-        </Typography>
+            {cards.map((cards) => (
+              <Categories title={cards} />
+            ))}
+          </Grid>
 
-        <Grid
-          mt={5}
-          mx={3}
-          py={2}
-          container
-          direction={"row"}
-          wrap="nowrap"
-          sx={{
-            overflowX: "auto",
-            display: "flex",
-            gap: "10px",
-            maxWidth: "100%",
-          }}
-        >
-          
-          {cards.map((cards) => (
-            <Categories title={cards} />
-          ))}
-        </Grid>
-
-        {/* Review Sessions */}
-        <Typography
-          variant="h4"
-          mt={"56px"}
-          ml={2}
-          textAlign={"left"}
-          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-        >
-          Your Review Sessions
-          {/* temporary solution */}
-          <Button
+          {/* Review Sessions */}
+          <Typography
+            variant="h4"
+            mt={"56px"}
+            ml={2}
+            textAlign={"left"}
+            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
+          >
+            Your Review Sessions
+            {/* temporary solution */}
+            <Button
+              sx={{
+                ml: 2,
+              }}
+            >
+              <NewModal focus="category" />
+            </Button>
+          </Typography>
+          <Grid
+            mt={5}
+            mx={3}
+            py={2}
+            container
+            direction={"row"}
+            wrap="nowrap"
             sx={{
-              ml: 2,
+              overflowX: "auto",
+              display: "flex",
+              gap: "10px",
+              maxWidth: "100%",
             }}
           >
-            <NewModal focus="category" />
-          </Button>
-        </Typography>
-        <Grid
-          mt={5}
-          mx={3}
-          py={2}
-          container
-          direction={"row"}
-          wrap="nowrap"
-          sx={{
-            overflowX: "auto",
-            display: "flex",
-            gap: "10px",
-            maxWidth: "100%",
-          }}
-        >
-          {cards.map((cards) => (
-            <ReviewSessions title={"Lorem Ipsum"} />
-          ))}
-        </Grid>
-      </Stack>
-    </ThemeProvider>
+            {cards.map((cards) => (
+              <ReviewSessions title={"Lorem Ipsum"} />
+            ))}
+          </Grid>
+        </Stack>
+      </ThemeProvider>
+    </div>
   );
-}
+};
+export default Dashboard;

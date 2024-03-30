@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { setAuthHeader } from "../helpers/axios_helper";
 import {
   createTheme,
   ThemeProvider,
@@ -15,6 +14,7 @@ import {
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { setAuthHeader, verifyAuth } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -24,14 +24,19 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function Registration() {
+const Register = () => {
+
+  // error message (if one exists)
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  // information that the user enters
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+  // used to switch between pages
+  const navigate = useNavigate();
 
   // handles changes to the text in the text boxes
   const handleChange = (event) => {
@@ -39,12 +44,13 @@ export default function Registration() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // clears the text fields
-  const clearFields = () => {
-    setFormData({ name: "", email: "", password: "" });
-  };
 
-  // handles clicking the sign up button
+  /*
+  handles submition; sends a post request to the endpoint to register. is returned the
+  JWT token for authorization.This can probably be added to a separate file with all
+  of the reqests for the sake of cleaning things up, or added to the 
+  axios helper file for the same reason. 
+  */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMessage("");
@@ -56,13 +62,27 @@ export default function Registration() {
       })
       .then(function (response) {
         setAuthHeader(response.data.token);
-        clearFields();
         navigate("/");
       })
       .catch(function (error) {
+        setAuthHeader("");
+        console.log(error);
         setMessage(error.response.data.message);
       });
   };
+
+  //  check if the user is valid or not, and redirect the to the dashboard or do nothing
+  const redirectUser = async () => {
+    const authenticated = await verifyAuth();
+    if (authenticated) {
+      navigate("/");
+    }
+  };
+
+  // once component is mounted, will run redirect user
+  React.useEffect(() => {
+    redirectUser();
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -97,6 +117,7 @@ export default function Registration() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {/* name text field */}
             <TextField
               margin="normal"
               required
@@ -109,7 +130,7 @@ export default function Registration() {
               autoComplete="name"
               autoFocus
             />
-
+            {/* email text field */}
             <TextField
               margin="normal"
               required
@@ -123,7 +144,7 @@ export default function Registration() {
               autoComplete="email"
               color="primary"
             />
-
+            {/* password text field */}
             <TextField
               margin="normal"
               required
@@ -138,12 +159,13 @@ export default function Registration() {
               helperText={"6-16 characters."}
               autoComplete="current-password"
             />
+            {/* if there is a message, render it  */}
             {message && (
               <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
                 {message}
               </Box>
             )}
-
+            {/* Already have account link */}
             <Grid container sx={{ padding: 2 }}>
               <Grid item>
                 <Link
@@ -166,7 +188,7 @@ export default function Registration() {
                 </Link>
               </Grid>
             </Grid>
-
+            {/* submit button */}
             <Button
               type="submit"
               className="submit"
@@ -196,4 +218,5 @@ export default function Registration() {
       </Container>
     </ThemeProvider>
   );
-}
+};
+export default Register;

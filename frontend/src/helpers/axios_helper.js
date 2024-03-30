@@ -15,9 +15,7 @@ export const setAuthHeader = (token) => {
 };
 // Default values
 axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.headers.common = { Authorization: `Bearer ${getAuthToken}` };
 axios.defaults.headers.post["Content-Type"] = "application/json";
-
 
 // provided request. Most likely will delete
 export const request = (method, url, data) => {
@@ -34,12 +32,11 @@ export const request = (method, url, data) => {
   });
 };
 
-// managed redirection in the case that the user does not have a valid token 
+// managed redirection in the case that the user does not have a valid token
 // TODO
 export const isValidated = () => {
   if (getAuthToken() != null) {
-
-    return window.location.href("/login");
+    return window.location.href("http://localhost:8080/login");
   }
   // else if(!verifyAuth){
   //  return window.location.href("/login");
@@ -50,31 +47,37 @@ export const isValidated = () => {
 
 export const getAllCategories = () => {
   try {
-    const response = axios.get("/api/v1/categories", {
+    const response = axios.get("http://localhost:8080/api/v1/categories", {
       headers: {
         Authorization: `Bearer ${getAuthToken()}`,
       },
     });
-    console.log(response.data); 
+    console.log(response.data);
   } catch (error) {
     console.log("error");
     console.error(error);
-    throw error; 
+    throw error;
   }
 };
 
-// Verify if the token is valid. if it is return true, if its not return false
+// Verify if JWT token existrs and is valid. if it is return true, if its not return false
 export const verifyAuth = () => {
-  axios
-    .get("/api/v1/secure", {
-      headers: {
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMkAyMjMyMjIyMjIyIiwiaWF0IjoxNzExNjc4MzE1LCJleHAiOjE3MTE2Nzk3NTV9.XEU2Ri2zACJHRHm7M-0KTu6NVv87T1NnzMyfScEsLj0"}`,
-      },
-    })
-    .then((res) => {
-      console.log("true");
-    })
-    .catch((error) => {
-      console.error("fail");
-    });
+  return new Promise((resolve) => {
+    if (!getAuthToken()) {
+      resolve(false);
+    } else {
+      axios
+        .get("http://localhost:8080/api/v1/secure", {
+          headers: {
+            Authorization: `Bearer ${getAuthToken()}`,
+          },
+        })
+        .then((res) => {
+          resolve(true);
+        })
+        .catch((error) => {
+          resolve(false);
+        });
+    }
+  });
 };
