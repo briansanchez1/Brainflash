@@ -14,6 +14,7 @@ import {
 import logo from "../assets/logo.png";
 import { pink } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import {  setAuthHeader, verifyAuth } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -24,14 +25,36 @@ const defaultTheme = createTheme({
 });
 
 const Login = () => {
+  
+  // error message (if one exists)
+  const [message, setMessage] = useState("");
+
+
+  
+  // state to track loading
+  const [isLoading, setIsLoading] = useState(true);
+
+  // information that the user enters
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [message, setMessage] = useState("");
+  // used to switch between pages
   const navigate = useNavigate();
 
+  // handles changes to the text in the text boxes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+    /*
+  handles submition; sends a post request to the endpoint to register. is returned the
+  JWT token for authorization.This can probably be added to a separate file with all
+  of the reqests for the sake of cleaning things up, or added to the 
+  axios helper file for the same reason. 
+  */
   const handleSubmit = async (event) => {
     event.preventDefault();
     axios
@@ -40,6 +63,7 @@ const Login = () => {
         password: formData.password,
       })
       .then(function (response) {
+        setAuthHeader(response.data.token);
         navigate("/");
       })
       .catch(function (error) {
@@ -47,15 +71,29 @@ const Login = () => {
       });
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+  //  check if the user is valid or not, and redirect the to the dashboard or do nothing
+  const redirectUser = async () => {
+    const authenticated = await verifyAuth();
+    if (authenticated) {
+      navigate("/");
+    }else{
+      setIsLoading(false);
+    }
   };
 
+ // once component is mounted, will run redirect user
+ React.useEffect(() => {
+  redirectUser();
+}, [isLoading]);
+
   return (
+    <div>
+    {isLoading ? null : (
+      <div>
     <ThemeProvider theme={defaultTheme}>
       <Container
         component="main"
+        
         sx={{
           background: "#fff",
           borderRadius: 10,
@@ -109,7 +147,6 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              
             />
             {message && (
               <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
@@ -194,7 +231,10 @@ const Login = () => {
         </Box>
       </Container>
     </ThemeProvider>
+    </div>
+        )}
+      
+    </div>
   );
 };
-
 export default Login;

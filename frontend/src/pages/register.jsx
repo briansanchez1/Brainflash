@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import { setAuthHeader, verifyAuth } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -22,21 +24,39 @@ const defaultTheme = createTheme({
   },
 });
 
-export default function Registration() {
+const Register = () => {
+
+  // error message (if one exists)
+  const [message, setMessage] = useState("");
+  // information that the user enters
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const clearFields = () => {
-    setFormData({ name: "", email: "", password: "" });
+  // state to track loading
+  const [isLoading, setIsLoading] = useState(true);
+
+  // used to switch between pages
+  const navigate = useNavigate();
+
+  // handles changes to the text in the text boxes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const [message, setMessage] = useState("");
 
+  /*
+  handles submition; sends a post request to the endpoint to register. is returned the
+  JWT token for authorization.This can probably be added to a separate file with all
+  of the reqests for the sake of cleaning things up, or added to the 
+  axios helper file for the same reason. 
+  */
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setMessage("");
     axios
       .post("http://localhost:8080/api/v1/auth/register", {
         name: formData.name,
@@ -44,24 +64,36 @@ export default function Registration() {
         password: formData.password,
       })
       .then(function (response) {
-        console.log(response);
-        clearFields();
-        setMessage("Account Successfully created!");
+        setAuthHeader(response.data.token);
+        navigate("/");
       })
       .catch(function (error) {
-        setMessage("An account with this email already exists");
+        setAuthHeader("");
+        console.log(error);
+        setMessage(error.response.data.message);
       });
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    if (formData.password.length > 16) {
-      
+  //  check if the user is valid or not, and redirect the to the dashboard or do nothing
+  const redirectUser = async () => {
+    const authenticated = await verifyAuth();
+    if (authenticated) {
+      navigate("/");
+    } else {
+      setIsLoading(false);
     }
   };
+ 
+
+  // once component is mounted, will run redirect user
+  React.useEffect(() => {
+    redirectUser();
+  }, [isLoading]);
 
   return (
+    <div>
+    {isLoading ? null : (
+      <div>
     <ThemeProvider theme={defaultTheme}>
       <Container
         component="main"
@@ -70,7 +102,7 @@ export default function Registration() {
           background: "#fff",
           borderRadius: 10,
           width: { xs: 300, sm: 350, md: 450, lg: 550 },
-          height: { xs: 525, sm: 550},
+          height: { xs: 525, sm: 550 },
         }}
       >
         <Box
@@ -94,6 +126,7 @@ export default function Registration() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {/* name text field */}
             <TextField
               margin="normal"
               required
@@ -106,7 +139,7 @@ export default function Registration() {
               autoComplete="name"
               autoFocus
             />
-
+            {/* email text field */}
             <TextField
               margin="normal"
               required
@@ -120,7 +153,7 @@ export default function Registration() {
               autoComplete="email"
               color="primary"
             />
-
+            {/* password text field */}
             <TextField
               margin="normal"
               required
@@ -131,17 +164,17 @@ export default function Registration() {
               label="Password"
               type="password"
               id="password"
-              inputProps={{ minLength: 6,maxLength: 16, }}
+              inputProps={{ minLength: 6, maxLength: 16 }}
               helperText={"6-16 characters."}
-              
               autoComplete="current-password"
             />
+            {/* if there is a message, render it  */}
             {message && (
               <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
                 {message}
               </Box>
             )}
-
+            {/* Already have account link */}
             <Grid container sx={{ padding: 2 }}>
               <Grid item>
                 <Link
@@ -164,7 +197,7 @@ export default function Registration() {
                 </Link>
               </Grid>
             </Grid>
-
+            {/* submit button */}
             <Button
               type="submit"
               className="submit"
@@ -193,5 +226,10 @@ export default function Registration() {
         </Box>
       </Container>
     </ThemeProvider>
+    </div>
+        )}
+      
+    </div>
   );
-}
+};
+export default Register;
