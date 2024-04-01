@@ -17,4 +17,5 @@ public class FlashcardDTO {
     private String question;
     private String answer;
     private Integer categoryId;
+    private Integer deckId;
 }

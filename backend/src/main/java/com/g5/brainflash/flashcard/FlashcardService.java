@@ -12,6 +12,8 @@ import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.common.responses.UpdateResponse;
+import com.g5.brainflash.deck.Deck;
+import com.g5.brainflash.deck.DeckRepository;
 import com.g5.brainflash.user.User;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +29,7 @@ public class FlashcardService {
 
     private final FlashcardRepository flashcardRepository;
     private final CategoryRepository categoryRepository;
+    private final DeckRepository deckRepository;
 
     /**
      * Build flashcard DTO to be saved
@@ -39,12 +42,14 @@ public class FlashcardService {
         Category category = categoryRepository.findById(request.getCategoryId())
                             .orElseThrow(() -> new EntityNotFoundException("Category not found."));
 
+        Optional<Deck> deck = deckRepository.findById(request.getDeckId());
+
         Flashcard flashcard = Flashcard.builder()
             .question(request.getQuestion())
             .answer(request.getAnswer())
             .user(user)
             .category(category)
-            //.deck(request.getDeck())
+            .deck(deck.orElse(null))
             .build();
 
         flashcardRepository.save(flashcard);
@@ -54,7 +59,7 @@ public class FlashcardService {
             .question(flashcard.getQuestion())
             .answer(flashcard.getAnswer())
             .categoryId(flashcard.getCategory().getId())
-            //.deck(flashcard.getDeck())
+            .deckId(flashcard.getDeck().getId())
             .build();
     }
 
@@ -71,8 +76,8 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategory().getId()))
-                            //flashcard.getDeck()))
+                            flashcard.getCategory().getId(),
+                            flashcard.getDeck().getId()))
                         .collect(Collectors.toList());        
     }
 
@@ -89,8 +94,8 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategory().getId()))
-                            //flashcard.getDeck()))
+                            flashcard.getCategory().getId(),
+                            flashcard.getDeck().getId()))
                         .collect(Collectors.toList());        
     }
 
@@ -99,7 +104,7 @@ public class FlashcardService {
      * @param deckId The ID of the deck
      * @return List of all flashcard DTOs
      */
-    /*@Transactional
+    @Transactional
     public List<FlashcardDTO> getAllFlashcardsByDeckId(Integer deckId) {
         List<Flashcard> flashcards = flashcardRepository.findAllByDeckId(deckId);
         return flashcards.stream()
@@ -107,10 +112,10 @@ public class FlashcardService {
                             flashcard.getId(), 
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
-                            flashcard.getCategoryId()))
-                            //flashcard.getDeck()))
+                            flashcard.getCategory().getId(),
+                            flashcard.getDeck().getId()))
                         .collect(Collectors.toList());        
-    }*/
+    }
 
     /**
      * Delete a flashcard from the database
@@ -165,10 +170,13 @@ public class FlashcardService {
         Category category = categoryRepository.findById(request.getCategoryId())
                             .orElseThrow(() -> new EntityNotFoundException("Category not found."));
 
+        Deck deck = deckRepository.findById(request.getDeckId())
+                            .orElse(null);
+
         flashcard.setQuestion(request.getQuestion());
         flashcard.setAnswer(request.getAnswer());
         flashcard.setCategory(category);
-        //flashcard.setDeck(request.getDeck());
+        flashcard.setDeck(deck);
 
         flashcardRepository.save(flashcard);
 

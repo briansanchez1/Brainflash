@@ -1,6 +1,7 @@
 package com.g5.brainflash.flashcard;
 
 import com.g5.brainflash.category.Category;
+import com.g5.brainflash.deck.Deck;
 import com.g5.brainflash.user.User;
 
 import jakarta.persistence.Entity;
@@ -36,10 +37,9 @@ public class Flashcard {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     
-    /*@ManyToOne(optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "deck_id", referencedColumnName = "id")
-    private Deck deck;*/
-    
+    private Deck deck;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "id")

@@ -89,10 +89,10 @@ public class FlashcardController {
      * @param deckId The ID of the deck to get flashcards for
      * @return Response with list of flashcards
      */
-    /*@GetMapping("/deck/{deckId}")
+    @GetMapping("/deck/{deckId}")
     public ResponseEntity<?> getFlashcardsByDeck(
         @AuthenticationPrincipal User user, @PathVariable Integer deckId
     ) {
         return ResponseEntity.ok(flashcardService.getAllFlashcardsByDeckId(deckId));
-    }*/
+    }
 }

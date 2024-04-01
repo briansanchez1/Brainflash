@@ -1,4 +1,5 @@
 package com.g5.brainflash.flashcard;
+
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,6 @@ public class FlashcardRequest {
     @Column(name = "category_id")
     private Integer categoryId;
 
-    //private Deck deck;
+    @Column(name = "deck_id")
+    private Integer deckId;
 }
