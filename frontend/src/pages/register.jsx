@@ -14,7 +14,7 @@ import {
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { setAuthHeader, verifyAuth } from "../helpers/axios_helper";
+import { setAuthHeader } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -25,7 +25,6 @@ const defaultTheme = createTheme({
 });
 
 const Register = () => {
-
   // error message (if one exists)
   const [message, setMessage] = useState("");
   // information that the user enters
@@ -43,7 +42,6 @@ const Register = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   /*
   handles submition; sends a post request to the endpoint to register. is returned the
@@ -72,17 +70,6 @@ const Register = () => {
   };
 
   //  check if the user is valid or not, and redirect the to the dashboard or do nothing
-  const redirectUser = async () => {
-    const authenticated = await verifyAuth();
-    if (authenticated) {
-      navigate("/");
-    }
-  };
-
-  // once component is mounted, will run redirect user
-  React.useEffect(() => {
-    redirectUser();
-  });
 
   return (
     <ThemeProvider theme={defaultTheme}>

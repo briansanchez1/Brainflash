@@ -1,32 +1,22 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { CardContent, Card } from "@mui/material";
+import { CardContent, Card, CardActionArea } from "@mui/material";
 
-export default function card_component({ title, cardNum }) {
+const handleClick = (category) => {
+  // Handle click event, for example, navigate to a category detail page
+  console.log("Clicked category:", category);
+};
+
+export default function category_card({ category }) {
   return (
-    <div>
-      <Card
-        sx={{
-          width: {xs: "150px",lg: "250px"},
-          height: {xs: "100px",lg:"200px"},
-          border: "1px solid black",
-
-          ":hover": {
-            cursor: "pointer",
-          },
-        }}
-      >
+    <Card>
+      <CardActionArea onClick={() => handleClick(category)}>
         <CardContent>
-          <Typography variant="h5" component="div">
-            {title}
+          <Typography variant="h6" component="h2" align="center">
+            {category.name}
           </Typography>
-
-          {/* Eventually, category will pass number of cards }
-          <Typography sx={{ mt: 3 }} color="#797979">
-           {cardNum}
-          </Typography> */}
         </CardContent>
-      </Card>
-    </div>
+      </CardActionArea>
+    </Card>
   );
 }

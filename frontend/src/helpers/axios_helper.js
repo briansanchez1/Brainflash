@@ -44,18 +44,20 @@ export const isValidated = () => {
 };
 
 // get categories from database with their token
-
-export const getAllCategories = () => {
+export const getAllCategories = async () => {
   try {
-    const response = axios.get("http://localhost:8080/api/v1/categories", {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
-    });
-    console.log(response.data);
+    const response = await axios.get(
+      "http://localhost:8080/api/v1/categories",
+      {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
+    );
+    const categories = response.data.map((category) => category.title);
+    return categories;
   } catch (error) {
-    console.log("error");
-    console.error(error);
+    console.error("Error occurred while fetching categories" + error);
     throw error;
   }
 };
