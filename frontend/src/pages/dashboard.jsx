@@ -6,18 +6,16 @@ import {
   Stack,
   Button,
 } from "@mui/material";
-import Navbar from "../components/navbar";
 import Categories from "../components/card";
 import ReviewSessions from "../components/card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 
 const defaultTheme = createTheme();
-const cards = ["card1",2,3,4,5,6,7,8]
+const cards = ["card1", 2, 3, 4, 5, 6, 7, 8];
 export default function forgotpassword() {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Navbar />
       <Stack>
         {/* Categories */}
         <Typography
@@ -68,7 +66,6 @@ export default function forgotpassword() {
           {/* temporary solution */}
           <Button
             sx={{
-              
               ml: 2,
             }}
           >
@@ -83,7 +80,6 @@ export default function forgotpassword() {
           direction={"row"}
           wrap="nowrap"
           sx={{
-            
             overflowX: "auto",
             display: "flex",
             gap: "10px",
