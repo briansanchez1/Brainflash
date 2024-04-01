@@ -18,7 +18,7 @@ public class DeckRequest {
     @NotBlank(message = "Title is required")
     @Size(
         min = 2,
-        max = 19,
+        max = 25,
         message = "Title must be between {min} and {max} characters long.")
     private String title;
 
