@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 public class CategoryRequest {
     @NotBlank(message = "Title is required")    
     @Size(
-        min = 2,
-        max = 19,
+        min = 3,
+        max = 25,
         message = "Title must be between {min} and {max} characters long.")
     private String title;
 }
