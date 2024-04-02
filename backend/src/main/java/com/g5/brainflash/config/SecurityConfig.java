@@ -41,9 +41,9 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable) // Disables CSRF (Cross-Site Request Forgery) protection.
             .cors(Customizer.withDefaults()) // Configures CORS (Cross-Origin Resource Sharing) using default settings.
-            // Authorizes requests, permitting all requests to "/api/v1/auth/**" and requiring authentication for any other request.
+            // Authorizes requests, permitting all requests to for registration and authentication and requiring authentication for any other request.
             .authorizeHttpRequests(req ->
-                req.requestMatchers("/api/v1/auth/**")
+                req.requestMatchers("/api/v1/auth/register","/api/v1/auth/authenticate")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
