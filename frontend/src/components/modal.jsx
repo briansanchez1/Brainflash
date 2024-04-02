@@ -38,7 +38,10 @@ export default function ModalComponent({ focus }) {
       setActive(newActive);
     }
   };
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    setActive(focus);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -83,13 +86,13 @@ export default function ModalComponent({ focus }) {
           textDecoration: "none",
           color: "#000",
           bgcolor: "#BDBDBD",
-          
+
           borderRadius: "20px",
           width: "20px",
           transition: "0.2s",
           ":hover": {
             bgcolor: "#656565",
-            color: "#fff"
+            color: "#fff",
           },
         }}
       >

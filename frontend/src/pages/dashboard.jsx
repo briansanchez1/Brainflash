@@ -1,96 +1,177 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   createTheme,
   ThemeProvider,
   Typography,
   Stack,
   Button,
+  Container,  
 } from "@mui/material";
-import Categories from "../components/card";
-import ReviewSessions from "../components/card";
+import CategoryCard from "../components/category_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 
 const defaultTheme = createTheme();
-const cards = ["card1", 2, 3, 4, 5, 6, 7, 8];
-export default function forgotpassword() {
+
+// testing values
+const categoriesData = [
+  { id: 1, name: "a", flashcard_amount: 5 },
+  { id: 2, name: "Chemistry", flashcard_amount: 5 },
+  { id: 3, name: "Software Engineering", flashcard_amount: 5 },
+  { id: 4, name: "Category 4", flashcard_amount: 5 },
+  { id: 5, name: "Category 5zzzzzzzzs", flashcard_amount: 5 },
+  { id: 6, name: "Category 6", flashcard_amount: 5 },
+  { id: 7, name: "Category 7", flashcard_amount: 5 },
+];
+
+const Dashboard = () => {
+  // State to track loading
+  const [displayedCards, setDisplayedCards] = useState([]);
+
+  // original cards used to determine if a helper card should be shown or not
+  const [originalCards, setOriginalCards] = useState([]);
+
+
+
+  const loadExtraCard = () => {
+    if (originalCards.length > 3) {
+      setDisplayedCards(originalCards.reverse().slice(0, 3));
+    } else {
+      setDisplayedCards(originalCards.reverse());
+    }
+  };
+
+
+  useEffect(() => {
+    setOriginalCards(categoriesData);
+  }, []);
+
+  useEffect(() => {
+    loadExtraCard();
+  }, [originalCards]);
+
+ 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Stack>
-        {/* Categories */}
-        <Typography
-          variant="h4"
-          mt={"56px"}
-          ml={2}
-          textAlign={"left"}
-          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-        >
-          Your Categories
-          {/* temporary solution */}
-          <Button
-            sx={{
-              ml: 2,
-            }}
+     
+      <Container>
+        <Stack>
+          {/* Categories */}
+          <Typography
+            variant="h4"
+            mt={"56px"}
+            textAlign={"left"}
+            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
           >
-            <NewModal focus="category" />
-          </Button>
-        </Typography>
-        <Grid
-          mt={5}
-          mx={3}
-          py={2}
-          container
-          direction={"row"}
-          wrap="nowrap"
-          sx={{
-            overflowX: "auto",
-            display: "flex",
-            gap: "10px",
-            maxWidth: "100%",
-          }}
-        >
-          {cards.map((cards) => (
-            <Categories title={"Lorem Ipsum"} />
-          ))}
-        </Grid>
+            Your Categories
+            {/* temporary solution */}
+            <Button
+              sx={{
+                ml: 2,
+              }}
+            >
+              <NewModal focus="category" />
+            </Button>
+          </Typography>
 
-        {/* Review Sessions */}
-        <Typography
-          variant="h4"
-          mt={"56px"}
-          ml={2}
-          textAlign={"left"}
-          sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-        >
-          Your Review Sessions
-          {/* temporary solution */}
-          <Button
-            sx={{
-              ml: 2,
-            }}
+          <Grid
+            container
+            direction={"row"}
+            spacing={1}
           >
-            <NewModal focus="category" />
-          </Button>
-        </Typography>
-        <Grid
-          mt={5}
-          mx={3}
-          py={2}
-          container
-          direction={"row"}
-          wrap="nowrap"
-          sx={{
-            overflowX: "auto",
-            display: "flex",
-            gap: "10px",
-            maxWidth: "100%",
-          }}
-        >
-          {cards.map((cards) => (
-            <ReviewSessions title={"Lorem Ipsum"} />
-          ))}
-        </Grid>
-      </Stack>
+            {displayedCards.length > 0 ? (
+              displayedCards.map((category) => (
+                <Grid
+                  item
+                  key={category.id}
+                  xs={12}
+                  sm={12}
+                  md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
+                  lg={4}
+                  xl={4}
+                 
+                >
+                  <CategoryCard category={category}  />
+                </Grid>
+              ))
+            ) : (
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <CategoryCard
+                  category={{ name: "No Categories Found. Click to Create." }}
+                />
+              </Grid>
+            )}
+
+            {originalCards.length > 3 && (
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <CategoryCard
+                  category={{ name: "Click to View All Categories" }}
+                />
+              </Grid>
+            )}
+          </Grid>
+
+
+           {/* PFE / Review Boilerplate */}
+           <Typography
+            variant="h4"
+            mt={"56px"}
+            textAlign={"left"}
+            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
+          >
+            Review Sessions
+            {/* temporary solution */}
+            <Button
+              sx={{
+                ml: 2,
+              }}
+            >
+              <NewModal focus="review" />
+            </Button>
+          </Typography>
+
+          <Grid
+            container
+            direction={"row"}
+            spacing={1}
+          >
+            {displayedCards.length > 0 ? (
+              displayedCards.map((category) => (
+                <Grid
+                  item
+                  key={category.id}
+                  xs={12}
+                  sm={12}
+                  md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
+                  lg={4}
+                  xl={4}
+                 
+                >
+                  <CategoryCard category={category}  />
+                </Grid>
+              ))
+            ) : (
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <CategoryCard
+                  category={{ name: "No Review Sessions Found. Click to Create." }}
+                />
+              </Grid>
+            )}
+
+            {originalCards.length > 3 && (
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <CategoryCard
+                  category={{ name: "Click to View All Review Sessions" }}
+                />
+              </Grid>
+            )}
+          </Grid>
+
+          {/* Review Sessions */}
+        </Stack>
+      </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default Dashboard;
