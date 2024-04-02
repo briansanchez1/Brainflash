@@ -1,0 +1,116 @@
+package com.g5.brainflash.deck;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.g5.brainflash.common.exceptions.NotFoundException;
+import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
+import com.g5.brainflash.common.responses.DeleteResponse;
+import com.g5.brainflash.common.responses.UpdateResponse;
+import com.g5.brainflash.user.User;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+/**
+ * Deck service class. Handles logic relating to decks in the system
+ */
+@Service
+@RequiredArgsConstructor
+public class DeckService {
+    private final DeckRepository deckRepository;
+
+    /**
+     * Build deck DTO to be saved
+     * @param user The user creating/editing deck
+     * @param request The deck request object
+     * @return The deck DTO to be saved
+     */
+    @Transactional
+    public DeckDTO saveDeck(User user, DeckRequest request) {
+        Deck deck = Deck.builder().title(request.getTitle()).numCards(0).user(user).build();
+
+        deck = deckRepository.save(deck);
+
+        return DeckDTO.builder()
+            .id(deck.getId())
+            .title(deck.getTitle())
+            .numCards(deck.getNumCards())
+            .build();
+    }
+
+    /**
+     * Get all decks for a user
+     * @param userId The ID of the user
+     * @return List of all deck DTOs
+     */
+    @Transactional
+    public List<DeckDTO> getAllDecksByUserId(Integer userId) {
+        List<Deck> decks = deckRepository.findAllByUserId(userId);
+        return decks.stream()
+                    .map(deck -> new DeckDTO(
+                        deck.getId(), 
+                        deck.getTitle(),
+                        deck.getNumCards()))
+                    .collect(Collectors.toList());        
+    }
+
+    /**
+     * Delete a deck from the database
+     * @param userId The ID of the user
+     * @param id The ID of the deck to delete
+     * @return Response with result of deleting deck
+     */
+    @Transactional
+    public DeleteResponse deleteDeck(Integer userId, Integer id) {
+        Optional<Deck> optDeck = deckRepository.findById(id);
+
+        // Check if deck exists
+        if(!optDeck.isPresent()){
+            throw new NotFoundException("Deck not found.");
+        }
+
+        Deck deck = optDeck.get();
+
+        // Check if deck belongs to user
+        if(!deck.getUser().getId().equals(userId)) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to delete this deck.");
+        }
+
+        deckRepository.deleteById(id);
+        return new DeleteResponse("Deck deleted.");
+    }
+
+    /**
+     * Update a deck's information in the database
+     * @param userId The ID of the user
+     * @param id The ID of the deck to update
+     * @param request The deck request object
+     * @return Response with result of updating deck
+     */
+    @Transactional
+    public UpdateResponse updateDeck(Integer userId, Integer id, DeckRequest request) {
+        Optional<Deck> optDeck = deckRepository.findById(id);
+
+        // Check if deck exists
+        if(!optDeck.isPresent()){
+            throw new NotFoundException("Deck not found.");
+        }
+
+        Deck deck = optDeck.get();
+
+        // Check if deck belongs to user
+        if(!deck.getUser().getId().equals(userId)) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update this deck.");
+        }
+
+        deck.setTitle(request.getTitle());
+        deck.setNumCards(request.getNumCards());
+        deck = deckRepository.save(deck);
+
+        return new UpdateResponse("Deck updated.");
+    }
+}

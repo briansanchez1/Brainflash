@@ -1,9 +1,8 @@
-package com.g5.brainflash.flashcard;
+package com.g5.brainflash.deck;
 
-import com.g5.brainflash.category.Category;
-import com.g5.brainflash.deck.Deck;
 import com.g5.brainflash.user.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,31 +16,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Flashcard class. Represents a single flashcard.
+ * Deck class represents a deck entity in the system.
+ * Decks are used for organizing flashcards into more specific groups.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "flashcard")
-public class Flashcard {
+@Table(name = "deck")
+public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    private String question;
-    private String answer;
+    private String title;
+
+    private Integer numCards;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "deck_id", referencedColumnName = "id")
-    private Deck deck;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
 }

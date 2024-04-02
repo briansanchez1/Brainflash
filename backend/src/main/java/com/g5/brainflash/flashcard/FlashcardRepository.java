@@ -28,7 +28,7 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, Integer>{
      * @param deckId ID of the deck
      * @return List of all flashcards in the deck
      */
-    //List<Flashcard> findAllByDeckId(Integer deckId);
+    List<Flashcard> findAllByDeckId(Integer deckId);
 
     /**
      * Find all flashcards by category ID
