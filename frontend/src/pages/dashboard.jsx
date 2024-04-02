@@ -10,21 +10,9 @@ import {
 import CategoryCard from "../components/category_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import { useNavigate } from "react-router-dom";
-import { verifyAuth } from "../helpers/axios_helper";
+import { apiCategories } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme();
-
-// testing values
-const categoriesData = [
-  { id: 1, name: "a", flashcard_amount: 5 },
-  { id: 2, name: "Chemistry", flashcard_amount: 5 },
-  { id: 3, name: "Software Engineering", flashcard_amount: 5 },
-  { id: 4, name: "Category 4", flashcard_amount: 5 },
-  { id: 5, name: "Category 5zzzzzzzzs", flashcard_amount: 5 },
-  { id: 6, name: "Category 6", flashcard_amount: 5 },
-  { id: 7, name: "Category 7", flashcard_amount: 5 },
-];
 
 const Dashboard = () => {
   // State to track loading
@@ -42,8 +30,17 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setOriginalCards(categoriesData);
-  }, []);
+    loadExtraCard();
+    // Fetch all categories when the component mounts
+    apiCategories
+      .getAllCategories()
+      .then((response) => {
+        setOriginalCards(response.data); // Set the categories in state
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, [originalCards]);
 
   useEffect(() => {
     loadExtraCard();
@@ -89,7 +86,7 @@ const Dashboard = () => {
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "No Categories Found. Click to Create." }}
+                  category={{ title: "No Categories Found. Click to Create." }}
                 />
               </Grid>
             )}
@@ -97,7 +94,7 @@ const Dashboard = () => {
             {originalCards.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "Click to View All Categories" }}
+                  category={{ title: "Click to View All Categories" }}
                 />
               </Grid>
             )}
@@ -140,7 +137,7 @@ const Dashboard = () => {
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
                   category={{
-                    name: "No Review Sessions Found. Click to Create.",
+                    title: "No Review Sessions Found. Click to Create.",
                   }}
                 />
               </Grid>
@@ -149,7 +146,7 @@ const Dashboard = () => {
             {originalCards.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "Click to View All Review Sessions" }}
+                  category={{ title: "Click to View All Review Sessions" }}
                 />
               </Grid>
             )}

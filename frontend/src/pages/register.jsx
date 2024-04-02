@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   createTheme,
   ThemeProvider,
@@ -14,7 +13,7 @@ import {
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { setAuthHeader, verifyAuth } from "../helpers/axios_helper";
+import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -25,7 +24,6 @@ const defaultTheme = createTheme({
 });
 
 const Register = () => {
-
   // error message (if one exists)
   const [message, setMessage] = useState("");
   // information that the user enters
@@ -47,7 +45,6 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-
   /*
   handles submition; sends a post request to the endpoint to register. is returned the
   JWT token for authorization.This can probably be added to a separate file with all
@@ -57,12 +54,8 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMessage("");
-    axios
-      .post("http://localhost:8080/api/v1/auth/register", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      })
+    apiAuth
+      .register(formData.name, formData.email, formData.password)
       .then(function (response) {
         setAuthHeader(response.data.token);
         navigate("/");
@@ -74,161 +67,155 @@ const Register = () => {
       });
   };
 
-  //  check if the user is valid or not, and redirect the to the dashboard or do nothing
-  const redirectUser = async () => {
-    const authenticated = await verifyAuth();
-    if (authenticated) {
-      navigate("/");
-    } else {
-      setIsLoading(false);
-    }
-  };
- 
-
-  // once component is mounted, will run redirect user
-  React.useEffect(() => {
-    redirectUser();
-  }, [isLoading]);
+  // Redirects user if already logged in
+  useEffect(() => {
+    verifyAuth().then((auth) => {
+      if (auth) {
+        navigate("/");
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [navigate]);
 
   return (
     <div>
-    {isLoading ? null : (
-      <div>
-    <ThemeProvider theme={defaultTheme}>
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          background: "#fff",
-          borderRadius: 10,
-          width: { xs: 300, sm: 350, md: 450, lg: 550 },
-          height: { xs: 525, sm: 550 },
-        }}
-      >
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar
-            alt="Brainflash"
-            src={logo}
-            variant="square"
-            sx={{ width: 128, height: 128, m: 2 }}
-          />
-
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            {/* name text field */}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              value={formData.name}
-              onChange={handleChange}
-              label="Name"
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
-            {/* email text field */}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              value={formData.email}
-              onChange={handleChange}
-              id="email"
-              type="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              color="primary"
-            />
-            {/* password text field */}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              value={formData.password}
-              onChange={handleChange}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              inputProps={{ minLength: 6, maxLength: 16 }}
-              helperText={"6-16 characters."}
-              autoComplete="current-password"
-            />
-            {/* if there is a message, render it  */}
-            {message && (
-              <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
-                {message}
-              </Box>
-            )}
-            {/* Already have account link */}
-            <Grid container sx={{ padding: 2 }}>
-              <Grid item>
-                <Link
-                  href="/login"
-                  variant="body2"
-                  sx={{
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    color: "#797979",
-                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
-
-                    ":hover": {
-                      textDecoration: "underline",
-                      color: "black",
-                      transition: "0.1s",
-                    },
-                  }}
-                >
-                  {"Already have an account? Log in"}
-                </Link>
-              </Grid>
-            </Grid>
-            {/* submit button */}
-            <Button
-              type="submit"
-              className="submit"
-              variant="contained"
+      {isLoading ? null : (
+        <div>
+          <ThemeProvider theme={defaultTheme}>
+            <Container
+              component="main"
+              maxWidth="xs"
               sx={{
-                m: "auto",
-                mb: 2,
-                bgcolor: "pink",
-                color: "black",
-                borderRadius: 5,
-                fontFamily: "Trebuchet MS",
-                fontSize: { xs: 17, lg: 18 },
-                width: { xs: 200, sm: 275, md: 300, lg: 350 },
-                height: { xs: 40, md: 50 },
-                fontWeight: 700,
-                ":hover": {
-                  bgcolor: "pink",
-                  color: "black",
-                  transition: "0s",
-                },
+                background: "#fff",
+                borderRadius: 10,
+                width: { xs: 300, sm: 350, md: 450, lg: 550 },
+                height: { xs: 525, sm: 550 },
               }}
             >
-              Sign Up
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-    </div>
-        )}
-      
+              <Box
+                sx={{
+                  marginTop: 8,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  alt="Brainflash"
+                  src={logo}
+                  variant="square"
+                  sx={{ width: 128, height: 128, m: 2 }}
+                />
+
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{ mt: 1 }}
+                >
+                  {/* name text field */}
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    label="Name"
+                    name="name"
+                    autoComplete="name"
+                    autoFocus
+                  />
+                  {/* email text field */}
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={formData.email}
+                    onChange={handleChange}
+                    id="email"
+                    type="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    color="primary"
+                  />
+                  {/* password text field */}
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={formData.password}
+                    onChange={handleChange}
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    inputProps={{ minLength: 6, maxLength: 16 }}
+                    helperText={"6-16 characters."}
+                    autoComplete="current-password"
+                  />
+                  {/* if there is a message, render it  */}
+                  {message && (
+                    <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
+                      {message}
+                    </Box>
+                  )}
+                  {/* Already have account link */}
+                  <Grid container sx={{ padding: 2 }}>
+                    <Grid item>
+                      <Link
+                        href="/login"
+                        variant="body2"
+                        sx={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "#797979",
+                          fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
+                          ":hover": {
+                            textDecoration: "underline",
+                            color: "black",
+                            transition: "0.1s",
+                          },
+                        }}
+                      >
+                        {"Already have an account? Log in"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                  {/* submit button */}
+                  <Button
+                    type="submit"
+                    className="submit"
+                    variant="contained"
+                    sx={{
+                      m: "auto",
+                      mb: 2,
+                      bgcolor: "pink",
+                      color: "black",
+                      borderRadius: 5,
+                      fontFamily: "Trebuchet MS",
+                      fontSize: { xs: 17, lg: 18 },
+                      width: { xs: 200, sm: 275, md: 300, lg: 350 },
+                      height: { xs: 40, md: 50 },
+                      fontWeight: 700,
+                      ":hover": {
+                        bgcolor: "pink",
+                        color: "black",
+                        transition: "0s",
+                      },
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Box>
+              </Box>
+            </Container>
+          </ThemeProvider>
+        </div>
+      )}
     </div>
   );
 };

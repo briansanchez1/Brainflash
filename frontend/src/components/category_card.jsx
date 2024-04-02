@@ -13,7 +13,7 @@ export default function category_card({ category }) {
       <CardActionArea onClick={() => handleClick(category)}>
         <CardContent>
           <Typography variant="h6" component="h2" align="center">
-            {category.name}
+            {category.title}
           </Typography>
         </CardContent>
       </CardActionArea>

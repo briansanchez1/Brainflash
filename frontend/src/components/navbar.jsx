@@ -12,13 +12,21 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import NewModal from "./modal";
+import { apiAuth } from "../helpers/axios_helper";
 
-const pages = [
-  "Your Categories",
-  "Your Review Sessions",
-  "View All Cards",
-];
-const settings = [ "Dashboard", "Settings", "Logout"];
+const pages = ["Your Categories", "Your Review Sessions", "View All Cards"];
+
+const handleLogout = () => {
+  apiAuth.logout();
+};
+
+const handleDashboard = () => {
+  console.log("Dashboard clicked");
+};
+
+const handleSettings = () => {
+  console.log("Settings clicked");
+};
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -38,7 +46,6 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
 
   return (
     <AppBar position="static">
@@ -116,7 +123,9 @@ function ResponsiveAppBar() {
           >
             Brainflash
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } , gap: 2}}>
+          <Box
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 2 }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}
@@ -131,28 +140,25 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Create">
               <IconButton
-              
-                 sx={{
+                sx={{
                   mr: 3,
                   bgcolor: "#BDBDBD",
                   color: "#fff",
                   width: 36,
-                  height: 36
+                  height: 36,
                 }}
               >
-               <NewModal id="modal" focus={"flashcard"} />
-                
+                <NewModal id="modal" focus={"flashcard"} />
               </IconButton>
             </Tooltip>
           </Box>
-        
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} >
+              <IconButton onClick={handleOpenUserMenu}>
                 <Avatar alt="User" src=" " sx={{ color: "#000" }} />
               </IconButton>
             </Tooltip>
-
 
             <Menu
               sx={{ mt: "45px" }}
@@ -170,17 +176,20 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleDashboard}>
+                <Typography textAlign="center">Dashboard</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleSettings}>
+                <Typography textAlign="center">Settings</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
-   
   );
 }
 export default ResponsiveAppBar;

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   createTheme,
   ThemeProvider,
@@ -14,7 +13,7 @@ import {
 import logo from "../assets/logo.png";
 import { pink } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import {  setAuthHeader, verifyAuth } from "../helpers/axios_helper";
+import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -25,12 +24,9 @@ const defaultTheme = createTheme({
 });
 
 const Login = () => {
-  
   // error message (if one exists)
   const [message, setMessage] = useState("");
 
-
-  
   // state to track loading
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +45,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-    /*
+  /*
   handles submition; sends a post request to the endpoint to register. is returned the
   JWT token for authorization.This can probably be added to a separate file with all
   of the reqests for the sake of cleaning things up, or added to the 
@@ -57,11 +53,8 @@ const Login = () => {
   */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    axios
-      .post("http://localhost:8080/api/v1/auth/authenticate", {
-        email: formData.email,
-        password: formData.password,
-      })
+    apiAuth
+      .authenticate(formData.email, formData.password)
       .then(function (response) {
         setAuthHeader(response.data.token);
         navigate("/");
@@ -71,169 +64,163 @@ const Login = () => {
       });
   };
 
-  //  check if the user is valid or not, and redirect the to the dashboard or do nothing
-  const redirectUser = async () => {
-    const authenticated = await verifyAuth();
-    if (authenticated) {
-      navigate("/");
-    }else{
-      setIsLoading(false);
-    }
-  };
-
- // once component is mounted, will run redirect user
- React.useEffect(() => {
-  redirectUser();
-}, [isLoading]);
+  // Redirects user if already logged in
+  useEffect(() => {
+    verifyAuth().then((auth) => {
+      if (auth) {
+        navigate("/");
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [navigate]);
 
   return (
     <div>
-    {isLoading ? null : (
-      <div>
-    <ThemeProvider theme={defaultTheme}>
-      <Container
-        component="main"
-        
-        sx={{
-          background: "#fff",
-          borderRadius: 10,
-          width: { xs: 300, sm: 350, md: 450, lg: 550 },
-          height: { xs: 500, lg: 475 },
-        }}
-      >
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar
-            alt="Brainflash"
-            src={logo}
-            variant="square"
-            sx={{ width: 128, height: 128, m: 2 }}
-          />
-
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              autoFocus
-              id="email"
-              type="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-            />
-
-            <TextField
-              margin="normal"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {message && (
-              <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
-                {message}
-              </Box>
-            )}
-
-            <Grid
-              container
-              justifyContent={"space-between"}
-              sx={{ padding: 2 }}
-            >
-              <Grid item>
-                <Link
-                  href="/forgot-password"
-                  variant="body2"
-                  sx={{
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    color: "#797979",
-                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
-
-                    ":hover": {
-                      textDecoration: "underline",
-                      color: "black",
-                      transition: "0.1s",
-                    },
-                  }}
-                >
-                  {"Forgot password?"}
-                </Link>
-              </Grid>
-
-              <Grid item>
-                <Link
-                  href="/register"
-                  variant="body2"
-                  sx={{
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    color: "#797979",
-                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
-
-                    ":hover": {
-                      textDecoration: "underline",
-                      color: "black",
-                      transition: "0.1s",
-                    },
-                  }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-
-            <Button
-              onClick={handleSubmit}
-              type="submit"
-              className="submit"
-              variant="contained"
+      {isLoading ? null : (
+        <div>
+          <ThemeProvider theme={defaultTheme}>
+            <Container
+              component="main"
               sx={{
-                m: "auto",
-                mb: 2,
-                bgcolor: "pink",
-                color: "black",
-                borderRadius: 5,
-                fontFamily: "Trebuchet MS",
-                fontSize: { xs: 17, lg: 18 },
-                width: { xs: 200, sm: 275, md: 300, lg: 350 },
-                height: { xs: 40, md: 50 },
-                fontWeight: 700,
-                ":hover": {
-                  bgcolor: "pink",
-                  color: "black",
-                  transition: "0s",
-                },
+                background: "#fff",
+                borderRadius: 10,
+                width: { xs: 300, sm: 350, md: 450, lg: 550 },
+                height: { xs: 500, lg: 475 },
               }}
             >
-              Log in
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-    </div>
-        )}
-      
+              <Box
+                sx={{
+                  marginTop: 8,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  alt="Brainflash"
+                  src={logo}
+                  variant="square"
+                  sx={{ width: 128, height: 128, m: 2 }}
+                />
+
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{ mt: 1 }}
+                >
+                  <TextField
+                    margin="normal"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    fullWidth
+                    autoFocus
+                    id="email"
+                    type="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                  />
+
+                  <TextField
+                    margin="normal"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                  />
+                  {message && (
+                    <Box sx={{ textAlign: "center", m: 2, fontWeight: 800 }}>
+                      {message}
+                    </Box>
+                  )}
+
+                  <Grid
+                    container
+                    justifyContent={"space-between"}
+                    sx={{ padding: 2 }}
+                  >
+                    <Grid item>
+                      <Link
+                        href="/forgot-password"
+                        variant="body2"
+                        sx={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "#797979",
+                          fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
+                          ":hover": {
+                            textDecoration: "underline",
+                            color: "black",
+                            transition: "0.1s",
+                          },
+                        }}
+                      >
+                        {"Forgot password?"}
+                      </Link>
+                    </Grid>
+
+                    <Grid item>
+                      <Link
+                        href="/register"
+                        variant="body2"
+                        sx={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "#797979",
+                          fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
+                          ":hover": {
+                            textDecoration: "underline",
+                            color: "black",
+                            transition: "0.1s",
+                          },
+                        }}
+                      >
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+
+                  <Button
+                    onClick={handleSubmit}
+                    type="submit"
+                    className="submit"
+                    variant="contained"
+                    sx={{
+                      m: "auto",
+                      mb: 2,
+                      bgcolor: "pink",
+                      color: "black",
+                      borderRadius: 5,
+                      fontFamily: "Trebuchet MS",
+                      fontSize: { xs: 17, lg: 18 },
+                      width: { xs: 200, sm: 275, md: 300, lg: 350 },
+                      height: { xs: 40, md: 50 },
+                      fontWeight: 700,
+                      ":hover": {
+                        bgcolor: "pink",
+                        color: "black",
+                        transition: "0s",
+                      },
+                    }}
+                  >
+                    Log in
+                  </Button>
+                </Box>
+              </Box>
+            </Container>
+          </ThemeProvider>
+        </div>
+      )}
     </div>
   );
 };
