@@ -5,24 +5,14 @@ import {
   Typography,
   Stack,
   Button,
-  Container,  
+  Container,
 } from "@mui/material";
 import CategoryCard from "../components/category_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
+import { apiCategories } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme();
-
-// testing values
-const categoriesData = [
-  { id: 1, name: "a", flashcard_amount: 5 },
-  { id: 2, name: "Chemistry", flashcard_amount: 5 },
-  { id: 3, name: "Software Engineering", flashcard_amount: 5 },
-  { id: 4, name: "Category 4", flashcard_amount: 5 },
-  { id: 5, name: "Category 5zzzzzzzzs", flashcard_amount: 5 },
-  { id: 6, name: "Category 6", flashcard_amount: 5 },
-  { id: 7, name: "Category 7", flashcard_amount: 5 },
-];
 
 const Dashboard = () => {
   // State to track loading
@@ -30,8 +20,6 @@ const Dashboard = () => {
 
   // original cards used to determine if a helper card should be shown or not
   const [originalCards, setOriginalCards] = useState([]);
-
-
 
   const loadExtraCard = () => {
     if (originalCards.length > 3) {
@@ -41,19 +29,25 @@ const Dashboard = () => {
     }
   };
 
-
   useEffect(() => {
-    setOriginalCards(categoriesData);
-  }, []);
+    loadExtraCard();
+    // Fetch all categories when the component mounts
+    apiCategories
+      .getAllCategories()
+      .then((response) => {
+        setOriginalCards(response.data); // Set the categories in state
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, [originalCards]);
 
   useEffect(() => {
     loadExtraCard();
   }, [originalCards]);
 
- 
   return (
     <ThemeProvider theme={defaultTheme}>
-     
       <Container>
         <Stack>
           {/* Categories */}
@@ -74,11 +68,7 @@ const Dashboard = () => {
             </Button>
           </Typography>
 
-          <Grid
-            container
-            direction={"row"}
-            spacing={1}
-          >
+          <Grid container direction={"row"} spacing={1}>
             {displayedCards.length > 0 ? (
               displayedCards.map((category) => (
                 <Grid
@@ -89,15 +79,14 @@ const Dashboard = () => {
                   md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
                   lg={4}
                   xl={4}
-                 
                 >
-                  <CategoryCard category={category}  />
+                  <CategoryCard category={category} />
                 </Grid>
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "No Categories Found. Click to Create." }}
+                  category={{ title: "No Categories Found. Click to Create." }}
                 />
               </Grid>
             )}
@@ -105,15 +94,14 @@ const Dashboard = () => {
             {originalCards.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "Click to View All Categories" }}
+                  category={{ title: "Click to View All Categories" }}
                 />
               </Grid>
             )}
           </Grid>
 
-
-           {/* PFE / Review Boilerplate */}
-           <Typography
+          {/* PFE / Review Boilerplate */}
+          <Typography
             variant="h4"
             mt={"56px"}
             textAlign={"left"}
@@ -130,11 +118,7 @@ const Dashboard = () => {
             </Button>
           </Typography>
 
-          <Grid
-            container
-            direction={"row"}
-            spacing={1}
-          >
+          <Grid container direction={"row"} spacing={1}>
             {displayedCards.length > 0 ? (
               displayedCards.map((category) => (
                 <Grid
@@ -145,15 +129,16 @@ const Dashboard = () => {
                   md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
                   lg={4}
                   xl={4}
-                 
                 >
-                  <CategoryCard category={category}  />
+                  <CategoryCard category={category} />
                 </Grid>
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "No Review Sessions Found. Click to Create." }}
+                  category={{
+                    title: "No Review Sessions Found. Click to Create.",
+                  }}
                 />
               </Grid>
             )}
@@ -161,7 +146,7 @@ const Dashboard = () => {
             {originalCards.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
-                  category={{ name: "Click to View All Review Sessions" }}
+                  category={{ title: "Click to View All Review Sessions" }}
                 />
               </Grid>
             )}

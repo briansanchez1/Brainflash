@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography, Container, TextField, Box } from "@mui/material";
 import CategoryCard from "../components/category_card";
-
-const categoriesData = [
-  { id: 1, name: "a", flashcard_amount: 5 },
-  { id: 2, name: "Chemistry", flashcard_amount: 5 },
-  { id: 3, name: "Software Engineering", flashcard_amount: 5 },
-  { id: 4, name: "Category 4", flashcard_amount: 5 },
-  { id: 5, name: "Category 5zzzzzzzzs", flashcard_amount: 5 },
-  { id: 6, name: "Category 6", flashcard_amount: 5 },
-  { id: 7, name: "Category 7", flashcard_amount: 5 },
-];
+import { apiCategories } from "../helpers/axios_helper";
 
 const CategoriesGrid = () => {
+  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  useEffect(() => {
+    // Fetch all categories when the component mounts
+    apiCategories
+      .getAllCategories()
+      .then((response) => {
+        setCategories(response.data); // Set the categories in state
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
+  // Handles search change
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredCategories = categoriesData.filter((category) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Updates filtered categories
+  const filteredCategories = categories.filter((category) =>
+    category.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
