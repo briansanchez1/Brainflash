@@ -32,6 +32,16 @@ export const request = (method, url, data) => {
   });
 };
 
+// managed redirection in the case that the user does not have a valid token
+// TODO
+export const isValidated = () => {
+  if (getAuthToken() != null) {
+    return window.location.href("http://localhost:8080/login");
+  }
+  // else if(!verifyAuth){
+  //  return window.location.href("/login");
+  // }
+};
 
 // get categories from database with their token
 export const getAllCategories = async () => {
