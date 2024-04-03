@@ -103,3 +103,9 @@ export const apiCategories = {
   getAllCategories: () => instance.get("/categories"),
   createCategory: (data) => instance.post("/categories/add", data),
 };
+
+// Decks API
+export const apiDecks = {
+  getAllDecks: () => instance.get("/decks"),
+  createDeck: (data) => instance.post("/decks/add", data),
+};  
