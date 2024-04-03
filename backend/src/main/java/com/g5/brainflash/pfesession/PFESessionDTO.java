@@ -25,6 +25,6 @@ public class PFESessionDTO {
     private String title ;
     private LocalDate startDate ;
     private LocalDate endDate ;
-//    private Deck deck ;
-//    private Category category ;
+//    private Integer deckId ;
+//    private Integer categoryId ;
 }

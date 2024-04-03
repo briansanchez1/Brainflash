@@ -60,16 +60,16 @@ public class PFESession {
      */
 //    @ManyToOne(optional = false)
 //    @JoinColumn( name = "category_id", referencedColumnName = "id" )
-//    private Category category ;
+//    private Integer categoryId ;
     
     /*
      * Flashards included in a PFE Session. Many flashcards can be in many PFE
      * Sessions
      */
-//    @Nullable
+//    
 //    @ManyToOne(optional = false)
 //     @JoinColumn(name = "deck_id", referencedColumnName = "id")
-//     private Deck deck;
+//     private Integer deckId;
     
     
     /**

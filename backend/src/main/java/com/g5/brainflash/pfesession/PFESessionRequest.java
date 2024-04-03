@@ -11,6 +11,7 @@ import java.time.LocalDate ;
 //import java.util.Date ;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,12 +31,15 @@ public class PFESessionRequest {
     @Size( min = 2, max = 25, message = "Title must be between {min} and {max} characters long." )
     private String title ;
 
+
+    @NotNull( message = "Ente a start date.")
     private LocalDate startDate ;
 
+    @NotNull( message = "Ente a start date.")
     private LocalDate endDate ;
 
-// private Deck deck;
-
-// private Category category ;
+// private Integer deck;
+    
+// private Integer category ;
 
 }
