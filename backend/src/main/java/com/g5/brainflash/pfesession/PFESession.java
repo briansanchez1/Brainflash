@@ -7,7 +7,6 @@ import com.g5.brainflash.user.User;
 
 import java.time.LocalDate ;
 
-import io.micrometer.common.lang.Nullable ;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
