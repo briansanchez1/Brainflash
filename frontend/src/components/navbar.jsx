@@ -1,36 +1,61 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  MenuItem,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+
 import NewModal from "./modal";
+import { useNavigate } from "react-router-dom";
 import { apiAuth } from "../helpers/axios_helper";
-
-const pages = ["Your Categories", "Your Review Sessions", "View All Cards"];
-
-const handleLogout = () => {
-  apiAuth.logout();
-};
-
-const handleDashboard = () => {
-  console.log("Dashboard clicked");
-};
-
-const handleSettings = () => {
-  console.log("Settings clicked");
-};
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  // used to switch between pages
+  const navigate = useNavigate();
+
+  // used to  log out
+  const handleLogout = () => {
+    apiAuth.logout();
+  };
+
+  // sends user to dashboard
+  const handleDashboard = () => {
+    navigate("/");
+  };
+
+  // sends users to settings
+  const handleSettings = () => {
+    navigate("/settings");
+  };
+
+  // sends user to category view
+  const handleCategories = () => {
+    navigate("/categories");
+    setAnchorElNav(null);
+  };
+
+  // sends user to pfe view
+  const handlePFE = () => {
+    navigate("/pfe");
+    setAnchorElNav(null);
+  };
+
+  // sends user to flashcard view
+  const handleFlashcards = () => {
+    navigate("/flashcards");
+    setAnchorElNav(null);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -98,18 +123,22 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCategories}>
+                <Typography textAlign="center">Your Categories</Typography>
+              </MenuItem>
+              <MenuItem onClick={handlePFE}>
+                <Typography textAlign="center">Your Review Sessions</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleFlashcards}>
+                <Typography textAlign="center">View All Cards</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -126,39 +155,44 @@ function ResponsiveAppBar() {
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 2 }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              onClick={handleCategories}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Your Categories
+            </Button>
+            <Button
+              onClick={handlePFE}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Your Review Sessions
+            </Button>
+            <Button
+              onClick={handleFlashcards}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              View All Cards
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Create">
-              <IconButton
-                sx={{
-                  mr: 3,
-                  bgcolor: "#BDBDBD",
-                  color: "#fff",
-                  width: 36,
-                  height: 36,
-                }}
-              >
-                <NewModal id="modal" focus={"flashcard"} />
-              </IconButton>
-            </Tooltip>
+            <IconButton
+              sx={{
+                mr: 3,
+                bgcolor: "#BDBDBD",
+                color: "#fff",
+                width: 36,
+                height: 36,
+              }}
+            >
+              <NewModal id="modal" focus={"flashcard"} />
+            </IconButton>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar alt="User" src=" " sx={{ color: "#000" }} />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleOpenUserMenu}>
+              <Avatar alt="User" src=" " sx={{ color: "#000" }} />
+            </IconButton>
 
             <Menu
               sx={{ mt: "45px" }}
