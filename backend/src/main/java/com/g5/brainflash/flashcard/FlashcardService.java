@@ -42,14 +42,19 @@ public class FlashcardService {
         Category category = categoryRepository.findById(request.getCategoryId())
                             .orElseThrow(() -> new EntityNotFoundException("Category not found."));
 
-        Optional<Deck> deck = deckRepository.findById(request.getDeckId());
+        Deck deck = null;
+
+        if(request.getDeckId() != null) {
+            deck = deckRepository.findById(request.getDeckId())
+                            .orElseThrow(() -> new EntityNotFoundException("Deck not found."));
+        }
 
         Flashcard flashcard = Flashcard.builder()
             .question(request.getQuestion())
             .answer(request.getAnswer())
             .user(user)
             .category(category)
-            .deck(deck.orElse(null))
+            .deck(deck)
             .build();
 
         flashcardRepository.save(flashcard);
@@ -59,7 +64,7 @@ public class FlashcardService {
             .question(flashcard.getQuestion())
             .answer(flashcard.getAnswer())
             .categoryId(flashcard.getCategory().getId())
-            .deckId(flashcard.getDeck().getId())
+            .deckId(flashcard.getDeck() != null ? flashcard.getDeck().getId() : null)
             .build();
     }
 
@@ -77,7 +82,7 @@ public class FlashcardService {
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
                             flashcard.getCategory().getId(),
-                            flashcard.getDeck().getId()))
+                            flashcard.getDeck() != null ? flashcard.getDeck().getId() : null))
                         .collect(Collectors.toList());        
     }
 
@@ -95,7 +100,7 @@ public class FlashcardService {
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
                             flashcard.getCategory().getId(),
-                            flashcard.getDeck().getId()))
+                            flashcard.getDeck() != null ? flashcard.getDeck().getId() : null))
                         .collect(Collectors.toList());        
     }
 
@@ -113,7 +118,7 @@ public class FlashcardService {
                             flashcard.getQuestion(),
                             flashcard.getAnswer(),
                             flashcard.getCategory().getId(),
-                            flashcard.getDeck().getId()))
+                            flashcard.getDeck() != null ? flashcard.getDeck().getId() : null))
                         .collect(Collectors.toList());        
     }
 
@@ -170,8 +175,12 @@ public class FlashcardService {
         Category category = categoryRepository.findById(request.getCategoryId())
                             .orElseThrow(() -> new EntityNotFoundException("Category not found."));
 
-        Deck deck = deckRepository.findById(request.getDeckId())
-                            .orElse(null);
+        Deck deck = null;
+
+        if(request.getDeckId() != null) {
+            deck = deckRepository.findById(request.getDeckId())
+                            .orElseThrow(() -> new EntityNotFoundException("Deck not found."));
+        }
 
         flashcard.setQuestion(request.getQuestion());
         flashcard.setAnswer(request.getAnswer());

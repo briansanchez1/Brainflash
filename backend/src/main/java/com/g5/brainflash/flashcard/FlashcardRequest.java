@@ -2,6 +2,7 @@ package com.g5.brainflash.flashcard;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class FlashcardRequest {
     @NotBlank(message = "Answer is required")
     private String answer;
 
-    @NotBlank(message = "Category is required")
+    @NotNull(message = "Category is required")
     @Column(name = "category_id")
     private Integer categoryId;
 
