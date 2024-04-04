@@ -87,6 +87,36 @@ public class FlashcardService {
     }
 
     /**
+     * Get single flashcard by ID
+     * @param userId The ID of the user
+     * @param id The ID of the flashcard
+     * @return Flashcard DTO
+     */
+    @Transactional
+    public FlashcardDTO getFlashcardById(Integer userId, Integer id) {
+        Optional<Flashcard> optFlashcard = flashcardRepository.findById(id);
+
+        // Checks if the flashcard exists
+        if(!optFlashcard.isPresent()){
+            throw new NotFoundException("Flashcard not found.");
+        }
+
+        Flashcard flashcard = optFlashcard.get();
+
+        // Checks if the user owns the flashcard
+        if(flashcard.getUser().getId() != userId){
+            throw new UnauthorizedUserException("User is not authorized to view this flashcard.");
+        }
+
+        return new FlashcardDTO(
+            flashcard.getId(), 
+            flashcard.getQuestion(),
+            flashcard.getAnswer(),
+            flashcard.getCategory().getId(),
+            flashcard.getDeck() != null ? flashcard.getDeck().getId() : null);
+    }
+
+    /**
      * Get all flashcards for a category
      * @param categoryId The ID of the category
      * @return List of all flashcard DTOs

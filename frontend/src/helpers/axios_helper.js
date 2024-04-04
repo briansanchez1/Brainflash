@@ -109,3 +109,10 @@ export const apiDecks = {
   getAllDecks: () => instance.get("/decks"),
   createDeck: (data) => instance.post("/decks/add", data),
 };  
+
+// Flashcards API
+export const apiFlashcards = {
+  getAllFlashcards: () => instance.get("/flashcards"),
+  createFlashcard: (data) => instance.post("/flashcards/add", data),
+  getFlashcard: (id) => instance.get(`/flashcards/${id}`),
+};
