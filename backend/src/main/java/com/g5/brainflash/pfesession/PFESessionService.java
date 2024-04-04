@@ -112,15 +112,17 @@ public class PFESessionService {
     public List<PFESessionDTO> getAllPFESessionsByUserId(Integer userId) {
         List<PFESession> pfeSessions = pfeSessionRepository.findAllByUserId( userId ) ;
         return pfeSessions.stream()
-                          .map( pfeSession -> new PFESessionDTO( pfeSession.getId(),
-                                                                 pfeSession.getTitle(),
-                                                                 pfeSession.getStartDate(),
-                                                                 pfeSession.getEndDate(),
-                                                                 pfeSession.getDeck().getId(),
-                                                                 pfeSession.getCategory()
-                                                                           .getId() ) )
-                          .collect( Collectors.toList() ) ;
-    
+                                    .map(pfeSession -> {
+                                        Integer categoryId = pfeSession.getCategory() != null ? pfeSession.getCategory().getId() : null;
+                                        return new PFESessionDTO(pfeSession.getId(),
+                                                pfeSession.getTitle(),
+                                                pfeSession.getStartDate(),
+                                                pfeSession.getEndDate(),
+                                                pfeSession.getDeck().getId(),
+                                                categoryId);
+                                    })
+                                        .collect( Collectors.toList() ) ;
+                    
     }     
     
     /**
