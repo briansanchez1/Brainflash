@@ -10,40 +10,38 @@ import {
 import CategoryCard from "../components/category_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import { apiCategories } from "../helpers/axios_helper";
+import { apiCategories, apiPFE } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme();
 
 const Dashboard = () => {
   // State to track loading
-  const [displayedCards, setDisplayedCards] = useState([]);
+  const [categoryCards, setCategoryCards] = useState([]);
+  const [categoryAmt, setCategoryAmt] = useState(0);
 
-  // original cards used to determine if a helper card should be shown or not
-  const [originalCards, setOriginalCards] = useState([]);
-
-  const loadExtraCard = () => {
-    if (originalCards.length > 3) {
-      setDisplayedCards(originalCards.reverse().slice(0, 3));
-    } else {
-      setDisplayedCards(originalCards.reverse());
-    }
-  };
+  const [pfeCards, setPFECards] = useState([]);
+  const [pfeAmt, setPfeAmt] = useState(0);
 
   useEffect(() => {
-    loadExtraCard();
-    // Fetch all categories when the component mounts
     apiCategories
       .getAllCategories()
       .then((response) => {
-        setOriginalCards(response.data); // Set the categories in state
+        setCategoryCards(response.data.reverse().slice(0, 3));
+        setCategoryAmt(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-  }, []);
 
-  useEffect(() => {
-    loadExtraCard();
+    apiPFE
+      .getAllPFE()
+      .then((response) => {
+        setPFECards(response.data.reverse().slice(0, 3));
+        setPfeAmt(response.data.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching PFE Sessions:", error);
+      });
   }, []);
 
   return (
@@ -69,14 +67,14 @@ const Dashboard = () => {
           </Typography>
 
           <Grid container direction={"row"} spacing={1}>
-            {displayedCards.length > 0 ? (
-              displayedCards.map((category) => (
+            {categoryCards.length > 0 ? (
+              categoryCards.map((category) => (
                 <Grid
                   item
                   key={category.id}
                   xs={12}
                   sm={12}
-                  md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
+                  md={4}
                   lg={4}
                   xl={4}
                 >
@@ -91,7 +89,7 @@ const Dashboard = () => {
               </Grid>
             )}
 
-            {originalCards.length > 3 && (
+            {categoryAmt > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
                   category={{ title: "Click to View All Categories" }}
@@ -100,7 +98,7 @@ const Dashboard = () => {
             )}
           </Grid>
 
-          {/* PFE / Review Boilerplate */}
+          {/* PFE / Review  */}
           <Typography
             variant="h4"
             mt={"56px"}
@@ -119,18 +117,10 @@ const Dashboard = () => {
           </Typography>
 
           <Grid container direction={"row"} spacing={1}>
-            {displayedCards.length > 0 ? (
-              displayedCards.map((category) => (
-                <Grid
-                  item
-                  key={category.id}
-                  xs={12}
-                  sm={12}
-                  md={4} // ideally 4 would be bettwe so it is 3 on top and view all on bottom
-                  lg={4}
-                  xl={4}
-                >
-                  <CategoryCard category={category} />
+            {pfeCards.length > 0 ? (
+              pfeCards.map((pfe) => (
+                <Grid item key={pfe.id} xs={12} sm={12} md={4} lg={4} xl={4}>
+                  <CategoryCard category={pfe} />
                 </Grid>
               ))
             ) : (
@@ -143,16 +133,14 @@ const Dashboard = () => {
               </Grid>
             )}
 
-            {originalCards.length > 3 && (
+            {pfeAmt > 3 ? (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <CategoryCard
                   category={{ title: "Click to View All Review Sessions" }}
                 />
               </Grid>
-            )}
+            ) : null}
           </Grid>
-
-          {/* Review Sessions */}
         </Stack>
       </Container>
     </ThemeProvider>
