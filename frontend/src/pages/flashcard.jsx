@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { apiFlashcards } from '../helpers/axios_helper';
-import FlashcardFullCard from '../components/flashcard_full_card';
+import FlashcardCard from '../components/flashcard_card';
 
 function FlashcardPage({ match }) {
   const [flashcard, setFlashcard] = useState("");
@@ -14,7 +14,7 @@ function FlashcardPage({ match }) {
   if (!flashcard) return <div>Loading...</div>;
 
   return (
-    <FlashcardFullCard flashcard={flashcard} />
+    <FlashcardCard flashcard={flashcard} />
   );
 }
 

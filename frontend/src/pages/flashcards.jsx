@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography, Container, TextField, Box } from "@mui/material";
 import FlashcardCard from "../components/flashcard_card";
-import FlashcardFullCard from "../components/flashcard_full_card";
 import { apiFlashcards } from "../helpers/axios_helper";
 
 const flashcardsData = [
@@ -30,7 +29,7 @@ const FlashcardsGrid = () => {
     };
 
     // Updates filtered flashcards
-    const filteredFlashcards = flashcards.filter((flashcard) =>
+    const filteredFlashcards = flashcardsData.filter((flashcard) =>
         flashcard.question.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -66,7 +65,7 @@ const FlashcardsGrid = () => {
                 {filteredFlashcards.length > 0 ? (
                     filteredFlashcards.map((flashcard) => (
                         <Grid item key={flashcard.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-                            <FlashcardFullCard flashcard={flashcard} />
+                            <FlashcardCard flashcard={flashcard} />
                         </Grid>
                     ))
                 ) : (

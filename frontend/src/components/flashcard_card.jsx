@@ -1,22 +1,23 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { CardContent, Card, CardActionArea } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function Flashcard_card({ flashcard }) {
-    const navigate = useNavigate();
+export default function Flashcard_full_card({ flashcard }) {
+    const [flipped, setFlipped] = useState(false);
 
-    const HandleClick = (flashcard) => {
-        navigate(`/flashcards/${flashcard.id}`);
+    // Handles click event
+    const handleClick = () => {
+        setFlipped(!flipped);
     };
 
     return (
         <Card>
-            <CardActionArea onClick={() => HandleClick(flashcard)}>
+            <CardActionArea onClick={handleClick}>
                 <CardContent>
-                <Typography variant="h6" component="h2" align="center">
-                    {flashcard.question}
-                </Typography>
+                    <Typography variant="h6" component="h2" align="center">
+                        {flipped ? flashcard.answer : flashcard.question}
+                    </Typography>
                 </CardContent>
             </CardActionArea>
         </Card>
