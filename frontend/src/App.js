@@ -6,6 +6,7 @@ import ForgotPass from "./pages/forgot_password";
 import Dashboard from "./pages/dashboard";
 import Categories from "./pages/categories";
 import Decks from "./pages/decks";
+import PFE from "./pages/pfe";
 import Flashcards from "./pages/flashcards";
 import Flashcard from "./pages/flashcard";
 import PageNotFound from "./pages/page_not_found";
@@ -36,24 +37,34 @@ function App() {
                 </MainLayout>
               }
             />
-          </Route>
-          <Route 
-            path="/decks"
-            element={
-              <MainLayout>
-                <Decks />
-              </MainLayout>
-            }
-          />
-          <Route
+            <Route
+              path="/pfe"
+              element={
+                <MainLayout>
+                  <PFE />
+                </MainLayout>
+              }
+            />
+
+            <Route
+              path="/decks"
+              element={
+                <MainLayout>
+                  <Decks />
+                </MainLayout>
+              }
+            />
+            <Route
               path="/flashcards"
               element={
                 <MainLayout>
                   <Flashcards />
                 </MainLayout>
               }
-          />
-          <Route 
+            />
+          </Route>
+
+          <Route
             path="/flashcards/:id"
             element={
               <MainLayout>
@@ -62,14 +73,14 @@ function App() {
             }
           />
           <Route path="/forgot-password" element={<ForgotPass />}></Route>
-          <Route 
+          <Route
             path="*"
             element={
               <MainLayout>
                 <PageNotFound />
               </MainLayout>
             }
-           />
+          />
         </Routes>
       </Router>
     </div>
