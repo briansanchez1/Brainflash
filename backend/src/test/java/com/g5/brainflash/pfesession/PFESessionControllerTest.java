@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate ;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,10 @@ public class PFESessionControllerTest {
 
         PFESessionRequest request = new PFESessionRequest();
         request.setTitle("Test PFE");
+        request.setStartDate( LocalDate.now().plusDays( 3 ) );
+        request.setEndDate( LocalDate.now().plusDays( 4 ) );
+        request.setDeckId( 1 );
+        request.setCategoryId( 2 );
 
         // Mock the behavior of dependencies
         when(pfeSessionService.savePFESession(any(), any())).thenReturn(new PFESessionDTO());
@@ -97,6 +102,10 @@ public class PFESessionControllerTest {
 
         PFESessionRequest request = new PFESessionRequest();
         request.setTitle("Test PFE");
+        request.setStartDate( LocalDate.now().plusDays( 3 ) );
+        request.setEndDate( LocalDate.now().plusDays( 4 ) );
+        request.setDeckId( 1 );
+        request.setCategoryId( null );
 
         // Mock the behavior of dependencies
         when(pfeSessionService.updatePFESession(anyInt(), anyInt(), any()))

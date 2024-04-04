@@ -2,10 +2,7 @@ package com.g5.brainflash.pfesession;
 
 import java.time.LocalDate ;
 
-//import com.g5.brainflash.category.Category ;
-//import com.g5.brainflash.deck.Deck ;
 
-//import java.util.Date ;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +22,6 @@ public class PFESessionDTO {
     private String title ;
     private LocalDate startDate ;
     private LocalDate endDate ;
-//    private Integer deckId ;
-//    private Integer categoryId ;
+    private Integer deckId ;
+    private Integer categoryId ;
 }
