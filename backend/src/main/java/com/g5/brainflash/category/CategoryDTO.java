@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class CategoryDTO {
     private Integer id;
     private String title;
+    private Integer cardCount;
 }

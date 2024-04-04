@@ -39,6 +39,9 @@ public class Category {
      */    
     private String title;
 
+    // Number of cards in category. For use in PFE feature
+    private Integer cardCount;
+
    /**
      * The user who created this category.
      * Many-to-one relationship where "user" is the owning side

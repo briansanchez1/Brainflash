@@ -21,6 +21,4 @@ public class DeckRequest {
         max = 25,
         message = "Title must be between {min} and {max} characters long.")
     private String title;
-
-    private Integer numCards;
 }
