@@ -31,14 +31,14 @@ public class DeckService {
      */
     @Transactional
     public DeckDTO saveDeck(User user, DeckRequest request) {
-        Deck deck = Deck.builder().title(request.getTitle()).numCards(0).user(user).build();
+        Deck deck = Deck.builder().title(request.getTitle()).cardCount(0).user(user).build();
 
         deck = deckRepository.save(deck);
 
         return DeckDTO.builder()
             .id(deck.getId())
             .title(deck.getTitle())
-            .numCards(deck.getNumCards())
+            .cardCount(0)
             .build();
     }
 
@@ -54,7 +54,7 @@ public class DeckService {
                     .map(deck -> new DeckDTO(
                         deck.getId(), 
                         deck.getTitle(),
-                        deck.getNumCards()))
+                        deck.getCardCount()))
                     .collect(Collectors.toList());        
     }
 
@@ -108,7 +108,6 @@ public class DeckService {
         }
 
         deck.setTitle(request.getTitle());
-        deck.setNumCards(request.getNumCards());
         deck = deckRepository.save(deck);
 
         return new UpdateResponse("Deck updated.");

@@ -57,6 +57,12 @@ public class FlashcardService {
             .deck(deck)
             .build();
 
+        /*category.setCardCount(category.getCardCount() + 1);
+
+        if(deck != null) {
+            deck.setCardCount(deck.getCardCount() + 1);
+        }*/
+
         flashcardRepository.save(flashcard);
 
         return FlashcardDTO.builder()
@@ -174,6 +180,12 @@ public class FlashcardService {
             throw new UnauthorizedUserException("User is not authorized to delete this flashcard.");
         }
 
+        flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() - 1);
+
+        if(flashcard.getDeck() != null) {
+            flashcard.getDeck().setCardCount(flashcard.getDeck().getCardCount() - 1);
+        }
+
         flashcardRepository.delete(flashcard);
 
         return new DeleteResponse("Flashcard deleted successfully.");
@@ -197,6 +209,13 @@ public class FlashcardService {
 
         Flashcard flashcard = optFlashcard.get();
 
+        // Remove flashcard from old category and deck
+        flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() - 1);
+
+        if(flashcard.getDeck() != null) {
+            flashcard.getDeck().setCardCount(flashcard.getDeck().getCardCount() - 1);
+        }
+
         // Checks if the user owns the flashcard
         if(flashcard.getUser().getId() != userId){
             throw new UnauthorizedUserException("User is not authorized to update this flashcard.");
@@ -216,6 +235,12 @@ public class FlashcardService {
         flashcard.setAnswer(request.getAnswer());
         flashcard.setCategory(category);
         flashcard.setDeck(deck);
+
+        flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() + 1);
+
+        if(flashcard.getDeck() != null) {
+            flashcard.getDeck().setCardCount(flashcard.getDeck().getCardCount() + 1);
+        }
 
         flashcardRepository.save(flashcard);
 

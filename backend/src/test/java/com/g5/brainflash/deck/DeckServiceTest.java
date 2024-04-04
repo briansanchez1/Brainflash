@@ -47,12 +47,10 @@ public class DeckServiceTest {
         User user = new User();
         DeckRequest request = new DeckRequest();
         request.setTitle("Test Deck");
-        request.setNumCards(0);
 
         Deck savedDeck = new Deck();
         savedDeck.setId(1);
         savedDeck.setTitle("Test Deck");
-        savedDeck.setNumCards(0);
         savedDeck.setUser(user);
 
         // Mock the behavior of dependencies
@@ -64,7 +62,7 @@ public class DeckServiceTest {
         // Assert result
         assertEquals(savedDeck.getId(), result.getId());
         assertEquals(savedDeck.getTitle(), result.getTitle());
-        assertEquals(savedDeck.getNumCards(), result.getNumCards());
+        assertEquals(savedDeck.getCardCount(), result.getCardCount());
 
         // Verify interactions with dependencies
         verify(deckRepository, times(1)).save(any(Deck.class));
@@ -94,7 +92,7 @@ public class DeckServiceTest {
         for (int i = 0; i < decks.size(); i++) {
             assertEquals(decks.get(i).getId(), result.get(i).getId());
             assertEquals(decks.get(i).getTitle(), result.get(i).getTitle());
-            assertEquals(decks.get(i).getNumCards(), result.get(i).getNumCards());
+            assertEquals(decks.get(i).getCardCount(), result.get(i).getCardCount());
             assertEquals(decks.get(i).getUser().getId(), user.getId());
         }
 
@@ -188,12 +186,11 @@ public class DeckServiceTest {
 
         DeckRequest request = new DeckRequest();
         request.setTitle("Updated Deck Title");
-        request.setNumCards(1);
 
         Deck deck = new Deck();
         deck.setId(deckId);
         deck.setTitle("Old Deck Title");
-        deck.setNumCards(0);
+        deck.setCardCount(0);
         deck.setUser(user);
 
         // Mock the behavior of dependencies
@@ -206,7 +203,6 @@ public class DeckServiceTest {
         // Assert the result
         assertEquals("Deck updated.", response.getMessage());
         assertEquals(request.getTitle(), deck.getTitle());
-        assertEquals(request.getNumCards(), deck.getNumCards());
 
         // Verify interactions with dependencies
         verify(deckRepository, times(1)).save(any(Deck.class));

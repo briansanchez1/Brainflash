@@ -33,7 +33,7 @@ public class Deck {
 
     private String title;
 
-    private Integer numCards;
+    private Integer cardCount;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

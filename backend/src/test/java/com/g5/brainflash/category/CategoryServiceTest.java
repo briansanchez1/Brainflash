@@ -79,8 +79,8 @@ public class CategoryServiceTest {
         user.setId(1);
 
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1, "Category 1", user));
-        categories.add(new Category(2, "Category 2", user));
+        categories.add(new Category(1, "Category 1", 0, user));
+        categories.add(new Category(2, "Category 2", 0, user));
 
         // Mock the behavior of dependencies
         when(categoryRepository.findAllByUserId(user.getId())).thenReturn(categories);
@@ -93,6 +93,7 @@ public class CategoryServiceTest {
         for (int i = 0; i < categories.size(); i++) {
             assertEquals(categories.get(i).getId(), result.get(i).getId());
             assertEquals(categories.get(i).getTitle(), result.get(i).getTitle());
+            assertEquals(categories.get(i).getCardCount(), result.get(i).getCardCount());
             assertEquals(categories.get(i).getUser().getId(), user.getId());
         }
 

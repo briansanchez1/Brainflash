@@ -31,13 +31,14 @@ public class CategoryService {
      */
     @Transactional
     public CategoryDTO saveCategory(User user, CategoryRequest request ) {
-        Category category = Category.builder().title(request.getTitle()).user(user).build();
+        Category category = Category.builder().title(request.getTitle()).cardCount(0).user(user).build();
 
         category = categoryRepository.save(category);
 
         return CategoryDTO.builder()
             .id(category.getId())
             .title(category.getTitle())
+            .cardCount(0)
             .build();
     }    
 
@@ -52,7 +53,8 @@ public class CategoryService {
         return categories.stream()
                         .map(category -> new CategoryDTO(
                             category.getId(), 
-                            category.getTitle()))
+                            category.getTitle(),
+                            category.getCardCount()))
                         .collect(Collectors.toList());        
     }     
     

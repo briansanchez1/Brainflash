@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class DeckDTO {
     private Integer id;
     private String title;
-    private Integer numCards;
+    private Integer cardCount;
 }
