@@ -82,6 +82,17 @@ public class FlashcardController {
     }
 
     /**
+     * Get a flashcard by ID
+     * @param user The user to get flashcard for
+     * @param id The ID of the flashcard to get
+     * @return Response with flashcard
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFlashcardById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        return ResponseEntity.ok(flashcardService.getFlashcardById(user.getId(), id));
+    }
+
+    /**
      * Get all flashcards for a specified Category
      * @param categoryId The ID of the category to get flashcards for
      * @return Response with list of flashcards

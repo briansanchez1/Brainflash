@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Container, TextField, Box } from '@mui/material';
 import DeckCard from '../components/deck_card';
+import { apiDecks } from '../helpers/axios_helper';
 
 const DecksGrid = () => {
     const [decks, setDecks] = useState([]);
@@ -21,7 +22,7 @@ const DecksGrid = () => {
         setSearchTerm(event.target.value);
     };
 
-    const filteredDecks = decksData.filter((deck) => {
+    const filteredDecks = decks.filter((deck) => {
         return deck.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
