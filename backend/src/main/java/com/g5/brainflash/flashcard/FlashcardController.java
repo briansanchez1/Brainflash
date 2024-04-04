@@ -5,12 +5,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.g5.brainflash.common.responses.ErrorResponse;
 import com.g5.brainflash.user.User;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,7 +33,7 @@ public class FlashcardController {
      */
     @PostMapping("/add")
     public ResponseEntity<?> saveFlashcard(
-        @AuthenticationPrincipal User user, @RequestBody FlashcardRequest request
+        @AuthenticationPrincipal User user, @Valid @RequestBody FlashcardRequest request
     ) {
         return ResponseEntity.ok(flashcardService.saveFlashcard(user, request));
     }
@@ -55,7 +58,7 @@ public class FlashcardController {
      * @param request The flashcard request object
      * @return Response with result of updating flashcard
      */
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateFlashcard(
         @AuthenticationPrincipal User user, @PathVariable Integer id, @RequestBody FlashcardRequest request
     ) {
@@ -69,7 +72,24 @@ public class FlashcardController {
      */
     @GetMapping
     public ResponseEntity<?> getAllFlashcards(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(flashcardService.getAllFlashcardsByUserId(user.getId()));
+        try {
+            return ResponseEntity.ok(flashcardService.getAllFlashcardsByUserId(user.getId()));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+        
+    }
+
+    /**
+     * Get a flashcard by ID
+     * @param user The user to get flashcard for
+     * @param id The ID of the flashcard to get
+     * @return Response with flashcard
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFlashcardById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        return ResponseEntity.ok(flashcardService.getFlashcardById(user.getId(), id));
     }
 
     /**

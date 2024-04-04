@@ -40,11 +40,11 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-  }, [originalCards]);
+  }, []);
 
   useEffect(() => {
     loadExtraCard();
-  }, [originalCards]);
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
