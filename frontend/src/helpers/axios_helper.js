@@ -98,6 +98,12 @@ export const apiAuth = {
   },
 };
 
+// PFE Sessions API
+export const apiPFE = {
+  getAllPFE: () => instance.get("/pfe"),
+  createPFE: (data) => instance.post("/pfe/add", data),
+};
+
 // Categories API
 export const apiCategories = {
   getAllCategories: () => instance.get("/categories"),
@@ -108,7 +114,7 @@ export const apiCategories = {
 export const apiDecks = {
   getAllDecks: () => instance.get("/decks"),
   createDeck: (data) => instance.post("/decks/add", data),
-};  
+};
 
 // Flashcards API
 export const apiFlashcards = {
