@@ -4,8 +4,8 @@ import {
   ThemeProvider,
   Typography,
   Stack,
-  Button,
   Container,
+  Box,
 } from "@mui/material";
 import CategoryCard from "../components/category_card";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -49,22 +49,18 @@ const Dashboard = () => {
       <Container>
         <Stack>
           {/* Categories */}
-          <Typography
-            variant="h4"
-            mt={"56px"}
-            textAlign={"left"}
-            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-          >
-            Your Categories
-            {/* temporary solution */}
-            <Button
-              sx={{
-                ml: 2,
-              }}
+
+          <Stack direction={"row"} mt={"56px"} mb={"10px"} alignItems={"center"}>
+            <Typography
+              variant="h4" textAlign={"left"}
+              sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
             >
+              Your Categories
+            </Typography>
+            <Box ml={"10px"} >
               <NewModal focus="category" />
-            </Button>
-          </Typography>
+            </Box>
+          </Stack>
 
           <Grid container direction={"row"} spacing={1}>
             {categoryCards.length > 0 ? (
@@ -99,22 +95,17 @@ const Dashboard = () => {
           </Grid>
 
           {/* PFE / Review  */}
-          <Typography
-            variant="h4"
-            mt={"56px"}
-            textAlign={"left"}
-            sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
-          >
-            Review Sessions
-            {/* temporary solution */}
-            <Button
-              sx={{
-                ml: 2,
-              }}
+          <Stack direction={"row"} mt={"56px"} mb={"10px"} alignItems={"center"}>
+            <Typography
+              variant="h4" textAlign={"left"}
+              sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
             >
+              Your Review Sessions
+            </Typography>
+            <Box ml={"10px"} >
               <NewModal focus="review" />
-            </Button>
-          </Typography>
+            </Box>
+          </Stack>
 
           <Grid container direction={"row"} spacing={1}>
             {pfeCards.length > 0 ? (

@@ -88,7 +88,6 @@ export default function ModalComponent({ focus }) {
           bgcolor: "#BDBDBD",
 
           borderRadius: "20px",
-          width: "20px",
           transition: "0.2s",
           ":hover": {
             bgcolor: "#656565",
