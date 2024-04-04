@@ -8,6 +8,8 @@ import {
   Box,
 } from "@mui/material";
 import CategoryCard from "../components/category_card";
+import PFECard from "../components/pfe_card";
+import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 import { apiCategories, apiPFE } from "../helpers/axios_helper";
@@ -79,16 +81,16 @@ const Dashboard = () => {
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <CategoryCard
-                  category={{ title: "No Categories Found. Click to Create." }}
+                <ExtraCard
+                  extra={{ title: "No Categories Found. Click to Create." }}
                 />
               </Grid>
             )}
 
             {categoryAmt > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <CategoryCard
-                  category={{ title: "Click to View All Categories" }}
+                <ExtraCard navTo={"/categories"} 
+                  extra={{ title: "Click to View All Categories" }}
                 />
               </Grid>
             )}
@@ -111,13 +113,13 @@ const Dashboard = () => {
             {pfeCards.length > 0 ? (
               pfeCards.map((pfe) => (
                 <Grid item key={pfe.id} xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <CategoryCard category={pfe} />
+                  <PFECard pfe={pfe} />
                 </Grid>
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <CategoryCard
-                  category={{
+                <ExtraCard
+                  extra={{
                     title: "No Review Sessions Found. Click to Create.",
                   }}
                 />
@@ -126,8 +128,8 @@ const Dashboard = () => {
 
             {pfeAmt > 3 ? (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <CategoryCard
-                  category={{ title: "Click to View All Review Sessions" }}
+                <ExtraCard navTo={"/pfe"}
+                  extra={{ title: "Click to View All Review Sessions" }}
                 />
               </Grid>
             ) : null}
