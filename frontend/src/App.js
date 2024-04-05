@@ -12,6 +12,7 @@ import Flashcard from "./pages/flashcard";
 import PageNotFound from "./pages/page_not_found";
 import MainLayout from "./layouts/main_layout";
 import PrivateRoutes from "./components/private_routes";
+import Settings from "./pages/settings";
 
 function App() {
   return (
@@ -54,6 +55,22 @@ function App() {
                 </MainLayout>
               }
             />
+          <Route
+            path="/flashcards/:id"
+            element={
+              <MainLayout>
+                <Flashcard />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <MainLayout>
+                <Settings/>
+              </MainLayout>
+            }
+          />
             <Route
               path="/flashcards"
               element={
@@ -64,14 +81,6 @@ function App() {
             />
           </Route>
 
-          <Route
-            path="/flashcards/:id"
-            element={
-              <MainLayout>
-                <Flashcard />
-              </MainLayout>
-            }
-          />
           <Route path="/forgot-password" element={<ForgotPass />}></Route>
           <Route
             path="*"
