@@ -29,7 +29,7 @@ const FlashcardsGrid = () => {
     };
 
     // Updates filtered flashcards
-    const filteredFlashcards = flashcardsData.filter((flashcard) =>
+    const filteredFlashcards = flashcards.filter((flashcard) =>
         flashcard.question.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
