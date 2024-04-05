@@ -23,7 +23,7 @@ const DecksGrid = () => {
     };
 
     const filteredDecks = decks.filter((deck) => {
-        return deck.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return deck.title.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     return (
