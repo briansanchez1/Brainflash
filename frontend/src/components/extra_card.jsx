@@ -8,7 +8,7 @@ const ExtraCard = ({ extra, navTo }) => {
   const nav = useNavigate();
 
   const handleClick = () => {
-    nav(navTo); // Remove curly braces around navTo
+    nav(navTo); 
   };
 
   return (

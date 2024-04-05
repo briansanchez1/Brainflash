@@ -52,14 +52,20 @@ const Dashboard = () => {
         <Stack>
           {/* Categories */}
 
-          <Stack direction={"row"} mt={"56px"} mb={"10px"} alignItems={"center"}>
+          <Stack
+            direction={"row"}
+            mt={"56px"}
+            mb={"10px"}
+            alignItems={"center"}
+          >
             <Typography
-              variant="h4" textAlign={"left"}
+              variant="h4"
+              textAlign={"left"}
               sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
             >
               Your Categories
             </Typography>
-            <Box ml={"10px"} >
+            <Box ml={"10px"}>
               <NewModal focus="category" />
             </Box>
           </Stack>
@@ -89,7 +95,8 @@ const Dashboard = () => {
 
             {categoryAmt > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <ExtraCard navTo={"/categories"} 
+                <ExtraCard
+                  navTo={"/categories"}
                   extra={{ title: "Click to View All Categories" }}
                 />
               </Grid>
@@ -97,14 +104,20 @@ const Dashboard = () => {
           </Grid>
 
           {/* PFE / Review  */}
-          <Stack direction={"row"} mt={"56px"} mb={"10px"} alignItems={"center"}>
+          <Stack
+            direction={"row"}
+            mt={"56px"}
+            mb={"10px"}
+            alignItems={"center"}
+          >
             <Typography
-              variant="h4" textAlign={"left"}
+              variant="h4"
+              textAlign={"left"}
               sx={{ fontSize: { xs: 20, md: 25, lg: 27 } }}
             >
               Your Review Sessions
             </Typography>
-            <Box ml={"10px"} >
+            <Box ml={"10px"}>
               <NewModal focus="review" />
             </Box>
           </Stack>
@@ -128,7 +141,8 @@ const Dashboard = () => {
 
             {pfeAmt > 3 ? (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <ExtraCard navTo={"/pfe"}
+                <ExtraCard
+                  navTo={"/pfe"}
                   extra={{ title: "Click to View All Review Sessions" }}
                 />
               </Grid>
