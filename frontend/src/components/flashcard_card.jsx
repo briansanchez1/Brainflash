@@ -16,7 +16,7 @@ export default function Flashcard_full_card({ flashcard }) {
             <CardActionArea onClick={handleClick}>
                 <CardContent>
                     <Typography variant="h6" component="h2" align="center">
-                        {flipped ? flashcard.answer : flashcard.question}
+                        {flipped ? "A: " + flashcard.answer : "Q: " + flashcard.question}
                     </Typography>
                 </CardContent>
             </CardActionArea>
