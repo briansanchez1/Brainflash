@@ -45,6 +45,12 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
+  // sends user to deck view
+  const handleDecks = () => {
+    navigate("/decks");
+    setAnchorElNav(null);
+  };
+
   // sends user to pfe view
   const handlePFE = () => {
     navigate("/pfe");
@@ -126,6 +132,9 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCategories}>
                 <Typography textAlign="center">Your Categories</Typography>
               </MenuItem>
+              <MenuItem onClick={handleDecks}>
+                <Typography textAlign="center">Your Decks</Typography>
+              </MenuItem>
               <MenuItem onClick={handlePFE}>
                 <Typography textAlign="center">Your Review Sessions</Typography>
               </MenuItem>
@@ -160,6 +169,12 @@ function ResponsiveAppBar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Your Categories
+            </Button>
+            <Button
+              onClick={handleDecks}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Your Decks
             </Button>
             <Button
               onClick={handlePFE}
