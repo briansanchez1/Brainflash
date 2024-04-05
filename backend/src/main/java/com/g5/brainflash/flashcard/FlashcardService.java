@@ -57,11 +57,11 @@ public class FlashcardService {
             .deck(deck)
             .build();
 
-        /*category.setCardCount(category.getCardCount() + 1);
+        category.setCardCount(category.getCardCount() + 1);
 
         if(deck != null) {
             deck.setCardCount(deck.getCardCount() + 1);
-        }*/
+        }
 
         flashcardRepository.save(flashcard);
 
