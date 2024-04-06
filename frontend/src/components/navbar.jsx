@@ -92,7 +92,6 @@ function ResponsiveAppBar() {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".25rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -129,20 +128,37 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCategories}>
-                <Typography textAlign="center">Your Categories</Typography>
+              <MenuItem
+                onClick={handleDecks}
+                sx={{
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <Typography textAlign="center">Decks</Typography>
               </MenuItem>
-              <MenuItem onClick={handleDecks}>
-                <Typography textAlign="center">Your Decks</Typography>
+              <MenuItem
+                onClick={handleCategories}
+                sx={{
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <Typography textAlign="center">Categories</Typography>
               </MenuItem>
-              <MenuItem onClick={handlePFE}>
-                <Typography textAlign="center">Your Review Sessions</Typography>
+
+              <MenuItem
+                onClick={handlePFE}
+                sx={{
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <Typography textAlign="center">Review Sessions</Typography>
               </MenuItem>
               <MenuItem onClick={handleFlashcards}>
                 <Typography textAlign="center">View All Cards</Typography>
               </MenuItem>
             </Menu>
           </Box>
+
           <Typography
             variant="h5"
             noWrap
@@ -151,10 +167,10 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
+              fontSize: "25px",
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -165,26 +181,63 @@ function ResponsiveAppBar() {
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 2 }}
           >
             <Button
-              onClick={handleCategories}
-              sx={{ my: 2, color: "white", display: "block" }}
+              onClick={handleDecks}
+              disableRipple
+              sx={{
+                my: 2,
+                color: "#fff",
+                display: "block",
+                ":hover": {
+                  bgcolor: "hsla(249, 17%, 100%, 0.33)",
+                  transition: "0.2s",
+                },
+              }}
             >
-              Your Categories
+              Decks
             </Button>
             <Button
-              onClick={handleDecks}
-              sx={{ my: 2, color: "white", display: "block" }}
+              onClick={handleCategories}
+              disableRipple
+              sx={{
+                my: 2,
+                color: "#fff",
+                display: "block",
+                ":hover": {
+                  bgcolor: "hsla(249, 17%, 100%, 0.33)",
+                  transition: "0.2s",
+                },
+              }}
             >
-              Your Decks
+              Categories
             </Button>
+
             <Button
               onClick={handlePFE}
-              sx={{ my: 2, color: "white", display: "block" }}
+              disableRipple
+              sx={{
+                my: 2,
+                color: "#fff",
+                display: "block",
+                ":hover": {
+                  bgcolor: "hsla(249, 17%, 100%, 0.33)",
+                  transition: "0.2s",
+                },
+              }}
             >
-              Your Review Sessions
+              Review Sessions
             </Button>
             <Button
               onClick={handleFlashcards}
-              sx={{ my: 2, color: "white", display: "block" }}
+              disableRipple
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                ":hover": {
+                  bgcolor: "hsla(249, 17%, 100%, 0.33)",
+                  transition: "0.2s",
+                },
+              }}
             >
               View All Cards
             </Button>
