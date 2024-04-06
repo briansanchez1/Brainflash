@@ -100,11 +100,12 @@ public class PFESessionService {
         return pfeSessions.stream()
             .map(pfeSession -> {
                 Integer categoryId = pfeSession.getCategory() != null ? pfeSession.getCategory().getId() : null;
+                Integer deckId = pfeSession.getDeck() != null ? pfeSession.getDeck().getId() : null;
                 return new PFESessionDTO(pfeSession.getId(),
                     pfeSession.getTitle(),
                     pfeSession.getStartDate(),
                     pfeSession.getEndDate(),
-                    pfeSession.getDeck().getId(),
+                    deckId,
                     categoryId);
             })
             .collect(Collectors.toList());
@@ -159,8 +160,11 @@ public class PFESessionService {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to update this PFE session.");
         }
 
-        Deck deck = deckRepository.findById(request.getDeckId())
-            .orElseThrow(() -> new EntityNotFoundException("Deck not found."));
+        Deck deck = null;
+        if (request.getDeckId() != null) {
+             deck = deckRepository.findById(request.getDeckId())
+                .orElseThrow(() -> new EntityNotFoundException("Deck not found."));
+        }
 
         Category category = null;
         if (request.getCategoryId() != null) {
