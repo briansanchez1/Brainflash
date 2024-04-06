@@ -136,5 +136,8 @@ export const apiDecks = {
 export const apiFlashcards = {
   getAllFlashcards: () => instance.get("/flashcards"),
   createFlashcard: (data) => instance.post("/flashcards/add", data),
-  getFlashcard: (id) => instance.get(`/flashcards/${id}`),
+  getFlashcard: (id) => instance.get("/flashcards/" + id),
+  deleteFlashcard: (id) => instance.get("/decks/delete/" + id),
+  getFlashcardsByDeck: (deckId) => instance.get("/flashcards/deck/" + deckId),
+  getFlashcardsByCategory: (categoryId) => instance.get("/flashcards/category/" + categoryId),
 };
