@@ -3,9 +3,6 @@ import { Grid, Typography, Container, TextField, Box } from "@mui/material";
 import FlashcardCard from "../components/flashcard_card";
 import { apiFlashcards } from "../helpers/axios_helper";
 
-const flashcardsData = [
-    { id: 1, question: "What is the capital of France?", answer: "Paris", category_id: 1 },
-]
 
 const FlashcardsGrid = () => {
     const [flashcards, setFlashcards] = useState([]);
