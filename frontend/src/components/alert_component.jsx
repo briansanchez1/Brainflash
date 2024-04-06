@@ -1,14 +1,12 @@
-import * as React from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import * as React from "react";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
-export default function SnackBar({message, severiry}) {
+export default function SnackBar({ message, severiry }) {
   const [open, setOpen] = React.useState(true);
 
- 
-
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -16,20 +14,22 @@ export default function SnackBar({message, severiry}) {
   };
 
   return (
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
+    <Snackbar
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+    >
+      <Alert
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} 
+        severity={severiry}
+        variant="filled"
+        
+        sx={{ width: "100%", fontSize: "18px"}} 
       >
-        <Alert
-          onClose={handleClose}
-          severity={severiry}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {message}
-        </Alert>
-      </Snackbar>
+        {message}
+      </Alert>
+    </Snackbar>
   );
 }

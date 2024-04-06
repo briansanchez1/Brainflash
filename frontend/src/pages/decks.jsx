@@ -5,6 +5,7 @@ import ActionModal from "../components/action_modal";
 import DeckView from "../components/modal_components/deck_focus";
 import CardGridView from "../components/grid_view";
 import { SearchField } from "../components/text_fields";
+import AlertBox from "../components/alert_component";
 
 const DecksGrid = () => {
   const [decks, setDecks] = useState([]);
@@ -14,6 +15,10 @@ const DecksGrid = () => {
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
   const [handleAction, setHandleAction] = useState(null);
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     // Fetch all decks when the component mounts
@@ -44,6 +49,7 @@ const DecksGrid = () => {
       />
     );
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleDeleteModalOpen = (deck) => {
@@ -51,6 +57,7 @@ const DecksGrid = () => {
     setModalContent("Are you sure you want to delete this deck?");
     setHandleAction(() => () => confirmDeleteAction(deck));
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleCloseModal = () => {
@@ -58,18 +65,24 @@ const DecksGrid = () => {
   };
 
   const confirmDeleteAction = (deck) => {
+    setAlert(true);
     apiDecks
       .deleteDeck(deck.id)
       .then((response) => {
         setDecks(decks.filter((d) => d.id !== deck.id));
         handleCloseModal();
+        setAlertMessage("Deck successfully deleted.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error deleting deck:", error);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
   const confirmEditAction = (d) => {
+    setAlert(true);
     apiDecks
       .updateDeck(d.id, d.title)
       .then((response) => {
@@ -79,9 +92,13 @@ const DecksGrid = () => {
         });
         setDecks(updatedDecks);
         handleCloseModal();
+        setAlertMessage("Deck successfully edited.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error updating deck:", error);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
@@ -92,6 +109,9 @@ const DecksGrid = () => {
 
   return (
     <Container>
+      {showAlert && (
+        <AlertBox severiry={alertSeverity} message={alertMessage} />
+      )}
       <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
         Decks
       </Typography>

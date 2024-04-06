@@ -5,6 +5,7 @@ import ActionModal from "../components/action_modal";
 import SessionView from "../components/modal_components/PFE_focus";
 import CardGridView from "../components/grid_view";
 import { SearchField } from "../components/text_fields";
+import AlertBox from "../components/alert_component";
 
 const PFEGrid = () => {
   const [sessions, setSessions] = useState([]);
@@ -14,6 +15,10 @@ const PFEGrid = () => {
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
   const [handleAction, setHandleAction] = useState(null);
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     // Fetch all sessions when the component mounts
@@ -44,6 +49,7 @@ const PFEGrid = () => {
       />
     );
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleDeleteModalOpen = (session) => {
@@ -51,6 +57,7 @@ const PFEGrid = () => {
     setModalContent("Are you sure you want to delete this session?");
     setHandleAction(() => () => confirmDeleteAction(session));
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleCloseModal = () => {
@@ -58,18 +65,25 @@ const PFEGrid = () => {
   };
 
   const confirmDeleteAction = (session) => {
+    setAlert(true);
     apiPFESessions
       .deleteSession(session.id)
       .then((response) => {
         setSessions(sessions.filter((s) => s.id !== session.id));
         handleCloseModal();
+        setAlertMessage("Session successfully deleted.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error deleting session:", error);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
   const confirmEditAction = (s) => {
+    setAlert(true);
+
     apiPFESessions
       .updateSession(s.id, s)
       .then((response) => {
@@ -79,9 +93,14 @@ const PFEGrid = () => {
         });
         setSessions(updatedSessions);
         handleCloseModal();
+        setAlert(true);
+        setAlertMessage("Session successfully edited.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error updating session:", error);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
@@ -92,6 +111,9 @@ const PFEGrid = () => {
 
   return (
     <Container>
+      {showAlert && (
+        <AlertBox severiry={alertSeverity} message={alertMessage} />
+      )}
       <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
         Review Sessions
       </Typography>

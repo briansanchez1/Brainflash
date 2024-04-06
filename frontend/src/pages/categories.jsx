@@ -5,6 +5,7 @@ import ActionModal from "../components/action_modal";
 import CategoryView from "../components/modal_components/category_focus";
 import CardGridView from "../components/grid_view";
 import { SearchField } from "../components/text_fields";
+import AlertBox from "../components/alert_component";
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
@@ -14,6 +15,10 @@ const CategoriesGrid = () => {
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
   const [handleAction, setHandleAction] = useState(null);
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     // Fetch all categories when the component mounts
@@ -44,6 +49,7 @@ const CategoriesGrid = () => {
       />
     );
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleDeleteModalOpen = (category) => {
@@ -51,6 +57,7 @@ const CategoriesGrid = () => {
     setModalContent("Are you sure you want to delete this category?");
     setHandleAction(() => () => confirmDeleteAction(category));
     setModalOpen(true);
+    setAlert(false);
   };
 
   const handleCloseModal = () => {
@@ -58,14 +65,19 @@ const CategoriesGrid = () => {
   };
 
   const confirmDeleteAction = (category) => {
+    setAlert(true);
     apiCategories
       .deleteCategory(category.id)
       .then((response) => {
         setCategories(categories.filter((c) => c.id !== category.id));
         handleCloseModal();
+        setAlertMessage("Category successfully deleted.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error deleting category:", error);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
@@ -79,9 +91,15 @@ const CategoriesGrid = () => {
         });
         setCategories(updatedCategories);
         handleCloseModal();
+        setAlert(true);
+        setAlertMessage("Category successfully edited.");
+        setAlertSeverity("success");
       })
       .catch((error) => {
         console.error("Error updating category:", error);
+        setAlert(true);
+        setAlertMessage(error);
+        setAlertSeverity("error");
       });
   };
 
@@ -92,6 +110,10 @@ const CategoriesGrid = () => {
 
   return (
     <Container>
+      {showAlert && (
+        <AlertBox severiry={alertSeverity} message={alertMessage} />
+      )}
+
       <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
         Categories
       </Typography>
