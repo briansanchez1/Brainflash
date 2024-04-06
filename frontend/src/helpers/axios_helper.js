@@ -99,21 +99,37 @@ export const apiAuth = {
 };
 
 // PFE Sessions API
-export const apiPFE = {
-  getAllPFE: () => instance.get("/pfe"),
-  createPFE: (data) => instance.post("/pfe/add", data),
+export const apiPFESessions = {
+  getAllSessions: () => instance.get("/pfe"),
+  createSession: (data) => instance.post("/pfe/add", data),
+  deleteSession: (id) => instance.get("/pfe/delete/" + id),
+  updateSession: (id, s) =>
+    instance.put("/pfe/update/" + id, {
+      id: s.id,
+      title: s.title,
+      startDate: s.startDate,
+      endDate: s.endDate,
+      deckId: s.deckId,
+      categoryId: s.categoryId,
+    }),
 };
 
 // Categories API
 export const apiCategories = {
   getAllCategories: () => instance.get("/categories"),
   createCategory: (data) => instance.post("/categories/add", data),
+  deleteCategory: (id) => instance.get("/categories/delete/" + id),
+  updateCategory: (id, title) =>
+    instance.put("/categories/update/" + id, { title: title }),
 };
 
 // Decks API
 export const apiDecks = {
   getAllDecks: () => instance.get("/decks"),
   createDeck: (data) => instance.post("/decks/add", data),
+  deleteDeck: (id) => instance.get("/decks/delete/" + id),
+  updateDeck: (id, title) =>
+    instance.put("/decks/update/" + id, { title: title }),
 };
 
 // Flashcards API
