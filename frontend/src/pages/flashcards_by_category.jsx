@@ -3,25 +3,25 @@ import { Grid, Typography, Container, TextField, Box } from "@mui/material";
 import FlashcardCard from "../components/flashcard_card";
 import { apiFlashcards } from "../helpers/axios_helper";
 
-const flashcardsData = [
-    { id: 1, question: "What is the capital of France?", answer: "Paris", category_id: 1 },
-]
 
-const FlashcardsGrid = () => {
+const FlashcardsByCategoryGrid = ({ categoryId }) => {
     const [flashcards, setFlashcards] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    console.log(categoryId);
 
+    // Fetch all flashcards by category id when the component mounts
     useEffect(() => {
-        // Fetch all flashcards when the component mounts
         apiFlashcards
-            .getAllFlashcards()
+            .getFlashcardsByCategory(categoryId)
             .then((response) => {
                 setFlashcards(response.data); // Set the flashcards in state
             })
             .catch((error) => {
                 console.error("Error fetching flashcards:", error);
+                console.log(categoryId);
             });
-    }, []);
+    }, [categoryId]);
+
 
     // Handles search change
     const handleSearchChange = (event) => {
@@ -85,4 +85,4 @@ const FlashcardsGrid = () => {
     );
 };
 
-export default FlashcardsGrid;
+export default FlashcardsByCategoryGrid;

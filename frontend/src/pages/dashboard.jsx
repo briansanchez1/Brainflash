@@ -12,6 +12,7 @@ import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -22,6 +23,8 @@ const Dashboard = () => {
 
   const [pfeCards, setPFECards] = useState([]);
   const [pfeAmt, setPfeAmt] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     apiCategories
@@ -45,9 +48,10 @@ const Dashboard = () => {
       });
   }, []);
 
-  const handleCardClick = (category) => {
+  const handleCardClick = (categoryId) => {
     // Handle click event, for example, navigate to a category detail page
-    console.log("Clicked category:", category);
+    //console.log("Clicked category:", category);
+    navigate(`/flashcards/category/${categoryId}`);
   };
 
   return (
@@ -94,7 +98,7 @@ const Dashboard = () => {
                         {"Card Count: " + category.cardCount}
                       </Typography>
                     }
-                    onClick={() => handleCardClick(category)}
+                    onClick={() => handleCardClick(category.id)}
                   />
                 </Grid>
               ))
