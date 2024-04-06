@@ -7,12 +7,12 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import CategoryCard from "../components/category_card";
+import ActionCard from "../components/action_card";
 import PFECard from "../components/pfe_card";
 import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import { apiCategories, apiPFE } from "../helpers/axios_helper";
+import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme();
 
@@ -35,8 +35,8 @@ const Dashboard = () => {
         console.error("Error fetching categories:", error);
       });
 
-    apiPFE
-      .getAllPFE()
+    apiPFESessions
+      .getAllSessions()
       .then((response) => {
         setPFECards(response.data.reverse().slice(0, 3));
         setPfeAmt(response.data.length);
@@ -45,6 +45,11 @@ const Dashboard = () => {
         console.error("Error fetching PFE Sessions:", error);
       });
   }, []);
+
+  const handleCardClick = (category) => {
+    // Handle click event, for example, navigate to a category detail page
+    console.log("Clicked category:", category);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -82,7 +87,14 @@ const Dashboard = () => {
                   lg={4}
                   xl={4}
                 >
-                  <CategoryCard category={category} />
+                  <ActionCard
+                    content={
+                      <Typography variant="h6" component="h2" align="center">
+                        {category.title}
+                      </Typography>
+                    }
+                    onClick={() => handleCardClick(category)}
+                  />
                 </Grid>
               ))
             ) : (
