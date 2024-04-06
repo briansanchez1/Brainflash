@@ -108,7 +108,7 @@ export default function PFEView({ session, onSessionEdit }) {
     // Set dates on edit
 
     if (session) {
-      setEditedSession(session);
+      setEditedSession({ ...session });
       //setStartDate(dayjs(new Date(session.startDate)));
       //setEndDate(dayjs(new Date(session.endDate)));
     }
