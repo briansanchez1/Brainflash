@@ -8,7 +8,6 @@ import {
   Box,
 } from "@mui/material";
 import ActionCard from "../components/action_card";
-import PFECard from "../components/pfe_card";
 import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
@@ -91,6 +90,8 @@ const Dashboard = () => {
                     content={
                       <Typography variant="h6" component="h2" align="center">
                         {category.title}
+                        <br />
+                        {"Card Count: " + category.cardCount}
                       </Typography>
                     }
                     onClick={() => handleCardClick(category)}
@@ -138,27 +139,40 @@ const Dashboard = () => {
             {pfeCards.length > 0 ? (
               pfeCards.map((pfe) => (
                 <Grid item key={pfe.id} xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <PFECard pfe={pfe} />
+                  <ActionCard
+                    content={
+                      <Typography variant="h6" component="h2" align="center">
+                        {pfe.title}
+                        <br />
+                        {"Start Date: " + pfe.startDate}
+                        <br />
+                        {"End Date: " + pfe.endDate}
+                        <br />
+                        {pfe.categoryId != null
+                          ? "Category: " + pfe.categoryId
+                          : "Deck: " + pfe.deckId}  {/* this needs to return the title of the card, not the card id */}
+                      </Typography>
+                    }
+                    onClick={() => handleCardClick(pfe)}
+                  />
                 </Grid>
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
-                  extra={{
-                    title: "No Review Sessions Found. Click to Create.",
-                  }}
+                  extra={{ title: "No Sessions Found. Click to Create." }}
                 />
               </Grid>
             )}
 
-            {pfeAmt > 3 ? (
+            {pfeAmt > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
                   navTo={"/pfe"}
-                  extra={{ title: "Click to View All Review Sessions" }}
+                  extra={{ title: "Click to View All Sessions" }}
                 />
               </Grid>
-            ) : null}
+            )}
           </Grid>
         </Stack>
       </Container>
