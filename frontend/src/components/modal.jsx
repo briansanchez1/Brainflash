@@ -32,6 +32,7 @@ const btnStyle = {
 export default function ModalComponent({ focus }) {
   const [active, setActive] = useState(focus);
   const [open, setOpen] = useState(false);
+  const [session, setSession] = useState(null);
 
   const handleChange = (event, newActive) => {
     if (newActive !== null) {
@@ -49,6 +50,7 @@ export default function ModalComponent({ focus }) {
   };
 
   const handleSubmit = () => {
+    console.log(session);
     setOpen(false);
   };
 
@@ -117,7 +119,9 @@ export default function ModalComponent({ focus }) {
               {active === "flashcard" && <FlashcardView />}
               {active === "deck" && <DeckView />}
               {active === "category" && <CategoryView />}
-              {active === "review" && <PFEView />}
+              {active === "review" && (
+                <PFEView onSessionEdit={(s) => setSession(s)} />
+              )}
             </Grid>
 
             <Grid item xs={12} textAlign={"center"}>

@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Container, TextField, Box } from "@mui/material";
-import CategoryCard from "../components/category_card";
+import { Typography, Container, Button } from "@mui/material";
 import { apiCategories } from "../helpers/axios_helper";
+import ActionModal from "../components/action_modal";
+import CategoryView from "../components/modal_components/category_focus";
+import CardGridView from "../components/grid_view";
+import { SearchField } from "../components/text_fields";
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  // Modal states
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [handleAction, setHandleAction] = useState(null);
 
   useEffect(() => {
     // Fetch all categories when the component mounts
@@ -19,64 +27,99 @@ const CategoriesGrid = () => {
       });
   }, []);
 
-  // Handles search change
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
   // Updates filtered categories
   const filteredCategories = categories.filter((category) =>
     category.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Modal
+  const handleEditModalOpen = (category) => {
+    setModalTitle("Edit Category");
+    setModalContent(
+      <CategoryView
+        category={category}
+        onUpdate={(c) => {
+          setHandleAction(() => () => confirmEditAction(c));
+        }}
+      />
+    );
+    setModalOpen(true);
+  };
+
+  const handleDeleteModalOpen = (category) => {
+    setModalTitle("Delete Category");
+    setModalContent("Are you sure you want to delete this category?");
+    setHandleAction(() => () => confirmDeleteAction(category));
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const confirmDeleteAction = (category) => {
+    apiCategories
+      .deleteCategory(category.id)
+      .then((response) => {
+        setCategories(categories.filter((c) => c.id !== category.id));
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.error("Error deleting category:", error);
+      });
+  };
+
+  const confirmEditAction = (c) => {
+    apiCategories
+      .updateCategory(c.id, c.title)
+      .then((response) => {
+        // Assuming response.data is the updated category object
+        const updatedCategories = categories.map((category) => {
+          return category.id === c.id ? c : category;
+        });
+        setCategories(updatedCategories);
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.error("Error updating category:", error);
+      });
+  };
+
+  const handleClick = (category) => {
+    // Handle click event, for example, navigate to a category detail page
+    console.log("Clicked category:", category);
+  };
 
   return (
     <Container>
       <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
         Categories
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <TextField
-          label="Search"
-          variant="outlined"
-          sx={{
-            mb: 4,
-            width: {
-              xs: "100%",
-              sm: "100%",
-              md: "100%",
-              lg: "100%",
-              xl: "25%",
-            },
-          }}
-          onChange={handleSearchChange}
-        />
-      </Box>
-      <Grid container spacing={2} sx={{ pb: 4 }}>
-        {filteredCategories.length > 0 ? (
-          filteredCategories.map((category) => (
-            <Grid item key={category.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-              <CategoryCard category={category} />
-            </Grid>
-          ))
-        ) : (
-          <Typography
-            sx={{
-              width: {
-                xs: "100%",
-              },
-            }}
-            variant="h8"
-          >
-            No categories found.
+      <SearchField onSearch={(event) => setSearchTerm(event.target.value)} />
+      <CardGridView
+        itemName={"Categories"}
+        items={filteredCategories}
+        cardContent={(item) => (
+          <Typography variant="h6" component="h2" align="center">
+            {item.title}
           </Typography>
         )}
-      </Grid>
+        onCardClick={(category) => handleClick(category)}
+        onCardEdit={(category) => handleEditModalOpen(category)}
+        onCardDelete={(category) => handleDeleteModalOpen(category)}
+      ></CardGridView>
+      <ActionModal
+        isOpen={isModalOpen}
+        handleClose={handleCloseModal}
+        title={modalTitle}
+        content={modalContent}
+        buttons={
+          <>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleAction}>Confirm</Button>
+          </>
+        }
+      />
     </Container>
   );
 };
