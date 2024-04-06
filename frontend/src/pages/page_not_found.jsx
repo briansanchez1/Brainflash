@@ -1,12 +1,12 @@
-import React from 'react';
-import { Typography } from '@mui/material';
+import React from "react";
+import { Typography, Container } from "@mui/material";
 
 const PageNotFound = () => {
-    return (
-        <Typography variant="h4">
-            404 - Page Not Found
-        </Typography>
-    );
+  return (
+    <Container>
+      <Typography variant="h4" mt={7} fontWeight={800}>404 - Page Not Found</Typography>
+    </Container>
+  );
 };
 
 export default PageNotFound;
