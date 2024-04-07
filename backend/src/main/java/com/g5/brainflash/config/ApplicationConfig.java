@@ -15,12 +15,16 @@ import com.g5.brainflash.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ApplicationConfig class. Configures the application.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository repository;
 
+    // User details service
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> repository.findByEmail(username)
@@ -36,11 +40,13 @@ public class ApplicationConfig {
         return authProvider;
     }    
 
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }   
     
+    // Authentication manager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();

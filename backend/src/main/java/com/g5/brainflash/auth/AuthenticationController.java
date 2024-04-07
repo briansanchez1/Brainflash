@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AuthenticationController class. Handles user registration and authentication
+ */
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -34,6 +37,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
     
+    /**
+     * This method handles user authentication requests.
+     * @param request The AuthenticationRequest object
+     * @return Response to authentication attempt
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
         @RequestBody AuthenticationRequest request
@@ -41,6 +49,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }    
 
+    /**
+     * Validates the JWT token
+     * @return Response with JWT token
+     */
     @GetMapping("/validate")
     public ResponseEntity<?> validateJwt(
     ) {

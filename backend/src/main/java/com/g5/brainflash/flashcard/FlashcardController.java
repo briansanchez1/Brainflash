@@ -16,12 +16,12 @@ import com.g5.brainflash.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("/api/v1/flashcards")
-@RequiredArgsConstructor
 /**
  * Flashcard Controller. Handles requests related to flashcards.
  */
+@RestController
+@RequestMapping("/api/v1/flashcards")
+@RequiredArgsConstructor
 public class FlashcardController {
     private final FlashcardService flashcardService;
 

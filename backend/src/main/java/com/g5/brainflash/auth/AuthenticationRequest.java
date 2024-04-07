@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * AuthenticationRequest class. Contains user email and password for authentication.
+ */
 @Data
 @Builder
 @NoArgsConstructor

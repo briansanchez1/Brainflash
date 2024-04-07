@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.g5.brainflash.flashcard.Flashcard;
 import com.g5.brainflash.category.Category;
+import com.g5.brainflash.deck.Deck;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,6 +31,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a user entity in the Brainflash application.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -54,8 +59,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flashcard> flashcards;
 
-    /*@OneToMany(mappedBy = "deck")
-    private List<Deck> decks;*/
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Deck> decks;
     
     /** 
      * The list of categories associated with the user.

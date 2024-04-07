@@ -15,6 +15,9 @@ import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.ErrorResponse;
 
 
+/**
+ * GlobalExceptionHandler. Handles exceptions thrown by the application.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

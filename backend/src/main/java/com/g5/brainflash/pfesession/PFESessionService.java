@@ -35,11 +35,8 @@ public class PFESessionService {
     /**
      * Build PFE session DTO to be saved
      * 
-     * @param user
-     *     The user creating/editing PFE
-     * @param request
-     *     The PFE request object
-     * 
+     * @param user The user creating/editing PFE
+     * @param request The PFE request object
      * @return The PFE DTO to be saved
      */
     @Transactional

@@ -14,6 +14,9 @@ import com.g5.brainflash.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AuthenticationService class. Handles user registration and authentication.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -23,6 +26,15 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authManager ;
 
+    /**
+     * Registers a new user in the system.
+     * 
+     * @param request The RegisterRequest object containing user registration 
+     * details.
+     * @return An AuthenticationResponse object containing the generated 
+     * JWT token.
+     * @throws EmailAlreadyRegisteredException If the email is already registered.
+     */
     @Transactional
     public AuthenticationResponse register( RegisterRequest request ) {
         // Checks if the email already exists

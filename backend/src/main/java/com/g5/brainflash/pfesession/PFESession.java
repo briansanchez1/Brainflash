@@ -2,7 +2,6 @@ package com.g5.brainflash.pfesession;
 
 import com.g5.brainflash.category.Category ;
 import com.g5.brainflash.deck.Deck ;
-//import com.g5.brainflash.flashcard.Flashcard ;
 import com.g5.brainflash.user.User;
 
 import java.time.LocalDate ;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * The PFE Session class represents a PFE Session entity in the system.
- * PFE Sessions are used to organize flashcards.
+ * PFE Sessions are used to allow the user to create a study schedule.
  */
 @Data
 @Builder
@@ -66,7 +65,6 @@ public class PFESession {
      * Deck included in a PFE Session. One Deck can be in many different PFE Sessions. A pfe
      * can only contain one Deck. A deck is required for to create a 
      */
-
     @ManyToOne
     @JoinColumn( name = "deck_id" )
     private Deck deck ;
@@ -75,7 +73,6 @@ public class PFESession {
      * The user who created a PFE Session. Many-to-one relationship where "user" is
      * the owning side. A PFE Session is associated with exactly one user.
      */
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

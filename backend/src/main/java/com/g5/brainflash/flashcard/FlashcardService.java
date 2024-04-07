@@ -39,9 +39,11 @@ public class FlashcardService {
      */
     @Transactional
     public FlashcardDTO saveFlashcard(User user, FlashcardRequest request) {
+        // Find category
         Category category = categoryRepository.findById(request.getCategoryId())
                             .orElseThrow(() -> new EntityNotFoundException("Category not found."));
 
+        // If deck is provided, find deck
         Deck deck = null;
 
         if(request.getDeckId() != null) {
@@ -57,6 +59,7 @@ public class FlashcardService {
             .deck(deck)
             .build();
 
+        // Increment card count for category and deck
         category.setCardCount(category.getCardCount() + 1);
 
         if(deck != null) {
@@ -180,6 +183,7 @@ public class FlashcardService {
             throw new UnauthorizedUserException("User is not authorized to delete this flashcard.");
         }
 
+        // Remove flashcard from category and deck
         flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() - 1);
 
         if(flashcard.getDeck() != null) {
@@ -209,7 +213,7 @@ public class FlashcardService {
 
         Flashcard flashcard = optFlashcard.get();
 
-        // Remove flashcard from old category and deck
+        // Remove flashcard from old category and deck counts
         flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() - 1);
 
         if(flashcard.getDeck() != null) {
@@ -236,6 +240,7 @@ public class FlashcardService {
         flashcard.setCategory(category);
         flashcard.setDeck(deck);
 
+        // Increment card count for new category and deck
         flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() + 1);
 
         if(flashcard.getDeck() != null) {
