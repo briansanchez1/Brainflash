@@ -3,6 +3,7 @@ package com.g5.brainflash.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -13,6 +14,7 @@ import com.g5.brainflash.auth.exceptions.EmailAlreadyRegisteredException;
 import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.ErrorResponse;
+import com.g5.brainflash.user.exceptions.PasswordMismatchException;
 
 
 @ControllerAdvice
@@ -52,5 +54,13 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.UNAUTHORIZED)
             .body(new ErrorResponse(ex.getMessage()));
     }        
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    public ResponseEntity<?> handleValidationExceptions(PasswordMismatchException ex){
+        return ResponseEntity
+        .status(HttpStatus.CONFLICT)
+        .body(new ErrorResponse((ex.getMessage())));
+    }
+
 
 }
