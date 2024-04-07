@@ -14,19 +14,26 @@ This section details how to set up and run the application locally. This require
 1. Ensure that a valid mySQL connection is set up on the machine. To download and set up mySQL, visit https://www.mysql.com/downloads/.
 2. Once this connection is set up, create a new schema titled "brainflash".
 3. Set the User environment variables as follows using your command prompt (parentheses indicate entering information as it relates to your database setup. Omit the parentheses when using the command prompt). This will ensure that the application is able to connect to the mySQL database.
-     - setx DATABASE_USERNAME (your database username)
-     - setx DATABASE_PASSWORD (your database password)
-     - setx DATABASE_URL localhost:3306/brainflash
+     ```
+     setx DATABASE_USERNAME (your database username)
+     setx DATABASE_PASSWORD (your database password)
+     setx DATABASE_URL localhost:3306/brainflash
+     ```
 4. Open Visual Studio Code and run the BrainflashApplication.java file (located in backend/src/main/java).
 
 ### Front End
 
 1. Open a new terminal in Visual Studio Code. Switch to the "frontend" directory.
 2. Run the npm install command (shorthand: npm i) to install the necessary dependencies.
-3. Run npm start. This will start the application's front end. From here, the user can interact with the application.
 
 ```
   npm install
+```
+
+3. Run npm start. This will start the application's front end. From here, the user can interact with the application.
+
+```
+     npm start
 ```
 
 ## Usage
