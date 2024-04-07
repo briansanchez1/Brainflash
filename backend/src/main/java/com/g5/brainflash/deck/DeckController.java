@@ -31,7 +31,7 @@ public class DeckController {
      * @return Response with result of saving deck
      */
     @PostMapping("/add")
-    public ResponseEntity<?> saveDeck(
+    public ResponseEntity < ? > saveDeck(
         @AuthenticationPrincipal User user, @Valid @RequestBody DeckRequest request
     ) {
         return ResponseEntity.ok(deckService.saveDeck(user, request));
@@ -44,7 +44,7 @@ public class DeckController {
      * @return Response with result of deleting deck
      */
     @GetMapping("/delete/{id}")
-    public ResponseEntity<?> deleteDeck(
+    public ResponseEntity < ? > deleteDeck(
         @AuthenticationPrincipal User user, @PathVariable Integer id
     ) {
         return ResponseEntity.ok(deckService.deleteDeck(user.getId(), id));
@@ -58,10 +58,21 @@ public class DeckController {
      * @return Response with result of updating deck
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateDeck(
+    public ResponseEntity < ? > updateDeck(
         @AuthenticationPrincipal User user, @PathVariable Integer id, @Valid @RequestBody DeckRequest request
     ) {
         return ResponseEntity.ok(deckService.updateDeck(user.getId(), id, request));
+    }
+
+    /**
+     * Get a deck by ID
+     * @param user The user to get deck for
+     * @param id The ID of the deck to get
+     * @return Response with deck
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity < ? > getDeckById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+        return ResponseEntity.ok(deckService.getDeckById(user.getId(), id));
     }
 
     /**
@@ -70,7 +81,7 @@ public class DeckController {
      * @return Response with list of all decks for user
      */
     @GetMapping
-    public ResponseEntity<?> getAllDecks(@AuthenticationPrincipal User user) {
+    public ResponseEntity < ? > getAllDecks(@AuthenticationPrincipal User user) {
         try {
             return ResponseEntity.ok(deckService.getAllDecksByUserId(user.getId()));
         } catch (Exception e) {
