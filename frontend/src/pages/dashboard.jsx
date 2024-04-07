@@ -11,22 +11,56 @@ import ActionCard from "../components/action_card";
 import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
+import {
+  apiCategories,
+  // apiDecks,
+  apiPFESessions,
+} from "../helpers/axios_helper";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
+
+// helper function to format date
+const formatDate = (dateString) => {
+  const [year, month, day] = dateString.split("-");
+  return `${month}/${day}/${year}`;
+};
 
 const Dashboard = () => {
   // State to track loading
   const [categoryCards, setCategoryCards] = useState([]);
   const [categoryAmt, setCategoryAmt] = useState(0);
-
+  // const [categoryTitle, setCategoryTitle] = useState("");
+  // States for pfe Info
   const [pfeCards, setPFECards] = useState([]);
   const [pfeAmt, setPfeAmt] = useState(0);
-
+  // const [deckTitle, setDeckTitle] = useState("");
+  // Used to navigate pages
   const navigate = useNavigate();
 
+  // const getDeckTitle = (id) => {
+  //   apiDecks
+  //     .getDeck(id)
+  //     .then((response) => {
+  //       setDeckTitle(response.data.title);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching decks:", error);
+  //     });
+  // };
+  // const getCatTitle = (id) => {
+  //   apiCategories
+  //     .getCategory(id)
+  //     .then((response) => {
+  //       setCategoryTitle(response.data.title);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching decks:", error);
+  //     });
+  // };
+
   useEffect(() => {
+    document.title = "Dashboard";
     apiCategories
       .getAllCategories()
       .then((response) => {
@@ -48,10 +82,14 @@ const Dashboard = () => {
       });
   }, []);
 
-  const handleCardClick = (categoryId) => {
-    // Handle click event, for example, navigate to a category detail page
-    //console.log("Clicked category:", category);
+  // Handle click event, for example, navigate to a category detail page
+  const handleCardClickCategory = (categoryId) => {
     navigate(`/flashcards/category/${categoryId}`);
+  };
+
+  // Handle click event, for example, navigate to a category detail page
+  const handleCardClickDeck = (deckId) => {
+    navigate(`/flashcards/deck/${deckId}`);
   };
 
   return (
@@ -92,13 +130,17 @@ const Dashboard = () => {
                 >
                   <ActionCard
                     content={
-                      <Typography variant="h6" component="h2" align="center">
-                        {category.title}
-                        <br />
-                        {"Card Count: " + category.cardCount}
-                      </Typography>
+                      <>
+                        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                          {category.title}
+                        </Typography>
+
+                        <Typography variant="h6" sx={{ fontSize: 18 }}>
+                          {"Number of cards: " + category.cardCount}
+                        </Typography>
+                      </>
                     }
-                    onClick={() => handleCardClick(category.id)}
+                    onClick={() => handleCardClickCategory(category.id)}
                   />
                 </Grid>
               ))
@@ -123,7 +165,7 @@ const Dashboard = () => {
           {/* PFE / Review  */}
           <Stack
             direction={"row"}
-            mt={"56px"}
+            mt={{ xs: "50px", md: "150px" }}
             mb={"10px"}
             alignItems={"center"}
           >
@@ -145,26 +187,52 @@ const Dashboard = () => {
                 <Grid item key={pfe.id} xs={12} sm={12} md={4} lg={4} xl={4}>
                   <ActionCard
                     content={
-                      <Typography variant="h6" component="h2" align="center">
-                        {pfe.title}
-                        <br />
-                        {"Start Date: " + pfe.startDate}
-                        <br />
-                        {"End Date: " + pfe.endDate}
-                        <br />
-                        {pfe.categoryId != null
-                          ? "Category: " + pfe.categoryId
-                          : "Deck: " + pfe.deckId}  {/* this needs to return the title of the card, not the card id */}
-                      </Typography>
+                      <>
+                        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                          {" "}
+                          {pfe.title}
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontSize: 18 }}>
+                          {"Start Date: " + formatDate(pfe.startDate)}
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontSize: 18 }}>
+                          {"End Date: " + formatDate(pfe.endDate)}
+                        </Typography>
+
+                        {/* this was causing a lot renders to happen, take a look after everything else is done */}
+                        {/*   <Typography variant="h6" sx={{ fontSize: 18 }}> 
+                          {pfe.categoryId != null
+                            ? (() => {
+                                getCatTitle(pfe.categoryId);
+                                return (
+                                  "Category: " +
+                                  (categoryTitle ? categoryTitle : "Loading...")
+                                );
+                              })()
+                            : (() => {
+                                getDeckTitle(pfe.deckId);
+                                return (
+                                  "Deck: " +
+                                  (deckTitle ? deckTitle : "Loading...")
+                                );
+                              })()}
+                        </Typography> */}
+                      </>
                     }
-                    onClick={() => handleCardClick(pfe)}
+                    onClick={() =>
+                      pfe.categoryId != null
+                        ? handleCardClickCategory(pfe.categoryId)
+                        : handleCardClickDeck(pfe.deckId)
+                    }
                   />
                 </Grid>
               ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
-                  extra={{ title: "No Sessions Found. Click to Create." }}
+                  extra={{
+                    title: "No Sessions Found. Click the plus to create.",
+                  }}
                 />
               </Grid>
             )}
