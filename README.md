@@ -28,13 +28,13 @@ This section details how to set up and run the application locally. This require
 2. Run the npm install command (shorthand: npm i) to install the necessary dependencies.
 
 ```
-  npm install
+npm install
 ```
 
 3. Run npm start. This will start the application's front end. From here, the user can interact with the application.
 
 ```
-     npm start
+npm start
 ```
 
 ## Usage
