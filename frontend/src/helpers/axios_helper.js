@@ -116,6 +116,7 @@ export const apiPFESessions = {
 
 // Categories API
 export const apiCategories = {
+  getCategory: (id) => instance.get("/categories/" + id),
   getAllCategories: () => instance.get("/categories"),
   createCategory: (data) => instance.post("/categories/add", data),
   deleteCategory: (id) => instance.get("/categories/delete/" + id),
@@ -125,6 +126,7 @@ export const apiCategories = {
 
 // Decks API
 export const apiDecks = {
+  getDeck: (id) => instance.get("/decks/" + id),
   getAllDecks: () => instance.get("/decks"),
   createDeck: (data) => instance.post("/decks/add", data),
   deleteDeck: (id) => instance.get("/decks/delete/" + id),
@@ -139,5 +141,6 @@ export const apiFlashcards = {
   getFlashcard: (id) => instance.get("/flashcards/" + id),
   deleteFlashcard: (id) => instance.get("/flashcards/delete/" + id),
   getFlashcardsByDeck: (deckId) => instance.get("/flashcards/deck/" + deckId),
-  getFlashcardsByCategory: (categoryId) => instance.get("/flashcards/category/" + categoryId),
+  getFlashcardsByCategory: (categoryId) =>
+    instance.get("/flashcards/category/" + categoryId),
 };
