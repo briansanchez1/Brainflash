@@ -120,8 +120,8 @@ export const apiCategories = {
   getAllCategories: () => instance.get("/categories"),
   createCategory: (data) => instance.post("/categories/add", data),
   deleteCategory: (id) => instance.get("/categories/delete/" + id),
-  updateCategory: (id, title) =>
-    instance.put("/categories/update/" + id, { title: title }),
+  updateCategory: (id, category) =>
+    instance.put("/categories/update/" + id, { title: category.title }),
 };
 
 // Decks API
@@ -130,8 +130,8 @@ export const apiDecks = {
   getAllDecks: () => instance.get("/decks"),
   createDeck: (data) => instance.post("/decks/add", data),
   deleteDeck: (id) => instance.get("/decks/delete/" + id),
-  updateDeck: (id, title) =>
-    instance.put("/decks/update/" + id, { title: title }),
+  updateDeck: (id, deck) =>
+    instance.put("/decks/update/" + id, { title: deck.title }),
 };
 
 // Flashcards API
@@ -140,6 +140,13 @@ export const apiFlashcards = {
   createFlashcard: (data) => instance.post("/flashcards/add", data),
   getFlashcard: (id) => instance.get("/flashcards/" + id),
   deleteFlashcard: (id) => instance.get("/flashcards/delete/" + id),
+  updateFlashcard: (id, f) =>
+    instance.put("/flashcards/update/" + id, {
+      question: f.question,
+      answer: f.answer,
+      deckId: f.deckId,
+      categoryId: f.categoryId,
+    }),
   getFlashcardsByDeck: (deckId) => instance.get("/flashcards/deck/" + deckId),
   getFlashcardsByCategory: (categoryId) =>
     instance.get("/flashcards/category/" + categoryId),
