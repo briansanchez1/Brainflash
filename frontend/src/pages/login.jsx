@@ -9,11 +9,15 @@ import {
   Link,
   Grid,
   Box,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import logo from "../assets/logo.png";
 import { pink } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
+import AlertBox from "../components/alert_component";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const defaultTheme = createTheme({
   palette: {
@@ -24,8 +28,16 @@ const defaultTheme = createTheme({
 });
 
 const Login = () => {
-  // error message (if one exists)
-  const [message, setMessage] = useState("");
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  // error state
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  // extra states
+  const [showPassword, setShowPassword] = useState(false);
 
   // state to track loading
   const [isLoading, setIsLoading] = useState(true);
@@ -39,10 +51,33 @@ const Login = () => {
   // used to switch between pages
   const navigate = useNavigate();
 
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   // handles changes to the text in the text boxes
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validations
+    if (name === "email") {
+      setEmailError(!emailRegex.test(value));
+    }
+
+    if (name === "password") {
+      if (value.length < 6) {
+        setPasswordError(true);
+        setPasswordErrorMessage("Password must be at least 6 characters.");
+      } else if (name === "confirm_password" && value !== formData.password) {
+        setPasswordError(true);
+        setPasswordErrorMessage("Passwords do not match");
+      } else {
+        setPasswordError(false);
+      }
+    }
+
     setFormData({ ...formData, [name]: value });
+    setAlert(false);
   };
 
   /*
@@ -53,6 +88,30 @@ const Login = () => {
   */
   const handleSubmit = async (event) => {
     event.preventDefault();
+    //if password and confurm pass dont match, error alert and exit the call.
+    setAlert(false);
+
+    if (formData.email.length < 3) {
+      setEmailError(true);
+      setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
+    }
+    if (formData.password.length < 6) {
+      setPasswordError(true);
+      setPasswordErrorMessage("Enter a valid password.");
+      setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
+      return;
+    } else {
+      setPasswordError(false);
+    }
+
+    if (emailError || passwordError) {
+      setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
+      return;
+    }
+
     apiAuth
       .authenticate(formData.email, formData.password)
       .then(function (response) {
@@ -60,7 +119,8 @@ const Login = () => {
         navigate("/");
       })
       .catch(function (error) {
-        setMessage("Email or password is incorrect.");
+        setAlertMessage("Email or password is incorrect.");
+        setAlert(true);
       });
   };
 
@@ -76,10 +136,13 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div>
+    <>
       {isLoading ? null : (
-        <div>
+        <>
           <ThemeProvider theme={defaultTheme}>
+            {showAlert && (
+              <AlertBox severity={"error"} message={alertMessage} />
+            )}
             <Container
               component="main"
               sx={{
@@ -112,15 +175,17 @@ const Login = () => {
                   <TextField
                     margin="normal"
                     required
+                    fullWidth
                     value={formData.email}
                     onChange={handleChange}
-                    fullWidth
-                    autoFocus
                     id="email"
                     type="email"
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    color="primary"
+                    error={emailError}
+                    helperText={emailError ? emailErrorMessage : null}
                   />
 
                   <TextField
@@ -128,32 +193,31 @@ const Login = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    helperText={"6-20 characters."}
-                    inputProps={{ minLength: 6, maxLength: 20 }}
                     fullWidth
                     name="password"
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
+                    inputProps={{ minLength: 6, maxLength: 20 }}
+                    error={passwordError}
+                    helperText={
+                      passwordError ? passwordErrorMessage : "6-20 characters."
+                    }
                     autoComplete="current-password"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
-                  {message && (
-                    <Box
-                      sx={{
-                        textAlign: "center",
-                        fontWeight: 800,
-                        fontSize: {
-                          xs: "13px",
-                          sm: "13px",
-                          md: "14px",
-                          lg: "15px",
-                          xl: "15px",
-                        },
-                      }}
-                    >
-                      {message}
-                    </Box>
-                  )}
 
                   <Grid
                     container
@@ -230,9 +294,9 @@ const Login = () => {
               </Box>
             </Container>
           </ThemeProvider>
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 export default Login;
