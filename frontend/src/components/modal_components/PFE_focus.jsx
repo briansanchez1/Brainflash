@@ -131,15 +131,18 @@ export default function PFEView({ session, onSessionEdit }) {
     <Stack spacing={2} container xs={11} alignContent={"center"}>
       <TextField
         required
+        autoFocus
         fullWidth
         label="Session name"
         name="title"
+        helperText={"3-40 characters."}
+        inputProps={{ maxLength: 200 }}
         defaultValue={session && session.title}
         value={editedTitle}
         onChange={(event) => {
           handleSessionChange(event);
         }}
-        autoFocus
+       
       />
       <BasicDatePicker
         defaultValue={session && dayjs(new Date(session.startDate))}

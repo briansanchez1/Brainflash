@@ -54,29 +54,30 @@ export default function FlashcardModalView({ flashcard, onFlashcardEdit }) {
       <TextField
         required
         fullWidth
+        autoFocus
         label="Enter Question"
         name="question"
-        helperText="3-19 characters"
+        helperText="3-50 characters."
+        inputProps={{ minLength: 3, maxLength: 50 }}
         value={question}
         onChange={(event) => {
           setQuestion(event.target.value);
           handleFlashcardChange(event);
         }}
-        autoFocus
-        inputProps={{ maxLength: 19, minLength: 3 }}
       />
 
       <TextField
         required
         fullWidth
         label="Enter Answer"
+        name="answer"
+        helperText="<200 characters."
+        inputProps={{ maxLength: 200 }}
         value={answer}
         onChange={(event) => {
           setAnswer(event.target.value);
           handleFlashcardChange(event);
         }}
-        name="answer"
-        helperText="3-19 characters"
         sx={{ mt: 1 }}
       />
 

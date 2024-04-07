@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class PFESessionRequest {
 
     @NotBlank( message = "Title is required" )
-    @Size( min = 2, max = 25, message = "Title must be between {min} and {max} characters long." )
+    @Size( min = 2, max = 40, message = "Title must be between {min} and {max} characters long." )
     private String title ;
 
     @NotNull( message = "Ente a start date." )

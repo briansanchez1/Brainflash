@@ -80,154 +80,156 @@ const Login = () => {
       {isLoading ? null : (
         <div>
           <ThemeProvider theme={defaultTheme}>
-      <Container
-        component="main"
-        sx={{
-          background: "#fff",
-          borderRadius: 10,
-          width: { xs: 300, sm: 350, md: 450, lg: 550 },
-        }}
-      >
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar
-            alt="Brainflash"
-            src={logo}
-            variant="square"
-            sx={{ width: 128, height: 128, m: 2 }}
-          />
-
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              autoFocus
-              id="email"
-              type="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-            />
-
-            <TextField
-              margin="normal"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {message && (
+            <Container
+              component="main"
+              sx={{
+                background: "#fff",
+                borderRadius: 10,
+                width: { xs: 300, sm: 350, md: 450, lg: 550 },
+              }}
+            >
               <Box
                 sx={{
-                  textAlign: "center",
-                  fontWeight: 800,
-                  fontSize: {
-                    xs: "13px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "15px",
-                    xl: "15px",
-                  },
+                  marginTop: 8,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
-                {message}
+                <Avatar
+                  alt="Brainflash"
+                  src={logo}
+                  variant="square"
+                  sx={{ width: 128, height: 128, m: 2 }}
+                />
+
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{ mt: 1 }}
+                >
+                  <TextField
+                    margin="normal"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    fullWidth
+                    autoFocus
+                    id="email"
+                    type="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                  />
+
+                  <TextField
+                    margin="normal"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    helperText={"6-20 characters."}
+                    inputProps={{ minLength: 6, maxLength: 20 }}
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                  />
+                  {message && (
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                        fontWeight: 800,
+                        fontSize: {
+                          xs: "13px",
+                          sm: "13px",
+                          md: "14px",
+                          lg: "15px",
+                          xl: "15px",
+                        },
+                      }}
+                    >
+                      {message}
+                    </Box>
+                  )}
+
+                  <Grid
+                    container
+                    justifyContent={"space-between"}
+                    sx={{ padding: 2 }}
+                  >
+                    <Grid item>
+                      <Link
+                        href="/forgot-password"
+                        variant="body2"
+                        sx={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "#797979",
+                          fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+                          ":hover": {
+                            textDecoration: "underline",
+                            color: "black",
+                            transition: "0.1s",
+                          },
+                        }}
+                      >
+                        {"Forgot password?"}
+                      </Link>
+                    </Grid>
+
+                    <Grid item>
+                      <Link
+                        href="/register"
+                        variant="body2"
+                        sx={{
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          color: "#797979",
+                          fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
+
+                          ":hover": {
+                            textDecoration: "underline",
+                            color: "black",
+                            transition: "0.1s",
+                          },
+                        }}
+                      >
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
+                    <Button
+                      onClick={handleSubmit}
+                      type="submit"
+                      className="submit"
+                      variant="contained"
+                      sx={{
+                        m: "auto",
+                        mt: 2,
+                        bgcolor: "pink",
+                        color: "black",
+                        borderRadius: 5,
+                        fontFamily: "Trebuchet MS",
+                        fontSize: { xs: 17, lg: 18 },
+                        width: { xs: 200, sm: 275, md: 300, lg: 350 },
+                        height: { xs: 40, md: 50 },
+                        fontWeight: 700,
+                        ":hover": {
+                          bgcolor: "pink",
+                          color: "black",
+                          transition: "0s",
+                        },
+                      }}
+                    >
+                      Log in
+                    </Button>
+                  </Grid>
+                </Box>
               </Box>
-            )}
-
-            <Grid
-              container
-              justifyContent={"space-between"}
-              sx={{ padding: 2 }}
-            >
-              <Grid item>
-                <Link
-                  href="/forgot-password"
-                  variant="body2"
-                  sx={{
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    color: "#797979",
-                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
-                    ":hover": {
-                      textDecoration: "underline",
-                      color: "black",
-                      transition: "0.1s",
-                    },
-                  }}
-                >
-                  {"Forgot password?"}
-                </Link>
-              </Grid>
-
-              <Grid item>
-                <Link
-                  href="/register"
-                  variant="body2"
-                  sx={{
-                    cursor: "pointer",
-                    textDecoration: "none",
-                    color: "#797979",
-                    fontSize: { xs: 12, sm: 15, md: 17, lg: 18 },
-
-                    ":hover": {
-                      textDecoration: "underline",
-                      color: "black",
-                      transition: "0.1s",
-                    },
-                  }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-              <Button
-                onClick={handleSubmit}
-                type="submit"
-                className="submit"
-                variant="contained"
-                sx={{
-                  m: "auto",
-                  mt: 2,
-                  bgcolor: "pink",
-                  color: "black",
-                  borderRadius: 5,
-                  fontFamily: "Trebuchet MS",
-                  fontSize: { xs: 17, lg: 18 },
-                  width: { xs: 200, sm: 275, md: 300, lg: 350 },
-                  height: { xs: 40, md: 50 },
-                  fontWeight: 700,
-                  ":hover": {
-                    bgcolor: "pink",
-                    color: "black",
-                    transition: "0s",
-                  },
-                }}
-              >
-                Log in
-              </Button>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+            </Container>
+          </ThemeProvider>
         </div>
       )}
     </div>

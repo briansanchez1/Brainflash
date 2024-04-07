@@ -27,13 +27,13 @@ export default function CategoryView({ category, onCategoryEdit }) {
         label="Title"
         name="title"
         autoFocus
+        inputProps={{ minLength: 3, maxLength: 25 }}
+        helperText={"3-25 characters."}
         value={title}
         onChange={(event) => {
           setTitle(event.target.value);
           handleCategoryChange(event);
         }}
-        inputProps={{ minLength: 3, maxLength: 25 }}
-        helperText={"3-25 characters."}
       />
     </Grid>
   );

@@ -27,13 +27,14 @@ export default function DeckView({ deck, onDeckEdit }) {
         label="Title"
         name="title"
         autoFocus
+        inputProps={{ minLength: 3, maxLength: 25 }}
+        helperText={"3-25 characters."}
         value={title}
         onChange={(event) => {
           setTitle(event.target.value);
           handleDeckChange(event);
         }}
-        inputProps={{ minLength: 3, maxLength: 25 }}
-        helperText={"3-25 characters."}
+       
       />
     </Grid>
   );
