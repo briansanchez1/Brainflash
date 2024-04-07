@@ -14,6 +14,7 @@ import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
+import AlertBox from "../components/alert_component";
 
 const defaultTheme = createTheme({
   palette: {
@@ -24,13 +25,15 @@ const defaultTheme = createTheme({
 });
 
 const Register = () => {
-  // error message (if one exists)
-  const [message, setMessage] = useState("");
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   // information that the user enters
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    confirm_password: "",
   });
 
   // state to track loading
@@ -43,6 +46,7 @@ const Register = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    setAlert(false);
   };
 
   /*
@@ -53,7 +57,13 @@ const Register = () => {
   */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setMessage("");
+    //if password and confurm pass dont match, error alert and exit the call.
+    if (formData.password !== formData.confirm_password) {
+      setAlertMessage("Passwords do not match.");
+      setAlert(true);
+      return;
+    }
+
     apiAuth
       .register(formData.name, formData.email, formData.password)
       .then(function (response) {
@@ -63,7 +73,8 @@ const Register = () => {
       .catch(function (error) {
         setAuthHeader("");
         console.log(error);
-        setMessage(error.response.data.message);
+        setAlertMessage(error.response.data.message);
+        setAlert(true);
       });
   };
 
@@ -79,9 +90,9 @@ const Register = () => {
   }, [navigate]);
 
   return (
-    <div>
+    <>
       {isLoading ? null : (
-        <div>
+        <>
           <ThemeProvider theme={defaultTheme}>
             <Container
               component="main"
@@ -92,6 +103,9 @@ const Register = () => {
                 width: { xs: 300, sm: 350, md: 450, lg: 550 },
               }}
             >
+              {showAlert && (
+                <AlertBox severity={"error"} message={alertMessage} />
+              )}
               <Box
                 sx={{
                   marginTop: 8,
@@ -151,28 +165,26 @@ const Register = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    inputProps={{ minLength: 6, maxLength: 20}}
+                    inputProps={{ minLength: 6, maxLength: 20 }}
                     helperText={"6-20 characters."}
                     autoComplete="current-password"
                   />
-                  {/* if there is a message, render it  */}
-                  {message && (
-                    <Box
-                      sx={{
-                        textAlign: "center",
-                        fontWeight: 800,
-                        fontSize: {
-                          xs: "13px",
-                          sm: "13px",
-                          md: "14px",
-                          lg: "15px",
-                          xl: "15px",
-                        },
-                      }}
-                    >
-                      {message}
-                    </Box>
-                  )}
+                  {/* password text field */}
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={formData.confirm_password}
+                    onChange={handleChange}
+                    name="confirm_password"
+                    label="Confirm password"
+                    type="password"
+                    id="confirm_password"
+                    inputProps={{ minLength: 6, maxLength: 20 }}
+                    helperText={"6-20 characters."}
+                    autoComplete="current-password"
+                  />
+
                   {/* Already have account link */}
                   <Grid container sx={{ padding: 2 }}>
                     <Grid item>
@@ -226,9 +238,9 @@ const Register = () => {
               </Box>
             </Container>
           </ThemeProvider>
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 export default Register;
