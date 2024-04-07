@@ -2,7 +2,7 @@ import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
-export default function SnackBar({ message, severiry }) {
+export default function SnackBar({ message, severity }) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (event, reason) => {
@@ -18,15 +18,13 @@ export default function SnackBar({ message, severiry }) {
       open={open}
       autoHideDuration={3000}
       onClose={handleClose}
-      
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
     >
       <Alert
         onClose={handleClose}
-        severity={severiry}
+        severity={severity}
         variant="filled"
-        
-        sx={{ width: "100%", fontSize: "18px"}} 
+        sx={{ width: "100%", fontSize: "18px" }}
       >
         {message}
       </Alert>
