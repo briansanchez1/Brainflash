@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Add } from "@mui/icons-material";
 import { Grid, ToggleButtonGroup, ToggleButton, Stack } from "@mui/material";
-import FlashcardView from "../components/modal_components/flashcard_focus";
+import FlashcardModalView from "../components/modal_components/flashcard_focus";
 import DeckView from "../components/modal_components/deck_focus";
 import CategoryView from "../components/modal_components/category_focus";
 import PFEView from "../components/modal_components/PFE_focus";
+import { BrainflashContext } from "./context/brainflash_context";
+import {
+  apiFlashcards,
+  apiPFESessions,
+  apiCategories,
+  apiDecks,
+} from "../helpers/axios_helper";
 
 const style = {
   position: "absolute",
@@ -32,10 +39,54 @@ const btnStyle = {
 export default function ModalComponent({ focus }) {
   const [active, setActive] = useState(focus);
   const [open, setOpen] = useState(false);
-  const [session, setSession] = useState(null);
+  const [currentItem, setCurrentItem] = useState(null);
+  const { addFlashcard, addSession, addCategory, addDeck } =
+    useContext(BrainflashContext);
+
+  const createFlashcard = (flashcard) => {
+    apiFlashcards
+      .createFlashcard(flashcard)
+      .then((response) => {
+        flashcard.id = response.data.id;
+        addFlashcard(flashcard);
+        setCurrentItem(null);
+      })
+      .catch((error) => {});
+  };
+
+  const createSession = (session) => {
+    apiPFESessions
+      .createSession(session)
+      .then((response) => {
+        addSession(response.data);
+        setCurrentItem(null);
+      })
+      .catch((error) => {});
+  };
+
+  const createCategory = (category) => {
+    apiCategories
+      .createCategory(category)
+      .then((response) => {
+        addCategory(response.data);
+        setCurrentItem(null);
+      })
+      .catch((error) => {});
+  };
+
+  const createDeck = (deck) => {
+    apiDecks
+      .createDeck(deck)
+      .then((response) => {
+        addDeck(response.data);
+        setCurrentItem(null);
+      })
+      .catch((error) => {});
+  };
 
   const handleChange = (event, newActive) => {
     if (newActive !== null) {
+      setCurrentItem(null);
       setActive(newActive);
     }
   };
@@ -50,7 +101,22 @@ export default function ModalComponent({ focus }) {
   };
 
   const handleSubmit = () => {
-    console.log(session);
+    switch (active) {
+      case "flashcard":
+        createFlashcard(currentItem);
+        break;
+      case "deck":
+        createDeck(currentItem);
+        break;
+      case "category":
+        createCategory(currentItem);
+        break;
+      case "review":
+        createSession(currentItem);
+        break;
+      default:
+    }
+
     setOpen(false);
   };
 
@@ -116,11 +182,23 @@ export default function ModalComponent({ focus }) {
               {children}
             </ToggleButtonGroup>
             <Grid container spacing={2}>
-              {active === "flashcard" && <FlashcardView />}
-              {active === "deck" && <DeckView />}
-              {active === "category" && <CategoryView />}
+              {active === "flashcard" && (
+                <FlashcardModalView
+                  flashcard={currentItem}
+                  onFlashcardEdit={setCurrentItem}
+                />
+              )}
+              {active === "deck" && (
+                <DeckView deck={currentItem} onDeckEdit={setCurrentItem} />
+              )}
+              {active === "category" && (
+                <CategoryView
+                  category={currentItem}
+                  onCategoryEdit={setCurrentItem}
+                />
+              )}
               {active === "review" && (
-                <PFEView onSessionEdit={(s) => setSession(s)} />
+                <PFEView session={currentItem} onSessionEdit={setCurrentItem} />
               )}
             </Grid>
 

@@ -1,88 +1,129 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Typography, Container, TextField, Box } from "@mui/material";
-import FlashcardCard from "../components/flashcard_card";
+import React, { useState, useEffect, useContext } from "react";
 import { apiFlashcards } from "../helpers/axios_helper";
+import FlashcardModalView from "../components/modal_components/flashcard_focus";
+import GridView from "../components/grid_view";
+import AlertBox from "../components/alert_component";
+import { BrainflashContext } from "../components/context/brainflash_context";
+import Typography from "@mui/material/Typography";
+import ActionCard, { CardAction } from "../components/action_card";
 
-const flashcardsData = [
-    { id: 1, question: "What is the capital of France?", answer: "Paris", category_id: 1 },
-]
+const Flashcards = () => {
+  //Alert State
+  const [showAlert, setAlert] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const { flashcards, setFlashcards, removeFlashcard, updateFlashcard } =
+    useContext(BrainflashContext);
 
-const FlashcardsGrid = () => {
-    const [flashcards, setFlashcards] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    // Fetch all flashcards when the component mounts
+    apiFlashcards
+      .getAllFlashcards()
+      .then((response) => {
+        setFlashcards(
+          response.data.map((f) => {
+            return f;
+          })
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching flashcards:", error);
+      });
+  }, []);
 
-    useEffect(() => {
-        // Fetch all flashcards when the component mounts
-        apiFlashcards
-            .getAllFlashcards()
-            .then((response) => {
-                setFlashcards(response.data); // Set the flashcards in state
-            })
-            .catch((error) => {
-                console.error("Error fetching flashcards:", error);
-            });
-    }, []);
+  const handleClick = (flashcard) => {
+    // Handle click event, for example, navigate to a flashcard detail page
+    console.log("Clicked flashcard:", flashcard);
+  };
 
-    // Handles search change
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
+  const editModal = (f, handle) => {
+    return <FlashcardModalView flashcard={f} onFlashcardEdit={handle} />;
+  };
 
-    // Updates filtered flashcards
-    const filteredFlashcards = flashcards.filter((flashcard) =>
-        flashcard.question.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const confirmEditAction = (f, callback) => {
+    setAlert(false);
+    apiFlashcards
+      .updateFlashcard(f.id, f)
+      .then((response) => {
+        updateFlashcard(f);
+        setAlert(true);
+        setAlertMessage(response.data.message);
+        setAlertSeverity("success");
+        callback(f);
+      })
+      .catch((error) => {
+        setAlertMessage(error);
+        setAlertSeverity("error");
+      });
+  };
 
-    return (
-        <Container>
-            <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
-                Flashcards
+  const confirmDeleteAction = (deletedFlash, callback) => {
+    setAlert(false);
+    apiFlashcards
+      .deleteFlashcard(deletedFlash.id)
+      .then((response) => {
+        removeFlashcard(deletedFlash.id);
+        setAlert(true);
+        setAlertMessage(response.data.message);
+        setAlertSeverity("success");
+        callback(deletedFlash);
+      })
+      .catch((error) => {
+        setAlertMessage(error);
+        setAlertSeverity("error");
+      });
+  };
+
+  return (
+    <>
+      {showAlert && (
+        <AlertBox severity={alertSeverity} message={alertMessage} />
+      )}
+      <GridView
+        title="Flashcards"
+        items={flashcards}
+        itemName="flashcard"
+        onItemClick={(item) => handleClick(item)}
+        onItemDelete={(f, callback) => confirmDeleteAction(f, callback)}
+        onItemEdit={(f, callback) => confirmEditAction(f, callback)}
+        editModalContent={(f, handle) => editModal(f, handle)}
+        cardContent={(flashcard) => {
+          return (
+            <Typography variant="h6" component="h2" align="center">
+              {flashcard.question}
             </Typography>
-            <Box
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                }}
-            >
-                <TextField
-                    label="Search"
-                    variant="outlined"
-                    sx={{
-                        mb: 4,
-                        width: {
-                            xs: "100%",
-                            sm: "100%",
-                            md: "100%",
-                            lg: "100%",
-                            xl: "25%",
-                        },
-                    }}
-                    onChange={handleSearchChange}
-                />
-            </Box>
-            <Grid container spacing={2} sx={{ pb: 4 }}>
-                {filteredFlashcards.length > 0 ? (
-                    filteredFlashcards.map((flashcard) => (
-                        <Grid item key={flashcard.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-                            <FlashcardCard flashcard={flashcard} />
-                        </Grid>
-                    ))
-                ) : (
-                    <Typography
-                        sx={{
-                            width: {
-                                xs: "100%",
-                            },
-                        }}
-                        variant="h8"
-                    >
-                        No flashcards found.
-                    </Typography>
-                )}
-            </Grid>
-        </Container>
-    );
+          );
+        }}
+        customItem={(flashcard, handleEditModalOpen, handleDeleteModalOpen) => {
+          return (
+            <ActionCard
+              content={
+                <Typography variant="h6" component="h2" align="center">
+                  {flashcard.question}
+                </Typography>
+              }
+              onClick={() => handleClick(flashcard)}
+              actions={[
+                <CardAction
+                  key="edit"
+                  label="Edit"
+                  onClick={() => handleEditModalOpen(flashcard)}
+                />,
+                <CardAction
+                  key="delete"
+                  label="Delete"
+                  onClick={() => handleDeleteModalOpen(flashcard)}
+                />,
+              ]}
+            />
+          );
+        }}
+        onSearchFilter={(flashcard, searchTerm) =>
+          flashcard.question.toLowerCase().includes(searchTerm.toLowerCase())
+        }
+      ></GridView>
+    </>
+  );
 };
 
-export default FlashcardsGrid;
+export default Flashcards;

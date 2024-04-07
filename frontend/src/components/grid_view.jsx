@@ -1,58 +1,121 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
-import ActionCard, { CardAction } from "../components/action_card";
+import { Typography, Container, Button } from "@mui/material";
+import ActionModal from "../components/action_modal";
+import CardGrid from "../components/card_grid";
+import { SearchField } from "../components/text_fields";
 
-const CardGridView = ({
-  itemName,
+const GridView = ({
+  title,
   items,
+  itemName,
+  onItemClick,
+  onItemDelete,
+  onItemEdit,
+  editModalContent,
   cardContent,
-  onCardClick,
-  onCardEdit,
-  onCardDelete,
+  onSearchFilter,
+  customItem,
 }) => {
-  const [gridItems, setGridItems] = useState(items);
+  const [gridItems, setGridItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  // Modal states
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [handleAction, setHandleAction] = useState(null);
 
   useEffect(() => {
     setGridItems(items);
   }, [items]);
+  // Updates filtered items
+  const filteredItems = gridItems.filter((item) =>
+    onSearchFilter(item, searchTerm)
+  );
+
+  const handleEditModalOpen = (item) => {
+    setModalTitle(`Edit ${itemName}`);
+    setModalContent(
+      editModalContent(item, (i) => {
+        setHandleAction(
+          () => () =>
+            onItemEdit(i, (updatedItem) => editActionCallback(updatedItem))
+        );
+      })
+    );
+
+    setModalOpen(true);
+  };
+
+  const handleDeleteModalOpen = (item) => {
+    setModalTitle(`Edit ${itemName}`);
+    setModalTitle("Delete items");
+    setModalContent(`Are you sure you want to delete this ${itemName}?`);
+    setHandleAction(
+      () => () =>
+        onItemDelete(item, (deletedItem) => deleteActionCallback(deletedItem))
+    );
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const deleteActionCallback = (deletedItem) => {
+    setGridItems(gridItems.filter((i) => i.id !== deletedItem.id));
+    handleCloseModal();
+  };
+
+  const editActionCallback = (updatedItem) => {
+    const updatedItems = gridItems.map((item) => {
+      if (item.id === updatedItem.id) {
+        item = updatedItem;
+      }
+      return item;
+    });
+    setGridItems(updatedItems);
+    handleCloseModal();
+  };
 
   return (
-    <Grid container spacing={2} sx={{ pb: 4 }}>
-      {gridItems.length > 0 ? (
-        gridItems.map((item) => (
-          <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={3}>
-            <ActionCard
-              content={cardContent(item)}
-              onClick={() => onCardClick(item)}
-              actions={[
-                <CardAction
-                  key="edit"
-                  label="Edit"
-                  onClick={() => onCardEdit(item)}
-                />,
-                <CardAction
-                  key="delete"
-                  label="Delete"
-                  onClick={() => onCardDelete(item)}
-                />,
-              ]}
-            />
-          </Grid>
-        ))
-      ) : (
-        <Typography
-          sx={{
-            width: {
-              xs: "100%",
-            },
-          }}
-          variant="h8"
-        >
-          No {itemName.toLowerCase()} found.
-        </Typography>
-      )}
-    </Grid>
+    <Container>
+      <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
+        {title}
+      </Typography>
+      <SearchField onSearch={(event) => setSearchTerm(event.target.value)} />
+      <CardGrid
+        itemName={"items"}
+        items={filteredItems}
+        cardContent={(curr_item) => cardContent(curr_item)}
+        onCardClick={(item) => onItemClick(item)}
+        onCardEdit={(item) => handleEditModalOpen(item)}
+        onCardDelete={(item) => handleDeleteModalOpen(item)}
+        customItem={
+          customItem
+            ? (i) => {
+                return customItem(
+                  i,
+                  handleEditModalOpen,
+                  handleDeleteModalOpen
+                );
+              }
+            : null
+        }
+      ></CardGrid>
+      <ActionModal
+        isOpen={isModalOpen}
+        handleClose={handleCloseModal}
+        title={modalTitle}
+        content={modalContent}
+        buttons={
+          <>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleAction}>Confirm</Button>
+          </>
+        }
+      />
+    </Container>
   );
 };
 
-export default CardGridView;
+export default GridView;

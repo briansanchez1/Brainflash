@@ -51,8 +51,6 @@ export default function PFEView({ session, onSessionEdit }) {
       deckData.map((d) => {
         if (session.deckId === d.id) {
           setSelectedOption(d);
-          setActive("Deck");
-          setSelections(deckData);
         }
         return d;
       });
@@ -69,6 +67,9 @@ export default function PFEView({ session, onSessionEdit }) {
         }
         return c;
       });
+    } else {
+      setActive("Category");
+      setSelections(categoriesData);
     }
   };
 
@@ -109,8 +110,6 @@ export default function PFEView({ session, onSessionEdit }) {
 
     if (session) {
       setEditedSession({ ...session });
-      //setStartDate(dayjs(new Date(session.startDate)));
-      //setEndDate(dayjs(new Date(session.endDate)));
     }
   }, []);
 
@@ -121,11 +120,11 @@ export default function PFEView({ session, onSessionEdit }) {
   };
 
   const children = [
-    <ToggleButton value="Deck" key="Deck" color="primary">
-      Deck
-    </ToggleButton>,
     <ToggleButton value="Category" key="Category" color="primary">
       Category
+    </ToggleButton>,
+    <ToggleButton value="Deck" key="Deck" color="primary">
+      Deck
     </ToggleButton>,
   ];
   return (
