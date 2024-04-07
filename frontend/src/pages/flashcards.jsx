@@ -6,6 +6,8 @@ import AlertBox from "../components/alert_component";
 import { BrainflashContext } from "../components/context/brainflash_context";
 import Typography from "@mui/material/Typography";
 import ActionCard, { CardAction } from "../components/action_card";
+import CardFlip from "react-card-flip";
+import Box from "@mui/material/Box";
 
 const Flashcards = () => {
   //Alert State
@@ -14,6 +16,7 @@ const Flashcards = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const { flashcards, setFlashcards, removeFlashcard, updateFlashcard } =
     useContext(BrainflashContext);
+  const [flippedCardId, setFlippedCardId] = useState(null);
 
   useEffect(() => {
     // Fetch all flashcards when the component mounts
@@ -34,6 +37,7 @@ const Flashcards = () => {
   const handleClick = (flashcard) => {
     // Handle click event, for example, navigate to a flashcard detail page
     console.log("Clicked flashcard:", flashcard);
+    setFlippedCardId(flashcard.id === flippedCardId ? null : flashcard.id);
   };
 
   const editModal = (f, handle) => {
@@ -96,26 +100,73 @@ const Flashcards = () => {
         }}
         customItem={(flashcard, handleEditModalOpen, handleDeleteModalOpen) => {
           return (
-            <ActionCard
-              content={
-                <Typography variant="h6" component="h2" align="center">
-                  {flashcard.question}
-                </Typography>
-              }
-              onClick={() => handleClick(flashcard)}
-              actions={[
-                <CardAction
-                  key="edit"
-                  label="Edit"
-                  onClick={() => handleEditModalOpen(flashcard)}
-                />,
-                <CardAction
-                  key="delete"
-                  label="Delete"
-                  onClick={() => handleDeleteModalOpen(flashcard)}
-                />,
-              ]}
-            />
+            <CardFlip
+              isFlipped={flashcard.id === flippedCardId}
+              flipDirection="vertical"
+            >
+              <ActionCard
+                key={"front"}
+                content={
+                  <>
+                    <Typography
+                      variant="h6"
+                      align="center"
+                      sx={{ opacity: 0.35 }}
+                    >
+                      {"Question"}
+                    </Typography>
+
+                    <Typography variant="h6" align="center">
+                      {flashcard.question}
+                    </Typography>
+                  </>
+                }
+                onClick={() => handleClick(flashcard)}
+                actions={[
+                  <CardAction
+                    key="edit"
+                    label="Edit"
+                    onClick={() => handleEditModalOpen(flashcard)}
+                  />,
+                  <CardAction
+                    key="delete"
+                    label="Delete"
+                    onClick={() => handleDeleteModalOpen(flashcard)}
+                  />,
+                ]}
+              />
+              <ActionCard
+                key={"back"}
+                content={
+                  <>
+                    <Typography
+                      variant="h6"
+                      align="center"
+                      sx={{ opacity: 0.35 }}
+                    >
+                      {"Answer"}
+                    </Typography>
+
+                    <Typography variant="h6" align="center">
+                      {flashcard.answer}
+                    </Typography>
+                  </>
+                }
+                onClick={() => handleClick(flashcard)}
+                actions={[
+                  <CardAction
+                    key="edit"
+                    label="Edit"
+                    onClick={() => handleEditModalOpen(flashcard)}
+                  />,
+                  <CardAction
+                    key="delete"
+                    label="Delete"
+                    onClick={() => handleDeleteModalOpen(flashcard)}
+                  />,
+                ]}
+              />
+            </CardFlip>
           );
         }}
         onSearchFilter={(flashcard, searchTerm) =>
