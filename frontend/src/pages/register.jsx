@@ -9,12 +9,15 @@ import {
   Link,
   Grid,
   Box,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
 import AlertBox from "../components/alert_component";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const defaultTheme = createTheme({
   palette: {
@@ -28,6 +31,13 @@ const Register = () => {
   //Alert State
   const [showAlert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  // error state
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  // extra states
+  const [showPassword, setShowPassword] = useState(false);
+
   // information that the user enters
   const [formData, setFormData] = useState({
     name: "",
@@ -42,9 +52,30 @@ const Register = () => {
   // used to switch between pages
   const navigate = useNavigate();
 
-  // handles changes to the text in the text boxes
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validations
+    if (name === "email") {
+      setEmailError(!emailRegex.test(value));
+    }
+
+    if (name === "password" || name === "confirm_password") {
+      if (value.length < 6) {
+        setPasswordError(true);
+        setPasswordErrorMessage("Password must be at least 6 characters.");
+      } else if (name === "confirm_password" && value !== formData.password) {
+        setPasswordError(true);
+        setPasswordErrorMessage("Passwords do not match");
+      } else {
+        setPasswordError(false);
+      }
+    }
+
     setFormData({ ...formData, [name]: value });
     setAlert(false);
   };
@@ -58,9 +89,31 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     //if password and confurm pass dont match, error alert and exit the call.
-    if (formData.password !== formData.confirm_password) {
-      setAlertMessage("Passwords do not match.");
+    setAlert(false);
+
+    if (formData.email.length < 3) {
+      setEmailError(true);
       setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
+    }
+    if (formData.password.length < 6) {
+      setPasswordError(true);
+      setPasswordErrorMessage("Enter a valid password.");
+      setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
+      return;
+    }
+    if (formData.password !== formData.confirm_password) {
+      setPasswordError(true);
+      setPasswordErrorMessage("Passwords do not match");
+      return;
+    } else {
+      setPasswordError(false);
+    }
+
+    if (emailError || passwordError) {
+      setAlert(true);
+      setAlertMessage("Please fill out the form correctly.");
       return;
     }
 
@@ -96,7 +149,6 @@ const Register = () => {
           <ThemeProvider theme={defaultTheme}>
             <Container
               component="main"
-              maxWidth="xs"
               sx={{
                 background: "#fff",
                 borderRadius: 10,
@@ -153,6 +205,8 @@ const Register = () => {
                     name="email"
                     autoComplete="email"
                     color="primary"
+                    error={emailError}
+                    helperText={emailError ? "Enter a valid email" : null}
                   />
                   {/* password text field */}
                   <TextField
@@ -163,11 +217,27 @@ const Register = () => {
                     onChange={handleChange}
                     name="password"
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     inputProps={{ minLength: 6, maxLength: 20 }}
-                    helperText={"6-20 characters."}
+                    error={passwordError}
+                    helperText={
+                      passwordError ? passwordErrorMessage : "6-20 characters."
+                    }
                     autoComplete="current-password"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                   {/* password text field */}
                   <TextField
@@ -178,11 +248,27 @@ const Register = () => {
                     onChange={handleChange}
                     name="confirm_password"
                     label="Confirm password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="confirm_password"
                     inputProps={{ minLength: 6, maxLength: 20 }}
-                    helperText={"6-20 characters."}
+                    error={passwordError}
+                    helperText={
+                      passwordError ? passwordErrorMessage : "6-20 characters."
+                    }
                     autoComplete="current-password"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
                   {/* Already have account link */}
