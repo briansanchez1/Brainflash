@@ -10,6 +10,7 @@ import PFE from "./pages/pfe";
 import Flashcards from "./pages/flashcards";
 import Flashcard from "./pages/flashcard";
 import FlashcardsByCategory from "./pages/flashcards_by_category";
+import FlashcardsByDeck from "./pages/flashcards_by_deck";
 import PageNotFound from "./pages/page_not_found";
 import MainLayout from "./layouts/main_layout";
 import PrivateRoutes from "./components/private_routes";
@@ -22,6 +23,17 @@ function FlashcardsInCategoryPage() {
       <FlashcardsByCategory categoryId={categoryId} />
     </MainLayout>
   );
+}
+
+function FlashcardsInDeckPage() {
+  let { deckId } = useParams();
+
+  return (
+    <MainLayout>
+      <FlashcardsByDeck deckId={deckId} />
+    </MainLayout>
+  );
+
 }
 
 function App() {
@@ -76,6 +88,10 @@ function App() {
             />
             <Route path="/flashcards/category">
               <Route path=":categoryId" element={<FlashcardsInCategoryPage />} />
+            </Route>
+
+            <Route path="/flashcards/deck">
+              <Route path=":deckId" element={<FlashcardsInDeckPage />} />
             </Route>
             
           </Route>

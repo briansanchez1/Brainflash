@@ -6,6 +6,7 @@ import DeckView from "../components/modal_components/deck_focus";
 import CardGridView from "../components/grid_view";
 import { SearchField } from "../components/text_fields";
 import AlertBox from "../components/alert_component";
+import { useNavigate } from "react-router-dom";
 
 const DecksGrid = () => {
   const [decks, setDecks] = useState([]);
@@ -19,6 +20,8 @@ const DecksGrid = () => {
   const [showAlert, setAlert] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all decks when the component mounts
@@ -104,7 +107,8 @@ const DecksGrid = () => {
 
   const handleClick = (deck) => {
     // Handle click event, for example, navigate to a deck detail page
-    console.log("Clicked deck:", deck);
+    //console.log("Clicked deck:", deck);
+    navigate(`/flashcards/deck/${deck.id}`);
   };
 
   return (

@@ -6,6 +6,7 @@ import CategoryView from "../components/modal_components/category_focus";
 import CardGridView from "../components/grid_view";
 import { SearchField } from "../components/text_fields";
 import AlertBox from "../components/alert_component";
+import { useNavigate } from "react-router-dom";
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
@@ -19,6 +20,8 @@ const CategoriesGrid = () => {
   const [showAlert, setAlert] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all categories when the component mounts
@@ -105,7 +108,8 @@ const CategoriesGrid = () => {
 
   const handleClick = (category) => {
     // Handle click event, for example, navigate to a category detail page
-    console.log("Clicked category:", category);
+    //console.log("Clicked category:", category);
+    navigate(`/flashcards/category/${category.id}`);
   };
 
   return (
