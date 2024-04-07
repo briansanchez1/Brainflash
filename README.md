@@ -1,5 +1,4 @@
-
-![Logo](https://i.ibb.co/sF3Wjg3/bf.jpg)
+<img src="https://i.ibb.co/sF3Wjg3/bf.jpg" width="100%" height="350" />
 
 ## What is Brainflash?
 
