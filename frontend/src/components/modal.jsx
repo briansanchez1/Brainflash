@@ -29,6 +29,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const btnStyle = {
   color: "black",
   fontWeight: "600",
@@ -152,14 +153,13 @@ export default function ModalComponent({ focus }) {
         onClick={handleOpen}
         sx={{
           textDecoration: "none",
-          color: "#000",
-          bgcolor: "#BDBDBD",
-
-          borderRadius: "20px",
-          transition: "0.2s",
+          color: "#fff",
+          bgcolor: "#747474",
+          borderRadius: "10px",
           ":hover": {
-            bgcolor: "#656565",
+            bgcolor: "#171717",
             color: "#fff",
+            border: "none",
           },
         }}
       >

@@ -79,7 +79,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ backgroundColor: "#3D3B40" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -259,7 +259,19 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu}>
-              <Avatar alt="User" src=" " sx={{ color: "#000" }} />
+              <Avatar
+                alt="User"
+                src=" "
+                sx={{
+                  backgroundColor: "#747474",
+                  color: "#fff",
+                  ":hover": {
+                    bgcolor: "#171717",
+                    color: "#fff",
+                    border: "none",
+                  },
+                }}
+              />
             </IconButton>
 
             <Menu
