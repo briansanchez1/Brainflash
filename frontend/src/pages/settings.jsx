@@ -14,8 +14,22 @@ const Settings = () => {
   const [handleAction, setHandleAction] = useState(null);
   const [changePasswordRequest, setChangePasswordReset] = useState({});
   const [changeEmailRequest, setChangeEmailRequest] = useState({});
+  const [emailError, setEmailError] = useState(false);
+  const [newEmailError, setNewEmailError] = useState(false);
+  const [confirmEmailError, setConfirmEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validation function for password
+  const validatePassword = (password) => {
+    return password < 6;
+  };
 
   const deleteAccount = () => {
     apiUsers
@@ -43,6 +57,65 @@ const Settings = () => {
   };
 
   const changeEmail = () => {
+    if (
+      !changeEmailRequest.currentEmail ||
+      changeEmailRequest.currentEmail.length < 3
+    ) {
+      console.log("123123123123");
+
+      setEmailError(true);
+    }
+    if (
+      !changeEmailRequest.newEmail ||
+      changeEmailRequest.newEmail.length < 3
+    ) {
+      console.log("12939213");
+
+      setNewEmailError(true);
+    }
+    if (
+      !changeEmailRequest.confirmationEmail ||
+      changeEmailRequest.confirmationEmail.length < 3
+    ) {
+      console.log("53333");
+
+      setConfirmEmailError(true);
+    }
+    if (
+      !changeEmailRequest.password ||
+      changeEmailRequest.password.length < 6
+    ) {
+      console.log("2325");
+
+      return;
+    }
+
+    if (!validateEmail(changeEmailRequest.currentEmail)) {
+      console.log("2");
+
+      setEmailError(true);
+    }
+    if (!validateEmail(changeEmailRequest.newEmail)) {
+      console.log("3");
+
+      setNewEmailError(true);
+    }
+    if (!validateEmail(changeEmailRequest.confirmationEmail)) {
+      console.log("5");
+
+      setNewEmailError(true);
+    }
+
+    if (changeEmailRequest.newEmail !== changeEmailRequest.confirmationEmail) {
+      console.log("emails do not match");
+      return;
+    }
+
+    if (emailError || newEmailError || confirmEmailError || passwordError) {
+      console.log(emailError, newEmailError, confirmEmailError, passwordError);
+      return;
+    }
+
     apiUsers
       .changeEmail(changeEmailRequest)
       .then((response) => {
@@ -119,6 +192,7 @@ const Settings = () => {
           id="currentEmail"
           type="email"
           label="Enter Current email"
+          error={emailError}
           onChange={(event) => {
             changeEmailRequest[event.target.name] = event.target.value;
           }}
@@ -128,6 +202,7 @@ const Settings = () => {
           id="newEmail"
           type="email"
           label="Enter New Email"
+          error={newEmailError}
           onChange={(event) => {
             changeEmailRequest[event.target.name] = event.target.value;
           }}
@@ -137,6 +212,7 @@ const Settings = () => {
           id="confirmationEmail"
           type="email"
           label="Re-Enter New Email"
+          error={confirmEmailError}
           onChange={(event) => {
             changeEmailRequest[event.target.name] = event.target.value;
           }}
@@ -146,6 +222,7 @@ const Settings = () => {
           id="password"
           type="password"
           label="Enter Password"
+          error={passwordError}
           onChange={(event) => {
             changeEmailRequest[event.target.name] = event.target.value;
           }}
