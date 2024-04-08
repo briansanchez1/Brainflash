@@ -38,7 +38,7 @@ npm start
 
 ## Usage
 
-this will explain how to use it. 
+This application is intended to be used as a study tool. Create and organize flashcards and utilize the review session (PFE) feature to assist in preparation for upcoming exams!
 
 ## Contributing
 
