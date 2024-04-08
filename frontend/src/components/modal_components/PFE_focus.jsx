@@ -136,16 +136,15 @@ export default function PFEView({ session, onSessionEdit }) {
         label="Session name"
         name="title"
         helperText={"3-40 characters."}
-        inputProps={{ maxLength: 200 }}
+        inputProps={{ maxLength: 40 }}
         defaultValue={session && session.title}
         value={editedTitle}
         onChange={(event) => {
           handleSessionChange(event);
         }}
-       
       />
       <BasicDatePicker
-        defaultValue={session && dayjs(new Date(session.startDate))}
+        defaultValue={session && dayjs(new Date(session.startDate)).utc()}
         label="Start Date"
         name="startDate"
         onChange={(newValue) =>
@@ -158,7 +157,8 @@ export default function PFEView({ session, onSessionEdit }) {
         }
       ></BasicDatePicker>
       <BasicDatePicker
-        defaultValue={session && dayjs(new Date(session.endDate))}
+        dis
+        defaultValue={session && dayjs(new Date(session.endDate)).utc()}
         label="End Date"
         onChange={(newValue) =>
           handleSessionChange({
