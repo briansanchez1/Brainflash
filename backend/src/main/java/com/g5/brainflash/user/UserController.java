@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class UserController {
      * @param connectedUser The connected user
      * @return Response with result of changing password
      */
-    @PatchMapping("/change-password")
+    @PostMapping("/change-password")
     public ResponseEntity<?> PasswordChangeRequest(@Valid @RequestBody PasswordChangeRequest request, Principal connectedUser)
     {
         service.changePassword(request, connectedUser);

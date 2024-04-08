@@ -1,6 +1,7 @@
 package com.g5.brainflash.user;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,9 @@ public class PasswordChangeRequest {
     private String newPassword;
 
     @NotBlank(message="Re-enter new password")
+    @Size(
+        min = 6,
+        max = 20,
+        message = "Password must be between {min} and {max} characters long.")
     private String confirmationPassword; 
 }

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "DatePicker": "^2.0.0",
+    "dayjs": "^1.11.10"
+  }
+}
