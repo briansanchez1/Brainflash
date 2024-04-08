@@ -61,53 +61,47 @@ const Settings = () => {
       !changeEmailRequest.currentEmail ||
       changeEmailRequest.currentEmail.length < 3
     ) {
-      console.log("123123123123");
-
       setEmailError(true);
+      return;
     }
     if (
       !changeEmailRequest.newEmail ||
       changeEmailRequest.newEmail.length < 3
     ) {
-      console.log("12939213");
-
       setNewEmailError(true);
+      return;
     }
     if (
       !changeEmailRequest.confirmationEmail ||
       changeEmailRequest.confirmationEmail.length < 3
     ) {
-      console.log("53333");
-
       setConfirmEmailError(true);
+      return;
     }
     if (
       !changeEmailRequest.password ||
       changeEmailRequest.password.length < 6
     ) {
-      console.log("2325");
-
+      setPasswordError(true);
       return;
     }
 
     if (!validateEmail(changeEmailRequest.currentEmail)) {
-      console.log("2");
-
       setEmailError(true);
+      return;
     }
     if (!validateEmail(changeEmailRequest.newEmail)) {
-      console.log("3");
-
       setNewEmailError(true);
+      return;
     }
     if (!validateEmail(changeEmailRequest.confirmationEmail)) {
-      console.log("5");
-
-      setNewEmailError(true);
+      setConfirmEmailError(true);
+      return;
     }
 
     if (changeEmailRequest.newEmail !== changeEmailRequest.confirmationEmail) {
-      console.log("emails do not match");
+      setNewEmailError(true);
+      setConfirmEmailError(true);
       return;
     }
 
