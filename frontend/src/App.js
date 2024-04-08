@@ -18,6 +18,7 @@ import FlashcardsByDeck from "./pages/flashcards_by_deck";
 import PageNotFound from "./pages/page_not_found";
 import MainLayout from "./layouts/main_layout";
 import PrivateRoutes from "./components/private_routes";
+import ResetPassword from "./pages/reset_pass";
 import { BrainflashProvider } from "./components/context/brainflash_context";
 
 function FlashcardsInCategoryPage() {
@@ -48,6 +49,8 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
+            <Route path="/reset-password" element={<ResetPassword />}></Route>
+            <Route path="/forgot-password" element={<ForgotPass />}></Route>
             <Route element={<PrivateRoutes />}>
               <Route
                 path="/"
@@ -102,15 +105,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/forgot-password" element={<ForgotPass />}></Route>
-            <Route
-              path="*"
-              element={
-                <MainLayout>
-                  <PageNotFound />
-                </MainLayout>
-              }
-            />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
       </div>
