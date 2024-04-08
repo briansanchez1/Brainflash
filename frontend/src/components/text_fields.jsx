@@ -32,7 +32,7 @@ export function SearchField({ onSearch }) {
   );
 }
 
-export function BasicDatePicker({ label, defaultValue, onChange, name }) {
+export function BasicDatePicker({ label, defaultValue, onChange, name, minDate }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
@@ -40,6 +40,7 @@ export function BasicDatePicker({ label, defaultValue, onChange, name }) {
           label={label}
           name={name}
           disablePast={true}
+          minDate={minDate}
           onChange={(newValue) => onChange(newValue)}
           defaultValue={defaultValue}
           inputFormat="YYYY-MM-DD"

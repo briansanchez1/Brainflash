@@ -160,6 +160,7 @@ export default function PFEView({ session, onSessionEdit }) {
         dis
         defaultValue={session && dayjs(new Date(session.endDate)).utc()}
         label="End Date"
+        minDate={editedSession && dayjs(new Date(editedSession.startDate)).utc()}
         onChange={(newValue) =>
           handleSessionChange({
             target: {
