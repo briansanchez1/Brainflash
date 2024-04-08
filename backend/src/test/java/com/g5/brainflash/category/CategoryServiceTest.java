@@ -79,8 +79,8 @@ public class CategoryServiceTest {
         user.setId(1);
 
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1, "Category 1", 0, user));
-        categories.add(new Category(2, "Category 2", 0, user));
+        categories.add(new Category(1, "Category 1", 0, user, null));
+        categories.add(new Category(2, "Category 2", 0, user, null));
 
         // Mock the behavior of dependencies
         when(categoryRepository.findAllByUserId(user.getId())).thenReturn(categories);

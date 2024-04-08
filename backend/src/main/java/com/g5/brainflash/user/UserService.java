@@ -8,10 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.user.exceptions.PasswordMismatchException;
 
-
-
+/**
+ * User service class. Handles logic relating to users in the system
+ */
 @Service
 @RequiredArgsConstructor
 
@@ -20,6 +22,12 @@ public class UserService
     private final PasswordEncoder passwordEncoder; 
     private final UserRepository repository; 
 
+    /**
+     * Change the password of the user
+     * 
+     * @param request The password change request object
+     * @param connectedUser The connected user
+     */
     public void changePassword(PasswordChangeRequest request, Principal connectedUser)
     {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal(); 
@@ -41,5 +49,16 @@ public class UserService
 
         //save new password
         repository.save(user); 
+    }
+
+    /**
+     * Delete the user account by ID
+     */
+    public DeleteResponse deleteUserAccount(Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal(); 
+
+        repository.deleteById(user.getId());
+
+        return new DeleteResponse("User account deleted successfully");
     }
 }

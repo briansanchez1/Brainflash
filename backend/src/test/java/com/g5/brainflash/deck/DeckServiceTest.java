@@ -78,8 +78,8 @@ public class DeckServiceTest {
         user.setId(1);
 
         List<Deck> decks = new ArrayList<>();
-        decks.add(new Deck(1, "Deck 1", 0, user));
-        decks.add(new Deck(2, "Deck 2", 0, user));
+        decks.add(new Deck(1, "Deck 1", 0, user, null));
+        decks.add(new Deck(2, "Deck 2", 0, user, null));
 
         // Mock the behavior of dependencies
         when(deckRepository.findAllByUserId(user.getId())).thenReturn(decks);
