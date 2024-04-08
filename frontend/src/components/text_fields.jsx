@@ -39,6 +39,7 @@ export function BasicDatePicker({ label, defaultValue, onChange, name }) {
         <DatePicker
           label={label}
           name={name}
+          disablePast={true}
           onChange={(newValue) => onChange(newValue)}
           defaultValue={defaultValue}
           inputFormat="YYYY-MM-DD"
