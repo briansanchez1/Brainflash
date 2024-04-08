@@ -19,6 +19,7 @@ import PageNotFound from "./pages/page_not_found";
 import MainLayout from "./layouts/main_layout";
 import PrivateRoutes from "./components/private_routes";
 import { BrainflashProvider } from "./components/context/brainflash_context";
+import Settings from "./pages/settings";
 
 function FlashcardsInCategoryPage() {
   let { categoryId } = useParams();
@@ -90,6 +91,16 @@ function App() {
                   </MainLayout>
                 }
               />
+
+             <Route
+                path="/settings"
+                element={
+                  <MainLayout>
+                    <Settings/>
+                  </MainLayout>
+                } 
+              />
+              
               <Route path="/flashcards/category">
                 <Route
                   path=":categoryId"
