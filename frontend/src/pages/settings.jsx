@@ -13,6 +13,7 @@ const Settings = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [handleAction, setHandleAction] = useState(null);
   const [changePasswordRequest, setChangePasswordReset] = useState({});
+  const [changeEmailRequest, setChangeEmailRequest] = useState({});
 
   const navigate = useNavigate();
 
@@ -33,12 +34,23 @@ const Settings = () => {
     apiUsers
       .changePassword(changePasswordRequest)
       .then((response) => {
-        setAuthHeader(null); 
-        // Redirect to login page
+        setAuthHeader(null);
         navigate("/login");
       })
       .catch((error) => {
-        console.error("Error deleting account:", error);
+        console.error("Error changing password:", error);
+      });
+  };
+
+  const changeEmail = () => {
+    apiUsers
+      .changeEmail(changeEmailRequest)
+      .then((response) => {
+        setAuthHeader(null);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error editing email:", error);
       });
   };
 
@@ -49,7 +61,7 @@ const Settings = () => {
     setModalOpen(true);
   };
 
-  const handleCloseDeleteModal = () => {
+  const handleCloseModal = () => {
     setModalOpen(false);
   };
 
@@ -67,7 +79,6 @@ const Settings = () => {
           onChange={(event) => {
             changePasswordRequest[event.target.name] = event.target.value;
           }}
-          id="dialog-content"
           label="Enter Current Password"
           variant="outlined"
         ></TextField>
@@ -76,7 +87,6 @@ const Settings = () => {
           onChange={(event) => {
             changePasswordRequest[event.target.name] = event.target.value;
           }}
-          id="dialog-content"
           label="Enter New Password"
           variant="outlined"
         ></TextField>
@@ -85,7 +95,6 @@ const Settings = () => {
           onChange={(event) => {
             changePasswordRequest[event.target.name] = event.target.value;
           }}
-          id="dialog-content"
           label="Re-Enter New Password"
           variant="outlined"
         ></TextField>
@@ -95,6 +104,57 @@ const Settings = () => {
     setModalOpen(true);
   };
 
+  const handleChangeEmailModal = (item) => {
+    setModalTitle("Change Email");
+    setModalContent(
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={2}
+      >
+        <TextField
+          autoFocus
+          name="currentEmail"
+          id="currentEmail"
+          type="email"
+          label="Enter Current email"
+          onChange={(event) => {
+            changeEmailRequest[event.target.name] = event.target.value;
+          }}
+        ></TextField>
+        <TextField
+          name="newEmail"
+          id="newEmail"
+          type="email"
+          label="Enter New Email"
+          onChange={(event) => {
+            changeEmailRequest[event.target.name] = event.target.value;
+          }}
+        ></TextField>
+        <TextField
+          name="confirmationEmail"
+          id="confirmationEmail"
+          type="email"
+          label="Re-Enter New Email"
+          onChange={(event) => {
+            changeEmailRequest[event.target.name] = event.target.value;
+          }}
+        ></TextField>{" "}
+        <TextField
+          name="password"
+          id="password"
+          type="password"
+          label="Enter Password"
+          onChange={(event) => {
+            changeEmailRequest[event.target.name] = event.target.value;
+          }}
+        ></TextField>
+      </Stack>
+    );
+    setHandleAction(() => () => changeEmail());
+    setModalOpen(true);
+  };
   return (
     <Container>
       <Typography variant="h3" textAlign={"center"} paddingTop={"100px"}>
@@ -109,7 +169,9 @@ const Settings = () => {
           alignItems: "center",
         }}
       >
-        <Button variant="contained">Change Email</Button>
+        <Button variant="contained" onClick={handleChangeEmailModal}>
+          Change Email
+        </Button>
       </Box>
 
       <Box
@@ -144,12 +206,12 @@ const Settings = () => {
       </Box>
       <ActionModal
         isOpen={isModalOpen}
-        handleClose={handleCloseDeleteModal}
+        handleClose={handleCloseModal}
         title={modalTitle}
         content={modalContent}
         buttons={
           <>
-            <Button onClick={handleCloseDeleteModal}>Cancel</Button>
+            <Button onClick={handleCloseModal}>Cancel</Button>
             <Button onClick={handleAction}>Confirm</Button>
           </>
         }

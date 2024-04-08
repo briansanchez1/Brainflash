@@ -156,5 +156,6 @@ export const apiFlashcards = {
 export const apiUsers = {
   // Delete the user account using the endpoint created in UserController.java, then clear the authentication token and redirect to the login page
   deleteUser: () => instance.get("/users/delete-account", apiAuth.logout), 
-  changePassword: (data) => instance.post("users/change-password", data)
+  changePassword: (data) => instance.post("users/change-password", data),
+  changeEmail: (data) => instance.post("users/change-email", data)
 };

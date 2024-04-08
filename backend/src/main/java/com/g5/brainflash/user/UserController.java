@@ -3,7 +3,6 @@ package com.g5.brainflash.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +33,13 @@ public class UserController {
     public ResponseEntity<?> PasswordChangeRequest(@Valid @RequestBody PasswordChangeRequest request, Principal connectedUser)
     {
         service.changePassword(request, connectedUser);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PostMapping("/change-email")
+    public ResponseEntity<?> EmailChangeRequest(@Valid @RequestBody EmailChangeRequest request, Principal connectedUser)
+    {
+        service.changeEmail(request, connectedUser);
         return ResponseEntity.ok().build();
     }
     
