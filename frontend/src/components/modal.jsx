@@ -16,6 +16,7 @@ import {
   apiCategories,
   apiDecks,
 } from "../helpers/axios_helper";
+import AlertBox from "../components/alert_component";
 
 const style = {
   position: "absolute",
@@ -44,43 +45,154 @@ export default function ModalComponent({ focus }) {
   const { addFlashcard, addSession, addCategory, addDeck } =
     useContext(BrainflashContext);
 
+  const [alert, setAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+
   const createFlashcard = (flashcard) => {
+    console.log(flashcard);
+    if (!flashcard) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Please fill out fields");
+      return;
+    }
+    if (!flashcard.question) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Entera an question.");
+      return;
+    }
+
+    if (flashcard.question.length < 3) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Flashcard question must be at least 3 characters.");
+      return;
+    }
+    if (!flashcard.answer) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Entera an answer.");
+      return;
+    }
+    if (!flashcard.categoryId) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Select a category when creating a flashcard.");
+      return;
+    }
+
     apiFlashcards
       .createFlashcard(flashcard)
       .then((response) => {
         flashcard.id = response.data.id;
         addFlashcard(flashcard);
         setCurrentItem(null);
+        setAlert(true);
+        setAlertMsg("Flashcard successfully created.");
+        setAlertSeverity("success");
       })
       .catch((error) => {});
   };
 
   const createSession = (session) => {
+    if (!session) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Please fill out fields");
+      return;
+    }
+    if (!session.title) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Enter a title for your session.");
+      return;
+    }
+    if (session.title.length < 3) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Session title must be at least 3 characters.");
+      return;
+    }
+    if (!session.startDate) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Enter a start date.");
+      return;
+    }
+    if (!session.endDate) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Enter a start date.");
+      return;
+    }
+    if (!session.categoryId && !session.deckId) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Enter either a category or a deck when creating a session.");
+      return;
+    }
+
     apiPFESessions
       .createSession(session)
       .then((response) => {
         addSession(response.data);
         setCurrentItem(null);
+        setAlert(true);
+        setAlertMsg("Session successfully created.");
+        setAlertSeverity("success");
       })
       .catch((error) => {});
   };
 
   const createCategory = (category) => {
+    if (!category) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Please enter a valid title.");
+      return;
+    }
+    if (category.title.length < 3) {
+      setAlert(true);
+      setAlertSeverity("error");
+      setAlertMsg("Please enter a valid title.");
+      return;
+    }
+
     apiCategories
       .createCategory(category)
       .then((response) => {
         addCategory(response.data);
         setCurrentItem(null);
+        setAlert(true);
+        setAlertMsg("Category successfully created.");
+        setAlertSeverity("success");
       })
       .catch((error) => {});
   };
 
   const createDeck = (deck) => {
+    if (!deck) {
+      setAlert(true);
+      setAlertMsg("Please enter a valid title.");
+      setAlertSeverity("error");
+      return;
+    }
+    if (deck.title.length < 3) {
+      setAlert(true);
+      setAlertMsg("Deck title must be at least 3 characters.");
+      setAlertSeverity("error");
+      return;
+    }
     apiDecks
       .createDeck(deck)
       .then((response) => {
         addDeck(response.data);
         setCurrentItem(null);
+        setAlert(true);
+        setAlertMsg("Deck successfully created.");
+        setAlertSeverity("success");
       })
       .catch((error) => {});
   };
@@ -93,6 +205,7 @@ export default function ModalComponent({ focus }) {
   };
   const handleOpen = () => {
     setOpen(true);
+    setAlert(false);
     setActive(focus);
   };
 
@@ -148,7 +261,7 @@ export default function ModalComponent({ focus }) {
   };
 
   return (
-    <div>
+    <>
       <Button
         onClick={handleOpen}
         sx={{
@@ -165,6 +278,7 @@ export default function ModalComponent({ focus }) {
       >
         <Add />
       </Button>
+      {alert && <AlertBox message={alertMsg} severity={alertSeverity} />}
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Stack spacing={2}>
@@ -210,6 +324,6 @@ export default function ModalComponent({ focus }) {
           </Stack>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }
