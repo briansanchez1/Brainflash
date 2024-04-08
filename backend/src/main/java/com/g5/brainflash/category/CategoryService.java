@@ -11,6 +11,7 @@ import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.common.responses.UpdateResponse;
+import com.g5.brainflash.flashcard.Flashcard;
 import com.g5.brainflash.user.User;
 
 import lombok.RequiredArgsConstructor;
@@ -106,6 +107,15 @@ public class CategoryService {
         }
 
         Category category = optCategory.get();
+
+        // Remove flashcard from category and update count
+        List<Flashcard> flashcards = category.getFlashcards();
+
+        for (Flashcard flashcard: flashcards) {
+            flashcard.setCategory(null);
+            flashcard.getDeck().setCardCount(flashcard.getDeck().getCardCount() - 1);
+        }
+
         // Checks if the user has permission to delete the category
         if (!category.getUser().getId().equals(userId)) {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to delete this category.");
