@@ -50,10 +50,10 @@ To contibute, .....
 
 This project was built in fulfillment of the requirements of COMP4960 - Software Engineering at Wentworth Institute of Technology. The project documentation is linked below:
 
-1. Software Requirements Specification: https://docs.google.com/document/d/1cyQBu222I8fotTiqe896mZIxzyaPqb61r9oJhp0OExs
-2. Software Architecture Proposal: https://docs.google.com/presentation/d/1S7TA-glqRlvQEqpiPnNx5Kg2wIEkKCETkZL7yQBCX1g
-3. Software Design Document: https://docs.google.com/document/d/1Y0zJFZ67bC232jxLLYDobRx3tckID394
-4. Project Summary Presentation: https://docs.google.com/presentation/d/1q2AQsnJwyO61aJt6FKezs3wIG5ArATy6UvN5vUTX8ds
+1. Software Requirements Specification: [Google Docs](https://docs.google.com/document/d/1cyQBu222I8fotTiqe896mZIxzyaPqb61r9oJhp0OExs)
+2. Software Architecture Proposal: [Google Slides](https://docs.google.com/presentation/d/1S7TA-glqRlvQEqpiPnNx5Kg2wIEkKCETkZL7yQBCX1g)
+3. Software Design Document: [Google Docs](https://docs.google.com/document/d/1Y0zJFZ67bC232jxLLYDobRx3tckID394)
+4. Project Summary Presentation: [Google Slides](https://docs.google.com/presentation/d/1q2AQsnJwyO61aJt6FKezs3wIG5ArATy6UvN5vUTX8ds)
 5. Project Overview Video:
 6. Project Build and Demo Video:
 
