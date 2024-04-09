@@ -22,7 +22,8 @@ export default function PFEView({ session, onSessionEdit }) {
   const [categories, setCategories] = useState(null);
   const [editedTitle, setEditedTitle] = useState(null);
   const [editedSession, setEditedSession] = useState({});
-  const [endDate, setEndDate] = useState(null); 
+  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
 
   dayjs.extend(utc);
 
@@ -113,6 +114,10 @@ export default function PFEView({ session, onSessionEdit }) {
     if (session) {
       setEditedSession({ ...session });
       setEndDate(dayjs(new Date(session.endDate)).utc());
+      setStartDate(dayjs(new Date(session.startDate)).utc());
+    } else {
+      setStartDate(dayjs(new Date()).utc());
+      setEditedSession({ startDate: dayjs(new Date()).utc() });
     }
   }, []);
 
@@ -147,26 +152,24 @@ export default function PFEView({ session, onSessionEdit }) {
         }}
       />
       <BasicDatePicker
-        value={session && dayjs(new Date(session.startDate)).utc()}
+        value={startDate}
         label="Start Date"
-        name="startDate"
-        onChange={(newValue) =>{
+        onChange={(newValue) => {
           handleSessionChange({
             target: {
               name: "startDate",
               value: dayjs(newValue).utc().format("YYYY-MM-DD"),
             },
-          })
-        }
-          
-        }
+          });
+        }}
       ></BasicDatePicker>
       <BasicDatePicker
         value={endDate}
-        label="End Date" 
-        textFieldStyle={{width: '100%'}}
-        //sx={{width:'100%'}} 
-        minDate={editedSession && dayjs(new Date(editedSession.startDate)).utc()}
+        label="End Date"
+        textFieldStyle={{ width: "100%" }}
+        minDate={
+          editedSession && dayjs(new Date(editedSession.startDate)).utc()
+        }
         onChange={(newValue) =>
           handleSessionChange({
             target: {
@@ -177,10 +180,15 @@ export default function PFEView({ session, onSessionEdit }) {
         }
       ></BasicDatePicker>
 
-      <ToggleButtonGroup 
+      <ToggleButtonGroup
         fullWidth
         {...control}
-        sx={{ justifyItems: "center", color: "black",  paddingTop:"15px", paddingBottom:"15px"}}
+        sx={{
+          justifyItems: "center",
+          color: "black",
+          paddingTop: "15px",
+          paddingBottom: "15px",
+        }}
       >
         {children}
       </ToggleButtonGroup>
