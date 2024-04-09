@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Add } from "@mui/icons-material";
-import { Grid, ToggleButtonGroup, ToggleButton, Stack } from "@mui/material";
+import { Grid, ToggleButtonGroup, ToggleButton, Stack,  ThemeProvider, createTheme } from "@mui/material";
 import FlashcardModalView from "../components/modal_components/flashcard_focus";
 import DeckView from "../components/modal_components/deck_focus";
 import CategoryView from "../components/modal_components/category_focus";
@@ -26,17 +26,25 @@ const style = {
   width: { xs: 250, sm: 350, md: 500, lg: 700 },
   height: "auto",
   bgcolor: "background.paper",
-
+  borderRadius: "30px",
   boxShadow: 24,
   p: 4,
 };
 
 const btnStyle = {
-  color: "black",
   fontWeight: "600",
   width: { xs: 150, sm: 250, md: 400, lg: 700 },
   fontSize: { xs: 10, md: 15, lg: 15 },
+  color: "#000",
 };
+
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#E6A4B4",
+    },
+  },
+});
 
 export default function ModalComponent({ focus }) {
   const [active, setActive] = useState(focus);
@@ -261,18 +269,17 @@ export default function ModalComponent({ focus }) {
   };
 
   return (
-    <>
+    <ThemeProvider theme={defaultTheme}>
       <Button
         onClick={handleOpen}
         sx={{
           textDecoration: "none",
-          color: "#fff",
-          bgcolor: "#747474",
+          color: "#000",
+          bgcolor: "#dec0b1",
           borderRadius: "10px",
           ":hover": {
-            bgcolor: "#171717",
-            color: "#fff",
-            border: "none",
+            bgcolor: "#b5a69f",
+            color: "#000",
           },
         }}
       >
@@ -317,13 +324,13 @@ export default function ModalComponent({ focus }) {
             </Grid>
 
             <Grid item xs={12} textAlign={"center"}>
-              <Button variant="contained" onClick={handleSubmit}>
+              <Button variant="contained" onClick={handleSubmit} sx={{fontWeight: 700}}>
                 Create
               </Button>
             </Grid>
           </Stack>
         </Box>
       </Modal>
-    </>
+    </ThemeProvider>
   );
 }

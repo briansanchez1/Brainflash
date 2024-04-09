@@ -79,7 +79,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#3D3B40" }} position="static">
+    <AppBar sx={{ backgroundColor: "#e6a4b4" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -92,7 +92,7 @@ function ResponsiveAppBar() {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              color: "inherit",
+              color: "#000",
               textDecoration: "none",
             }}
           >
@@ -106,7 +106,7 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="#000"
             >
               <MenuIcon />
             </IconButton>
@@ -164,18 +164,19 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
+            
             sx={{
-              mr: 2,
+              m: "auto",
               display: { xs: "flex", md: "none" },
-              fontSize: "25px",
+              fontSize: { xs: " 40px" },
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              color: "inherit",
+              color: "#000",
               textDecoration: "none",
             }}
           >
-            Brainflash
+            BF
           </Typography>
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 2 }}
@@ -185,7 +186,7 @@ function ResponsiveAppBar() {
               disableRipple
               sx={{
                 my: 2,
-                color: "#fff",
+                color: "#000",
                 display: "block",
                 ":hover": {
                   bgcolor: "hsla(249, 17%, 100%, 0.33)",
@@ -200,7 +201,7 @@ function ResponsiveAppBar() {
               disableRipple
               sx={{
                 my: 2,
-                color: "#fff",
+                color: "#000",
                 display: "block",
                 ":hover": {
                   bgcolor: "hsla(249, 17%, 100%, 0.33)",
@@ -216,7 +217,7 @@ function ResponsiveAppBar() {
               disableRipple
               sx={{
                 my: 2,
-                color: "#fff",
+                color: "#000",
                 display: "block",
                 ":hover": {
                   bgcolor: "hsla(249, 17%, 100%, 0.33)",
@@ -231,7 +232,7 @@ function ResponsiveAppBar() {
               disableRipple
               sx={{
                 my: 2,
-                color: "white",
+                color: "#000",
                 display: "block",
                 ":hover": {
                   bgcolor: "hsla(249, 17%, 100%, 0.33)",
@@ -243,18 +244,8 @@ function ResponsiveAppBar() {
             </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              sx={{
-                mr: 3,
-                bgcolor: "#BDBDBD",
-                color: "#fff",
-                width: 36,
-                height: 36,
-              }}
-            >
-              <NewModal id="modal" focus={"flashcard"} />
-            </IconButton>
+          <Box sx={{ flexGrow: 0, ml: 2 }}>
+            <NewModal id="modal" focus={"flashcard"} />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -263,11 +254,12 @@ function ResponsiveAppBar() {
                 alt="User"
                 src=" "
                 sx={{
-                  backgroundColor: "#747474",
-                  color: "#fff",
+                  bgcolor: "#dec0b1",
+                  color: "#000",
+                  transition: "0.2s",
                   ":hover": {
-                    bgcolor: "#171717",
-                    color: "#fff",
+                    bgcolor: "#b5a69f",
+                    color: "#000",
                     border: "none",
                   },
                 }}

@@ -4,6 +4,15 @@ import ActionModal from "../components/action_modal";
 import CardGrid from "../components/card_grid";
 import { SearchField } from "../components/text_fields";
 
+const btnStyle = {
+  color: "#000",
+  bgcolor: "#dec0b1",
+  borderRadius: "10px",
+  ":hover": {
+    bgcolor: "#b5a69f",
+    color: "#000",
+  },
+};
 const GridView = ({
   title,
   items,
@@ -78,7 +87,7 @@ const GridView = ({
   };
 
   return (
-    <Container>
+    <Container >
       <Typography sx={{ my: 4, textAlign: "left" }} variant="h4">
         {title}
       </Typography>
@@ -109,8 +118,12 @@ const GridView = ({
         content={modalContent}
         buttons={
           <>
-            <Button onClick={handleCloseModal}>Cancel</Button>
-            <Button onClick={handleAction}>Confirm</Button>
+            <Button onClick={handleCloseModal} sx={btnStyle}>
+              Cancel
+            </Button>
+            <Button onClick={handleAction} sx={btnStyle}>
+              Confirm
+            </Button>
           </>
         }
       />

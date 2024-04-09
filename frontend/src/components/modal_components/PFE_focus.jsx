@@ -5,6 +5,8 @@ import {
   Stack,
   ToggleButtonGroup,
   ToggleButton,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
 import { BasicDatePicker } from "../text_fields";
 import { useState } from "react";
@@ -13,6 +15,14 @@ import { useEffect } from "react";
 import { apiDecks, apiCategories } from "../../helpers/axios_helper";
 import utc from "dayjs/plugin/utc";
 import Box from "@mui/material/Box";
+
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#E6A4B4",
+    },
+  },
+});
 
 export default function PFEView({ session, onSessionEdit }) {
   const [active, setActive] = useState("");
@@ -193,19 +203,19 @@ export default function PFEView({ session, onSessionEdit }) {
         {children}
       </ToggleButtonGroup>
 
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={selections}
-        value={selectedOption}
-        onChange={(event, newValue) => {
-          setSelectedOption(newValue);
-          handleSessionChange({
-            target: {
-              name: newValue.categoryId ? "categoryId" : "deckId",
-              value: newValue.id,
-            },
-          });
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={selections}
+          value={selectedOption}
+          onChange={(event, newValue) => {
+            setSelectedOption(newValue);
+            handleSessionChange({
+              target: {
+                name: newValue.categoryId ? "categoryId" : "deckId",
+                value: newValue.id,
+              },
+            });
 
           handleSessionChange({
             target: {
