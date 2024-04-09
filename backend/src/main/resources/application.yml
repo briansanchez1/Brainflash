@@ -11,3 +11,21 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: brainflash-user
+    password: brainflas-pass
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
