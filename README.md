@@ -21,7 +21,9 @@ This project utilizes the following technologies. Before running the project, en
 3. Set your User environment variables as follows. This will ensure that the application is able to connect to the mySQL database.
 
    a. Set DATABASE_USERNAME to the username for your database connection
+   
    b. Set DATABASE_PASSWORD to the password for your database connection
+   
    c. Set DATABASE_URL to the reflect the port for your connection and the name for the BrainFlash database (for example, localhost:3306/brainflash)
     
 5. Open Visual Studio Code and run the BrainflashApplication.java file (located in backend/src/main/java).
