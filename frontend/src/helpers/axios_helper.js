@@ -96,6 +96,7 @@ export const apiAuth = {
     // Redirect user to login page
     window.location.href = "/login";
   },
+  activateEmail: (token) => instance.get("/auth/activate/" + token),
 };
 
 // PFE Sessions API
@@ -155,5 +156,11 @@ export const apiFlashcards = {
 // Users API
 export const apiUsers = {
   // Delete the user account using the endpoint created in UserController.java, then clear the authentication token and redirect to the login page
-  deleteUser: () => instance.get("/users/delete-account", apiAuth.logout), 
+  deleteUser: () => instance.get("/users/delete-account", apiAuth.logout),
+  resetPass: (token, data) =>
+    instance.put("/users/reset-password/" + token, {
+      password: data.password,
+      confirmationPassword: data.confirm_password,
+    }),
+  resetEmailPass: (data) => instance.post("/users/reset-password-email", data),
 };
