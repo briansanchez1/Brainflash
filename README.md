@@ -18,7 +18,7 @@ This project utilizes the following technologies. Before running the project, en
 
 1. Ensure that a valid mySQL connection is set up on the machine. To download and set up mySQL, visit https://www.mysql.com/downloads/.
 2. Once this connection is set up, create a new schema titled "brainflash".
-3. Set your User environment variables as follows. This will ensure that the application is able to connect to the mySQL database.
+3. Set your user environment variables as follows. This will ensure that the application is able to connect to the mySQL database.
 
    a. Set DATABASE_USERNAME to the username for your database connection
    
