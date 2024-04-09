@@ -115,6 +115,8 @@ const Login = () => {
       return;
     }
 
+    setAuthHeader(null);
+
     apiAuth
       .authenticate(formData.email, formData.password)
       .then(function (response) {

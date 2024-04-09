@@ -117,6 +117,8 @@ const Register = () => {
       return;
     }
 
+    setAuthHeader(null);
+
     apiAuth
       .register(formData.name, formData.email, formData.password)
       .then(function (response) {
