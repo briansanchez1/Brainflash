@@ -21,21 +21,7 @@ export function SearchField({ onSearch, fullWidth }) {
         alignItems: "flex-start",
       }}
     >
-      <TextField
-        label="Search"
-        variant="outlined"
-        fullWidth
-        sx={{
-          mb: 4,
-          width: {
-            xs: "100%",
-            sm: "100%",
-            md: "100%",
-            lg: "100%",
-            xl: fullWidth ? "100%" : "25%",
-          },
-        }}
-      />
+
         <TextField
           label="Search"
           variant="outlined"
