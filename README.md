@@ -36,6 +36,18 @@ npm install
 npm start
 ```
 
+Extra: To test email functionality, install maildev using the following command:
+
+```
+npm install -g maildev
+```
+
+Then run the maildev command to start the server.
+
+```
+maildev
+```
+
 ## Usage
 
 This application is intended to be used as a study tool. Create and organize flashcards and utilize the review session (PFE) feature to assist in preparation for upcoming exams!
