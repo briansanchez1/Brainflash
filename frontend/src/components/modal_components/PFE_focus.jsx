@@ -5,6 +5,8 @@ import {
   Stack,
   ToggleButtonGroup,
   ToggleButton,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
 import { BasicDatePicker } from "../text_fields";
 import { useState } from "react";
@@ -12,6 +14,14 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import { apiDecks, apiCategories } from "../../helpers/axios_helper";
 import utc from "dayjs/plugin/utc";
+
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#E6A4B4",
+    },
+  },
+});
 
 export default function PFEView({ session, onSessionEdit }) {
   const [active, setActive] = useState("");
@@ -128,79 +138,83 @@ export default function PFEView({ session, onSessionEdit }) {
     </ToggleButton>,
   ];
   return (
-    <Stack spacing={2} container xs={11} alignContent={"center"}>
-      <TextField
-        required
-        autoFocus
-        fullWidth
-        label="Session name"
-        name="title"
-        helperText={"3-40 characters."}
-        inputProps={{ maxLength: 40 }}
-        defaultValue={session && session.title}
-        value={editedTitle}
-        onChange={(event) => {
-          handleSessionChange(event);
-        }}
-      />
-      <BasicDatePicker
-        defaultValue={session && dayjs(new Date(session.startDate)).utc()}
-        label="Start Date"
-        name="startDate"
-        onChange={(newValue) =>
-          handleSessionChange({
-            target: {
-              name: "startDate",
-              value: dayjs(newValue).utc().format("YYYY-MM-DD"),
-            },
-          })
-        }
-      ></BasicDatePicker>
-      <BasicDatePicker
-        dis
-        defaultValue={session && dayjs(new Date(session.endDate)).utc()}
-        label="End Date"
-        minDate={editedSession && dayjs(new Date(editedSession.startDate)).utc()}
-        onChange={(newValue) =>
-          handleSessionChange({
-            target: {
-              name: "endDate",
-              value: dayjs(newValue).utc().format("YYYY-MM-DD"),
-            },
-          })
-        }
-      ></BasicDatePicker>
+    <ThemeProvider theme={defaultTheme}>
+      <Stack spacing={2} container xs={11} alignContent={"center"}>
+        <TextField
+          required
+          autoFocus
+          fullWidth
+          label="Session name"
+          name="title"
+          helperText={"3-40 characters."}
+          inputProps={{ maxLength: 40 }}
+          defaultValue={session && session.title}
+          value={editedTitle}
+          onChange={(event) => {
+            handleSessionChange(event);
+          }}
+        />
+        <BasicDatePicker
+          defaultValue={session && dayjs(new Date(session.startDate)).utc()}
+          label="Start Date"
+          name="startDate"
+          onChange={(newValue) =>
+            handleSessionChange({
+              target: {
+                name: "startDate",
+                value: dayjs(newValue).utc().format("YYYY-MM-DD"),
+              },
+            })
+          }
+        ></BasicDatePicker>
+        <BasicDatePicker
+          dis
+          defaultValue={session && dayjs(new Date(session.endDate)).utc()}
+          label="End Date"
+          minDate={
+            editedSession && dayjs(new Date(editedSession.startDate)).utc()
+          }
+          onChange={(newValue) =>
+            handleSessionChange({
+              target: {
+                name: "endDate",
+                value: dayjs(newValue).utc().format("YYYY-MM-DD"),
+              },
+            })
+          }
+        ></BasicDatePicker>
 
-      <ToggleButtonGroup
-        {...control}
-        sx={{ justifyContent: "center", color: "black" }}
-      >
-        {children}
-      </ToggleButtonGroup>
+        <ToggleButtonGroup
+          {...control}
+          sx={{ justifyContent: "center", color: "black" }}
+        >
+          {children}
+        </ToggleButtonGroup>
 
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={selections}
-        value={selectedOption}
-        onChange={(event, newValue) => {
-          setSelectedOption(newValue);
-          handleSessionChange({
-            target: {
-              name: newValue.categoryId ? "categoryId" : "deckId",
-              value: newValue.id,
-            },
-          });
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={selections}
+          value={selectedOption}
+          onChange={(event, newValue) => {
+            setSelectedOption(newValue);
+            handleSessionChange({
+              target: {
+                name: newValue.categoryId ? "categoryId" : "deckId",
+                value: newValue.id,
+              },
+            });
 
-          handleSessionChange({
-            target: {
-              name: !newValue.categoryId ? "categoryId" : "deckId",
-              value: null,
-            },
-          });
-        }}
-        renderInput={(params) => <TextField {...params} label={active} />}
-      />
-    </Stack>
+            handleSessionChange({
+              target: {
+                name: !newValue.categoryId ? "categoryId" : "deckId",
+                value: null,
+              },
+            });
+          }}
+          renderInput={(params) => <TextField {...params} label={active} />}
+        />
+      </Stack>
+    </ThemeProvider>
   );
 }

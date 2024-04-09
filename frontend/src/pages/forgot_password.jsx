@@ -73,8 +73,10 @@ const ForgotPassword = () => {
             <Container
               component="main"
               sx={{
+                mt: 5,
                 background: "#fff",
                 borderRadius: 10,
+                border: "1px solid black",
                 width: { xs: 300, sm: 350, md: 450, lg: 550 },
               }}
             >
@@ -165,7 +167,7 @@ const ForgotPassword = () => {
                       sx={{
                         m: "auto",
                         mt: 2,
-                        bgcolor: "pink",
+                        bgcolor: "##6A4B4",
                         color: "black",
                         borderRadius: 5,
                         fontFamily: "Trebuchet MS",

@@ -1,12 +1,29 @@
-import { Box, Button, Container, Typography, Stack } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Divider from "@mui/material/Divider";
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Stack,
+  TextField,
+  Divider,
+} from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import PasswordOutlined from "@mui/icons-material/PasswordOutlined";
 import ActionModal from "../components/action_modal";
+import { Email } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiUsers, setAuthHeader } from "../helpers/axios_helper";
-import TextField from "@mui/material/TextField";
 
+const btnStyle = {
+  color: "#000",
+  bgcolor: "#dec0b1",
+  borderRadius: "10px",
+  ":hover": {
+    bgcolor: "#b5a69f",
+    color: "#000",
+  },
+};
 const Settings = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -240,7 +257,12 @@ const Settings = () => {
           alignItems: "center",
         }}
       >
-        <Button variant="contained" onClick={handleChangeEmailModal}>
+        <Button
+          variant="contained"
+          onClick={handleChangeEmailModal}
+          sx={{ bgcolor: "#E6A4B4", color: "#000" }}
+          startIcon={<Email />}
+        >
           Change Email
         </Button>
       </Box>
@@ -253,7 +275,12 @@ const Settings = () => {
           alignItems: "center",
         }}
       >
-        <Button variant="contained" onClick={handleChangePasswordModal}>
+        <Button
+          variant="contained"
+          onClick={handleChangePasswordModal}
+          sx={{ bgcolor: "#E6A4B4", color: "#000" }}
+          startIcon={<PasswordOutlined />}
+        >
           Change Password
         </Button>
       </Box>
@@ -270,7 +297,7 @@ const Settings = () => {
           onClick={handleDeleteModalOpen}
           variant="contained"
           color="error"
-          startIcon={<DeleteIcon />}
+          startIcon={<Delete />}
         >
           Delete Account
         </Button>
@@ -282,8 +309,12 @@ const Settings = () => {
         content={modalContent}
         buttons={
           <>
-            <Button onClick={handleCloseModal}>Cancel</Button>
-            <Button onClick={handleAction}>Confirm</Button>
+            <Button onClick={handleCloseModal} sx={btnStyle}>
+              Cancel
+            </Button>
+            <Button onClick={handleAction} sx={btnStyle}>
+              Confirm
+            </Button>
           </>
         }
       />
