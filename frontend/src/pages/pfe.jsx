@@ -88,7 +88,7 @@ const PFES = () => {
         editModalContent={(s, handle) => editModal(s, handle)}
         cardContent={(session) => {
           return (
-            <Typography variant="h6" component="h2" align="center">
+            <Typography variant="h5" component="h2" align="center">
               {session.title}
             </Typography>
           );
