@@ -233,10 +233,10 @@ const Session = () => {
             Summary
           </Typography>
           <Typography mt={6} variant="h5" color="green">
-            Knew : {correctCount}
+            Familiar : {correctCount}
           </Typography>
           <Typography mt={6} variant="h5" color="red">
-            Did not know : {incorrectCount}
+            Unfamiliar : {incorrectCount}
           </Typography>
         </Stack>
       </Box>
@@ -268,7 +268,7 @@ const Session = () => {
                 mt={5}
                 key={"front"}
                 content={
-                  <Typography my={4} variant="h6" align="center">
+                  <Typography my={4} variant="h5" align="center">
                     {questions[currentIndex].question}
                   </Typography>
                 }
@@ -278,7 +278,7 @@ const Session = () => {
                 mt={5}
                 key={"back"}
                 content={
-                  <Typography my={4} variant="h6" align="center">
+                  <Typography my={4} variant="h5" align="center">
                     {questions[currentIndex].answer}
                   </Typography>
                 }
@@ -312,7 +312,7 @@ const Session = () => {
               alignItems="center"
             >
               <CancelOutlinedIcon style={{ fontSize: 80 }} />
-              <Typography variant="h4">I dont know the answer!</Typography>
+              <Typography variant="h4">I don't know the answer</Typography>
             </Stack>
           </Button>
         </Grid>
@@ -339,7 +339,7 @@ const Session = () => {
               alignItems="center"
             >
               <CheckCircleOutlineIcon style={{ fontSize: 80 }} />
-              <Typography variant="h4">I know the answer!</Typography>
+              <Typography variant="h4">I know the answer</Typography>
             </Stack>
           </Button>
         </Grid>
