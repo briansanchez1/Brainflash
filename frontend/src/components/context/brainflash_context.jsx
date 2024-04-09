@@ -6,6 +6,7 @@ export const BrainflashContext = createContext();
 // Create a provider component
 export const BrainflashProvider = ({ children }) => {
   const [flashcards, setFlashcards] = useState([]);
+  const [activeSession, setActiveSession] = useState(null);
   const [sessions, setSessions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [decks, setDecks] = useState([]);
@@ -120,6 +121,8 @@ export const BrainflashProvider = ({ children }) => {
         addDeck,
         removeDeck,
         updateDeck,
+        activeSession,
+        setActiveSession,
       }}
     >
       {children}

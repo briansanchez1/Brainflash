@@ -21,6 +21,8 @@ import PrivateRoutes from "./components/private_routes";
 import ResetPassword from "./pages/reset_pass";
 import { BrainflashProvider } from "./components/context/brainflash_context";
 import Settings from "./pages/settings";
+import VerifyEmail from "./pages/verify_email";
+import Session from "./pages/session";
 
 function FlashcardsInCategoryPage() {
   let { categoryId } = useParams();
@@ -49,9 +51,14 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/login/:alert" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/reset-password" element={<ResetPassword />}></Route>
+            <Route
+              path="/reset-password/:token"
+              element={<ResetPassword />}
+            ></Route>
             <Route path="/forgot-password" element={<ForgotPass />}></Route>
+            <Route path="/verify-email/:token" element={<VerifyEmail />} />
             <Route element={<PrivateRoutes />}>
               <Route
                 path="/"
@@ -95,15 +102,23 @@ function App() {
                 }
               />
 
-             <Route
+              <Route
                 path="/settings"
                 element={
                   <MainLayout>
-                    <Settings/>
+                    <Settings />
                   </MainLayout>
-                } 
+                }
               />
-              
+              <Route
+                path="/session"
+                element={
+                  <MainLayout>
+                    <Session />
+                  </MainLayout>
+                }
+              />
+
               <Route path="/flashcards/category">
                 <Route
                   path=":categoryId"

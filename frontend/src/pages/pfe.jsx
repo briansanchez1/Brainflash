@@ -5,14 +5,23 @@ import GridView from "../components/grid_view";
 import AlertBox from "../components/alert_component";
 import { BrainflashContext } from "../components/context/brainflash_context";
 import Typography from "@mui/material/Typography";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PFES = () => {
   //Alert State
   const [showAlert, setAlert] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-  const { sessions, setSessions, removeSession, updateSession } =
-    useContext(BrainflashContext);
+  const {
+    sessions,
+    setSessions,
+    removeSession,
+    updateSession,
+    setActiveSession,
+  } = useContext(BrainflashContext);
+
+  // used to switch between pages
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all sessions when the component mounts
@@ -32,7 +41,8 @@ const PFES = () => {
 
   const handleClick = (session) => {
     // Handle click event, for example, navigate to a session detail page
-    console.log("Clicked session:", session);
+    setActiveSession(session);
+    navigate("/session");
   };
 
   const editModal = (s, handle) => {
