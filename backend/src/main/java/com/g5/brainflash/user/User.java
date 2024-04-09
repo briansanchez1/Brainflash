@@ -61,6 +61,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Deck> decks;
+
+    /** The state of the user */
+    private boolean enabled;
     
     /** 
      * The list of categories associated with the user.
@@ -133,6 +136,6 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

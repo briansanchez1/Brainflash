@@ -13,7 +13,7 @@ import {
 import logo from "../assets/logo.png";
 import { pink } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { verifyAuth } from "../helpers/axios_helper";
+import { verifyAuth, apiUsers } from "../helpers/axios_helper";
 
 const defaultTheme = createTheme({
   palette: {
@@ -51,7 +51,14 @@ const ForgotPassword = () => {
   axios helper file for the same reason. 
   */
   const handleSubmit = () => {
-    setMessage("Functionality WIP");
+    apiUsers
+      .resetEmailPass(formData)
+      .then((response) => {
+        setMessage(response.data);
+      })
+      .catch((error) => {
+        setMessage("Verification failed. Please try again.");
+      });
   };
 
   // Redirects user if already logged in

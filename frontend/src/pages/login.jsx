@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import logo from "../assets/logo.png";
 import { pink } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
 import AlertBox from "../components/alert_component";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -31,6 +31,7 @@ const Login = () => {
   //Alert State
   const [showAlert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
   // error state
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -47,6 +48,8 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const { alert } = useParams();
 
   // used to switch between pages
   const navigate = useNavigate();
@@ -90,7 +93,7 @@ const Login = () => {
     event.preventDefault();
     //if password and confurm pass dont match, error alert and exit the call.
     setAlert(false);
-
+    setAlertSeverity("error");
     if (formData.email.length < 3) {
       setEmailError(true);
       setAlert(true);
@@ -119,7 +122,14 @@ const Login = () => {
         navigate("/");
       })
       .catch(function (error) {
-        setAlertMessage("Email or password is incorrect.");
+        if (error.response) {
+          setAlertMessage(
+            error.response.status !== 403
+              ? error.response.data.message
+              : "Email or password is incorrect."
+          );
+        }
+
         setAlert(true);
       });
   };
@@ -131,6 +141,11 @@ const Login = () => {
         navigate("/");
       } else {
         setIsLoading(false);
+        if (alert) {
+          setAlertMessage(alert);
+          setAlert(true);
+          setAlertSeverity("success");
+        }
       }
     });
   }, [navigate]);
@@ -141,7 +156,7 @@ const Login = () => {
         <>
           <ThemeProvider theme={defaultTheme}>
             {showAlert && (
-              <AlertBox severity={"error"} message={alertMessage} />
+              <AlertBox severity={alertSeverity} message={alertMessage} />
             )}
             <Container
               component="main"

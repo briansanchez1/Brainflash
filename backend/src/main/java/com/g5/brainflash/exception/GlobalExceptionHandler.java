@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.g5.brainflash.auth.exceptions.EmailAlreadyRegisteredException;
+import com.g5.brainflash.auth.exceptions.EmailNotEnabledException;
 import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.ErrorResponse;
@@ -43,6 +44,13 @@ public class GlobalExceptionHandler {
             .status(HttpStatus.CONFLICT)
             .body(new ErrorResponse(ex.getMessage()));
     }    
+
+    @ExceptionHandler(EmailNotEnabledException.class)
+    public ResponseEntity<?> handleValidationExceptions(EmailNotEnabledException ex) {
+            return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(new ErrorResponse(ex.getMessage()));
+    }      
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleValidationExceptions(NotFoundException ex) {

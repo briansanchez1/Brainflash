@@ -43,7 +43,12 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults()) // Configures CORS (Cross-Origin Resource Sharing) using default settings.
             // Authorizes requests, permitting all requests to for registration and authentication and requiring authentication for any other request.
             .authorizeHttpRequests(req ->
-                req.requestMatchers("/api/v1/auth/register","/api/v1/auth/authenticate")
+                req.requestMatchers(
+                    "/api/v1/auth/register",
+                    "/api/v1/auth/authenticate",
+                    "/api/v1/auth/activate/**",
+                    "/api/v1/users/reset-password-email",
+                    "/api/v1/users/reset-password/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

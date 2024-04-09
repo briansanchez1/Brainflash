@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
-import { setAuthHeader, verifyAuth, apiAuth } from "../helpers/axios_helper";
+import { useNavigate, useParams } from "react-router-dom";
+import { setAuthHeader, verifyAuth, apiUsers } from "../helpers/axios_helper";
 import AlertBox from "../components/alert_component";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -28,6 +28,8 @@ const defaultTheme = createTheme({
 });
 
 const ResetPassword = () => {
+  // Recieved token
+  const { token } = useParams();
   //Alert State
   const [showAlert, setAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -101,7 +103,14 @@ const ResetPassword = () => {
       setAlertMessage("Please fill out the form correctly.");
       return;
     }
-    // Put API call here to reset the password
+
+    apiUsers
+      .resetPass(token, formData)
+      .then((response) => {
+        const alertMsg = "Password has been reset.";
+        navigate(`/login/${alertMsg}`);
+      })
+      .catch((error) => {});
   };
 
   // Redirects user if already logged in

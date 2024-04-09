@@ -9,7 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.g5.brainflash.common.responses.DeleteResponse;
+import com.g5.brainflash.config.JwtService;
+import com.g5.brainflash.email.EmailService;
 import com.g5.brainflash.user.exceptions.PasswordMismatchException;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 /**
  * User service class. Handles logic relating to users in the system
@@ -21,6 +26,8 @@ public class UserService
 {
     private final PasswordEncoder passwordEncoder; 
     private final UserRepository repository; 
+    private final JwtService jwtService;
+    private final EmailService emailService;
 
     /**
      * Change the password of the user
@@ -60,5 +67,59 @@ public class UserService
         repository.deleteById(user.getId());
 
         return new DeleteResponse("User account deleted successfully");
+    }
+
+
+    @Transactional
+    public String resetPasswordEmail( ResetPasswordEmailRequest request ) {
+        // Checks if the email already exists
+        if ( repository.existsByEmail( request.getEmail() ) ) {
+            var user = repository.findByEmail(request.getEmail()).orElseThrow();
+            var jwtToken = jwtService.generateToken(user);
+            String activationLink = "http://localhost:3000/reset-password/" + jwtToken;
+            emailService.send(user.getEmail(), buildResetPassEmail(user.getName(), activationLink));
+            return "Password reset email sent.";
+        }
+
+        return "Email not found.";
+    }
+
+    
+
+    @Transactional
+    public String resetPassword(String token, ResetPasswordRequest request ) {
+        //see if the passwords are the same
+        if(!request.getPassword().equals(request.getConfirmationPassword()))
+        {
+            throw new PasswordMismatchException("Passwords Mismatch!"); 
+        }
+
+        final String userEmail;
+        userEmail = jwtService.extractUsername(token);
+        
+        if(userEmail != null && !jwtService.isTokenExpired(token)){
+            var user = repository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+            //replace old password with new one
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+            //save new password
+            repository.save(user);                 
+
+            return "Password has been reset.";
+        } 
+        
+        return "Token Error";
+    }    
+
+    private String buildResetPassEmail(String name, String link) {
+        return "<div style=\"text-align: center;\">" +
+            "<h2>Brainflash Password Reset</h2>" +
+            "<p>Hello "+name+", please click the button below to reset your password.</p>" +
+            "<p>This password reset link expires in one day.</p>" +
+            "<p>If you didn't request this, you can safely ignore this email.</p>" +
+            "<a href=\"" + link + "\" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;\">Reset Password</a>" +
+        "</div>";
     }
 }

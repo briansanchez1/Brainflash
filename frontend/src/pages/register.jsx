@@ -120,13 +120,17 @@ const Register = () => {
     apiAuth
       .register(formData.name, formData.email, formData.password)
       .then(function (response) {
-        setAuthHeader(response.data.token);
-        navigate("/");
+        const emailAlert = "A verification email has been sent.";
+        navigate(`/login/${emailAlert}`);
       })
       .catch(function (error) {
         setAuthHeader("");
         console.log(error);
-        setAlertMessage(error.response.data.message);
+        if (error.response) {
+          setAlertMessage(error.response.data.message);
+        } else {
+          setAlertMessage(error.message);
+        }
         setAlert(true);
       });
   };
