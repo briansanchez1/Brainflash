@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import { apiDecks, apiCategories } from "../../helpers/axios_helper";
 import utc from "dayjs/plugin/utc";
+import Box from "@mui/material/Box";
 
 export default function PFEView({ session, onSessionEdit }) {
   const [active, setActive] = useState("");
@@ -21,6 +22,7 @@ export default function PFEView({ session, onSessionEdit }) {
   const [categories, setCategories] = useState(null);
   const [editedTitle, setEditedTitle] = useState(null);
   const [editedSession, setEditedSession] = useState({});
+  const [endDate, setEndDate] = useState(null); 
 
   dayjs.extend(utc);
 
@@ -110,6 +112,7 @@ export default function PFEView({ session, onSessionEdit }) {
 
     if (session) {
       setEditedSession({ ...session });
+      setEndDate(dayjs(new Date(session.endDate)).utc());
     }
   }, []);
 
@@ -128,7 +131,7 @@ export default function PFEView({ session, onSessionEdit }) {
     </ToggleButton>,
   ];
   return (
-    <Stack spacing={2} container xs={11} alignContent={"center"}>
+    <Box spacing={2} container xs={11} alignItems={"center"} width={700}>
       <TextField
         required
         autoFocus
@@ -144,10 +147,10 @@ export default function PFEView({ session, onSessionEdit }) {
         }}
       />
       <BasicDatePicker
-        defaultValue={session && dayjs(new Date(session.startDate)).utc()}
+        value={session && dayjs(new Date(session.startDate)).utc()}
         label="Start Date"
         name="startDate"
-        onChange={(newValue) =>
+        onChange={(newValue) =>{
           handleSessionChange({
             target: {
               name: "startDate",
@@ -155,11 +158,15 @@ export default function PFEView({ session, onSessionEdit }) {
             },
           })
         }
+          
+        }
       ></BasicDatePicker>
       <BasicDatePicker
-        dis
-        defaultValue={session && dayjs(new Date(session.endDate)).utc()}
-        label="End Date"
+        value={endDate}
+        label="End Date" 
+        textFieldStyle={{width: '100%'}}
+        //sx={{width:'100%'}} 
+        minDate={editedSession && dayjs(new Date(editedSession.startDate)).utc()}
         onChange={(newValue) =>
           handleSessionChange({
             target: {
@@ -170,9 +177,10 @@ export default function PFEView({ session, onSessionEdit }) {
         }
       ></BasicDatePicker>
 
-      <ToggleButtonGroup
+      <ToggleButtonGroup 
+        fullWidth
         {...control}
-        sx={{ justifyContent: "center", color: "black" }}
+        sx={{ justifyItems: "center", color: "black",  paddingTop:"15px", paddingBottom:"15px"}}
       >
         {children}
       </ToggleButtonGroup>
@@ -200,6 +208,6 @@ export default function PFEView({ session, onSessionEdit }) {
         }}
         renderInput={(params) => <TextField {...params} label={active} />}
       />
-    </Stack>
+    </Box>
   );
 }

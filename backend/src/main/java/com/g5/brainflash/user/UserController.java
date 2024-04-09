@@ -33,10 +33,17 @@ public class UserController {
      * @param connectedUser The connected user
      * @return Response with result of changing password
      */
-    @PatchMapping("/change-password")
+    @PostMapping("/change-password")
     public ResponseEntity<?> PasswordChangeRequest(@Valid @RequestBody PasswordChangeRequest request, Principal connectedUser)
     {
         service.changePassword(request, connectedUser);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PostMapping("/change-email")
+    public ResponseEntity<?> EmailChangeRequest(@Valid @RequestBody EmailChangeRequest request, Principal connectedUser)
+    {
+        service.changeEmail(request, connectedUser);
         return ResponseEntity.ok().build();
     }
     

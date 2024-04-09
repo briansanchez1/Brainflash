@@ -10,6 +10,7 @@ import com.g5.brainflash.common.exceptions.NotFoundException;
 import com.g5.brainflash.common.exceptions.UnauthorizedUserException;
 import com.g5.brainflash.common.responses.DeleteResponse;
 import com.g5.brainflash.common.responses.UpdateResponse;
+import com.g5.brainflash.flashcard.Flashcard;
 import com.g5.brainflash.user.User;
 
 import jakarta.transaction.Transactional;
@@ -106,6 +107,14 @@ public class DeckService {
         }
 
         Deck deck = optDeck.get();
+
+        // Remove flashcard from deck and update count
+        List<Flashcard> flashcards = deck.getFlashcards();
+
+        for (Flashcard flashcard: flashcards) {
+            flashcard.setDeck(null);
+            flashcard.getCategory().setCardCount(flashcard.getCategory().getCardCount() - 1);
+        }
 
         // Check if deck belongs to user
         if (!deck.getUser().getId().equals(userId)) {

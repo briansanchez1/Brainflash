@@ -163,4 +163,6 @@ export const apiUsers = {
       confirmationPassword: data.confirm_password,
     }),
   resetEmailPass: (data) => instance.post("/users/reset-password-email", data),
+  changePassword: (data) => instance.post("users/change-password", data),
+  changeEmail: (data) => instance.post("users/change-email", data),
 };
