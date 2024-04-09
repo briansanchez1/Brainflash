@@ -8,17 +8,22 @@ Brainflash is a web application designed to assist users in studying. The applic
 
 This section details how to set up and run the application locally. This requires running two components once the repository is cloned and opened in Visual Studio Code.
 
+This project utilizes the following technologies. Before running the project, ensure that the proper versions are installed on your system
+
+1. Java - version 21
+2. React - version 18.2
+3. NodeJS - version 20.11.1
+
 ### Back End
 
 1. Ensure that a valid mySQL connection is set up on the machine. To download and set up mySQL, visit https://www.mysql.com/downloads/.
 2. Once this connection is set up, create a new schema titled "brainflash".
-3. Set the User environment variables as follows using your command prompt (parentheses indicate entering information as it relates to your database setup. Omit the parentheses when using the command prompt). This will ensure that the application is able to connect to the mySQL database.
-   
-     ```
-     setx DATABASE_USERNAME (your database username)
-     setx DATABASE_PASSWORD (your database password)
-     setx DATABASE_URL localhost:3306/brainflash
-     ```
+3. Set your User environment variables as follows. This will ensure that the application is able to connect to the mySQL database.
+
+   a. Set DATABASE_USERNAME to the username for your database connection
+   b. Set DATABASE_PASSWORD to the password for your database connection
+   c. Set DATABASE_URL to the reflect the port for your connection and the name for the BrainFlash database (for example, localhost:3306/brainflash)
+    
 5. Open Visual Studio Code and run the BrainflashApplication.java file (located in backend/src/main/java).
 
 ### Front End
