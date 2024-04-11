@@ -1,4 +1,4 @@
-<img src="https://i.ibb.co/sF3Wjg3/bf.jpg" width="100%" height="350" />
+<img src="https://i.ibb.co/sF3Wjg3/bf.jpg" width="100%" height="300" />
 
 ## What is Brainflash?
 
@@ -26,7 +26,19 @@ This project utilizes the following technologies. Before running the project, en
    
    c. Set DATABASE_URL to the reflect the port for your connection and the name for the BrainFlash database (for example, localhost:3306/brainflash)
     
-5. Open Visual Studio Code and run the BrainflashApplication.java file (located in backend/src/main/java).
+5. Open Visual Studio Code and run the ```BrainflashApplication.java``` file (located in backend/src/main/java).
+
+6. To use the email verification functionality, install maildev using the following command:
+
+```
+npm install -g maildev
+```
+
+7. Then run the maildev command to start the server.
+
+```
+maildev
+```
 
 ### Front End
 
@@ -43,27 +55,9 @@ npm install
 npm start
 ```
 
-Extra: To test email functionality, install maildev using the following command:
-
-```
-npm install -g maildev
-```
-
-Then run the maildev command to start the server.
-
-```
-maildev
-```
-
 ## Usage
 
 This application is intended to be used as a study tool. Create and organize flashcards and utilize the review session (PFE) feature to assist in preparation for upcoming exams!
-
-## Contributing
-
-Contributions are always welcome!
-
-To contibute, .....
 
 ## Documentation
 
@@ -73,8 +67,8 @@ This project was built in fulfillment of the requirements of COMP4960 - Software
 2. [Software Architecture Proposal](https://docs.google.com/presentation/d/1S7TA-glqRlvQEqpiPnNx5Kg2wIEkKCETkZL7yQBCX1g)
 3. [Software Design Document](https://docs.google.com/document/d/1Y0zJFZ67bC232jxLLYDobRx3tckID394)
 4. [Project Summary Presentation](https://docs.google.com/presentation/d/1q2AQsnJwyO61aJt6FKezs3wIG5ArATy6UvN5vUTX8ds)
-5. Project Overview Video:
-6. Project Build and Demo Video:
+5. [Project Overview Video](https://www.youtube.com/watch?v=gSdTbS8PrfQ&ab_channel=BrianSanchezMelo)
+6. [Project Build and Demo Video](https://www.youtube.com/watch?v=A7gPzTj3EQI&ab_channel=BrianSanchezMelo)
 
 ## License
 
