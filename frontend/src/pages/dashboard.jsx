@@ -30,8 +30,6 @@ const Dashboard = () => {
   // context of items on the dashboard
   const { categories, setCategories, sessions, setSessions } =
     useContext(BrainflashContext);
-  // loading state
-  const [isLoading, setIsLoading] = useState(true);
 
   // Handle click event, for example, navigate to a category detail page
   const handleCardClickCategory = (categoryId) => {
@@ -72,7 +70,6 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching sessions:", error);
       });
-    setIsLoading(false);
   }, []);
 
   return (
@@ -113,11 +110,6 @@ const Dashboard = () => {
                     lg={4}
                     xl={4}
                   >
-                    {isLoading ? (
-                      <Box sx={{ display: "flex" }}>
-                        <CircularProgress />
-                      </Box>
-                    ) : null}
                     <ActionCard
                       content={
                         <>
