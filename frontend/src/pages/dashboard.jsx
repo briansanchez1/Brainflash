@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   createTheme,
   ThemeProvider,
@@ -11,6 +11,8 @@ import ActionCard from "../components/action_card";
 import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
+import { BrainflashContext } from "../components/context/brainflash_context";
+
 import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
 import { useNavigate } from "react-router-dom";
 
@@ -23,22 +25,21 @@ const formatDate = (dateString) => {
 };
 
 const Dashboard = () => {
-  // States to track loading
-  const [categoryCards, setCategoryCards] = useState([]);
-  const [categoryAmt, setCategoryAmt] = useState(0);
-  // States for pfe Info
-  const [pfeCards, setPFECards] = useState([]);
-  const [pfeAmt, setPfeAmt] = useState(0);
   // Used to navigate pages
   const navigate = useNavigate();
+  const { categories, setCategories, sessions, setSessions } =
+    useContext(BrainflashContext);
 
   useEffect(() => {
     document.title = "Dashboard";
     apiCategories
       .getAllCategories()
       .then((response) => {
-        setCategoryCards(response.data.reverse().slice(0, 3));
-        setCategoryAmt(response.data.length);
+        setCategories(
+          response.data.map((c) => {
+            return c;
+          })
+        );
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -47,11 +48,14 @@ const Dashboard = () => {
     apiPFESessions
       .getAllSessions()
       .then((response) => {
-        setPFECards(response.data.reverse().slice(0, 3));
-        setPfeAmt(response.data.length);
+        setSessions(
+          response.data.map((s) => {
+            return s;
+          })
+        );
       })
       .catch((error) => {
-        console.error("Error fetching PFE Sessions:", error);
+        console.error("Error fetching sessions:", error);
       });
   }, []);
 
@@ -90,42 +94,46 @@ const Dashboard = () => {
           </Stack>
 
           <Grid container direction={"row"} spacing={1}>
-            {categoryCards.length > 0 ? (
-              categoryCards.map((category) => (
-                <Grid
-                  item
-                  key={category.id}
-                  xs={12}
-                  sm={12}
-                  md={4}
-                  lg={4}
-                  xl={4}
-                >
-                  <ActionCard
-                    content={
-                      <>
-                        <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                          {category.title}
-                        </Typography>
-
-                        <Typography variant="h6" sx={{ fontSize: 18 }}>
-                          {"Number of cards: " + category.cardCount}
-                        </Typography>
-                      </>
-                    }
-                    onClick={() => handleCardClickCategory(category.id)}
-                  />
-                </Grid>
-              ))
+            {categories.length > 0 ? (
+              categories
+                .slice(-3)
+                .reverse()
+                .map((category) => (
+                  <Grid
+                    item
+                    key={category.id}
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <ActionCard
+                      content={
+                        <>
+                          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                            {category.title}
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontSize: 18 }}>
+                            {"Number of cards: " + category.cardCount}
+                          </Typography>
+                        </>
+                      }
+                      onClick={() => handleCardClickCategory(category.id)}
+                    />
+                  </Grid>
+                ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
-                  extra={{ title: "No Categories Found. Click to Create." }}
+                  extra={{
+                    title: "No Categories Found. Click the plus to create.",
+                  }}
                 />
               </Grid>
             )}
 
-            {categoryAmt > 3 && (
+            {categories.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
                   navTo={"/categories"}
@@ -155,32 +163,43 @@ const Dashboard = () => {
           </Stack>
 
           <Grid container direction={"row"} spacing={1}>
-            {pfeCards.length > 0 ? (
-              pfeCards.map((pfe) => (
-                <Grid item key={pfe.id} xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <ActionCard
-                    content={
-                      <>
-                        <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                          {" "}
-                          {pfe.title}
-                        </Typography>
-                        <Typography variant="h6" sx={{ fontSize: 18 }}>
-                          {"Start Date: " + formatDate(pfe.startDate)}
-                        </Typography>
-                        <Typography variant="h6" sx={{ fontSize: 18 }}>
-                          {"End Date: " + formatDate(pfe.endDate)}
-                        </Typography>
-                      </>
-                    }
-                    onClick={() =>
-                      pfe.categoryId != null
-                        ? handleCardClickCategory(pfe.categoryId)
-                        : handleCardClickDeck(pfe.deckId)
-                    }
-                  />
-                </Grid>
-              ))
+            {sessions.length > 0 ? (
+              sessions
+                .slice(-3)
+                .reverse()
+                .map((session) => (
+                  <Grid
+                    item
+                    key={session.id}
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <ActionCard
+                      content={
+                        <>
+                          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                            {" "}
+                            {session.title}
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontSize: 18 }}>
+                            {"Start Date: " + formatDate(session.startDate)}
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontSize: 18 }}>
+                            {"End Date: " + formatDate(session.endDate)}
+                          </Typography>
+                        </>
+                      }
+                      onClick={() =>
+                        session.categoryId != null
+                          ? handleCardClickCategory(session.categoryId)
+                          : handleCardClickDeck(session.deckId)
+                      }
+                    />
+                  </Grid>
+                ))
             ) : (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
@@ -191,7 +210,7 @@ const Dashboard = () => {
               </Grid>
             )}
 
-            {pfeAmt > 3 && (
+            {sessions.length > 3 && (
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <ExtraCard
                   navTo={"/pfe"}
