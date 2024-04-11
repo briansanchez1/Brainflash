@@ -11,11 +11,7 @@ import ActionCard from "../components/action_card";
 import ExtraCard from "../components/extra_card";
 import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
-import {
-  apiCategories,
-  // apiDecks,
-  apiPFESessions,
-} from "../helpers/axios_helper";
+import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
@@ -27,37 +23,14 @@ const formatDate = (dateString) => {
 };
 
 const Dashboard = () => {
-  // State to track loading
+  // States to track loading
   const [categoryCards, setCategoryCards] = useState([]);
   const [categoryAmt, setCategoryAmt] = useState(0);
-  // const [categoryTitle, setCategoryTitle] = useState("");
   // States for pfe Info
   const [pfeCards, setPFECards] = useState([]);
   const [pfeAmt, setPfeAmt] = useState(0);
-  // const [deckTitle, setDeckTitle] = useState("");
   // Used to navigate pages
   const navigate = useNavigate();
-
-  // const getDeckTitle = (id) => {
-  //   apiDecks
-  //     .getDeck(id)
-  //     .then((response) => {
-  //       setDeckTitle(response.data.title);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching decks:", error);
-  //     });
-  // };
-  // const getCatTitle = (id) => {
-  //   apiCategories
-  //     .getCategory(id)
-  //     .then((response) => {
-  //       setCategoryTitle(response.data.title);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching decks:", error);
-  //     });
-  // };
 
   useEffect(() => {
     document.title = "Dashboard";
@@ -198,25 +171,6 @@ const Dashboard = () => {
                         <Typography variant="h6" sx={{ fontSize: 18 }}>
                           {"End Date: " + formatDate(pfe.endDate)}
                         </Typography>
-
-                        {/* this was causing a lot renders to happen, take a look after everything else is done */}
-                        {/*   <Typography variant="h6" sx={{ fontSize: 18 }}> 
-                          {pfe.categoryId != null
-                            ? (() => {
-                                getCatTitle(pfe.categoryId);
-                                return (
-                                  "Category: " +
-                                  (categoryTitle ? categoryTitle : "Loading...")
-                                );
-                              })()
-                            : (() => {
-                                getDeckTitle(pfe.deckId);
-                                return (
-                                  "Deck: " +
-                                  (deckTitle ? deckTitle : "Loading...")
-                                );
-                              })()}
-                        </Typography> */}
                       </>
                     }
                     onClick={() =>
