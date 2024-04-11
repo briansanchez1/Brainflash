@@ -15,7 +15,6 @@ import { BrainflashContext } from "../components/context/brainflash_context";
 import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
-import { Diversity1 } from "@mui/icons-material";
 
 const defaultTheme = createTheme();
 
@@ -34,8 +33,20 @@ const Dashboard = () => {
   // loading state
   const [isLoading, setIsLoading] = useState(true);
 
+  // Handle click event, for example, navigate to a category detail page
+  const handleCardClickCategory = (categoryId) => {
+    navigate(`/flashcards/category/${categoryId}`);
+  };
+
+  // Handle click event, for example, navigate to a category detail page
+  const handleCardClickDeck = (deckId) => {
+    navigate(`/flashcards/deck/${deckId}`);
+  };
+
   useEffect(() => {
     document.title = "Dashboard";
+
+    // get all categories
     apiCategories
       .getAllCategories()
       .then((response) => {
@@ -48,7 +59,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-
+    // get all pfe sessions
     apiPFESessions
       .getAllSessions()
       .then((response) => {
@@ -63,16 +74,6 @@ const Dashboard = () => {
       });
     setIsLoading(false);
   }, []);
-
-  // Handle click event, for example, navigate to a category detail page
-  const handleCardClickCategory = (categoryId) => {
-    navigate(`/flashcards/category/${categoryId}`);
-  };
-
-  // Handle click event, for example, navigate to a category detail page
-  const handleCardClickDeck = (deckId) => {
-    navigate(`/flashcards/deck/${deckId}`);
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
