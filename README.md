@@ -67,8 +67,8 @@ This project was built in fulfillment of the requirements of COMP4960 - Software
 2. [Software Architecture Proposal](https://docs.google.com/presentation/d/1S7TA-glqRlvQEqpiPnNx5Kg2wIEkKCETkZL7yQBCX1g)
 3. [Software Design Document](https://docs.google.com/document/d/1Y0zJFZ67bC232jxLLYDobRx3tckID394)
 4. [Project Summary Presentation](https://docs.google.com/presentation/d/1q2AQsnJwyO61aJt6FKezs3wIG5ArATy6UvN5vUTX8ds)
-5. [Project Overview Video](https://www.youtube.com/watch?v=gSdTbS8PrfQ&ab_channel=BrianSanchezMelo)
-6. [Project Build and Demo Video](https://www.youtube.com/watch?v=A7gPzTj3EQI&ab_channel=BrianSanchezMelo)
+5. [Project Overview Video](https://youtu.be/gSdTbS8PrfQ)
+6. [Project Build and Demo Video](https://youtu.be/A7gPzTj3EQI)
 
 ## License
 
