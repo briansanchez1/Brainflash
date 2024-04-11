@@ -6,15 +6,16 @@ import {
   Stack,
   Container,
   Box,
+  Grid,
 } from "@mui/material";
 import ActionCard from "../components/action_card";
 import ExtraCard from "../components/extra_card";
-import Grid from "@mui/material/Unstable_Grid2";
 import NewModal from "../components/modal";
 import { BrainflashContext } from "../components/context/brainflash_context";
-
 import { apiCategories, apiPFESessions } from "../helpers/axios_helper";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import { Diversity1 } from "@mui/icons-material";
 
 const defaultTheme = createTheme();
 
@@ -27,8 +28,11 @@ const formatDate = (dateString) => {
 const Dashboard = () => {
   // Used to navigate pages
   const navigate = useNavigate();
+  // context of items on the dashboard
   const { categories, setCategories, sessions, setSessions } =
     useContext(BrainflashContext);
+  // loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Dashboard";
@@ -57,6 +61,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching sessions:", error);
       });
+    setIsLoading(false);
   }, []);
 
   // Handle click event, for example, navigate to a category detail page
@@ -74,7 +79,6 @@ const Dashboard = () => {
       <Container>
         <Stack>
           {/* Categories */}
-
           <Stack
             direction={"row"}
             mt={"56px"}
@@ -108,6 +112,11 @@ const Dashboard = () => {
                     lg={4}
                     xl={4}
                   >
+                    {isLoading ? (
+                      <Box sx={{ display: "flex" }}>
+                        <CircularProgress />
+                      </Box>
+                    ) : null}
                     <ActionCard
                       content={
                         <>
