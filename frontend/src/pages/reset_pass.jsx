@@ -15,7 +15,7 @@ import {
 import { pink } from "@mui/material/colors";
 import logo from "../assets/logo.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { setAuthHeader, verifyAuth, apiUsers } from "../helpers/axios_helper";
+import { verifyAuth, apiUsers } from "../helpers/axios_helper";
 import AlertBox from "../components/alert_component";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 

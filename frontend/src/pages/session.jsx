@@ -1,39 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
-import { apiPFESessions, apiFlashcards } from "../helpers/axios_helper";
-import CategoryModalView from "../components/modal_components/category_focus";
-import GridView from "../components/grid_view";
-import AlertBox from "../components/alert_component";
+import { apiFlashcards } from "../helpers/axios_helper";
+
 import { BrainflashContext } from "../components/context/brainflash_context";
-import { useNavigate, useParams } from "react-router-dom";
-import { SearchField } from "../components/text_fields";
-import CardGrid from "../components/card_grid";
+import { useNavigate } from "react-router-dom";
+
 import ActionCard from "../components/action_card";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CardFlip from "react-card-flip";
 import utc from "dayjs/plugin/utc";
 
-import {
-  Stack,
-  Button,
-  Container,
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  Box,
-} from "@mui/material";
+import { Stack, Button, Container, Typography, Grid, Box } from "@mui/material";
 import dayjs from "dayjs";
 
 const Session = () => {
   //Alert State
-  const [showAlert, setAlert] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
+
   const { activeSession } = useContext(BrainflashContext);
-  const [searchTerm, setSearchTerm] = useState("");
   const [questions, setQuestions] = useState([]);
-  const [currentQuestion, setCurrentQuestion] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const [flippedCardId, setFlippedCardId] = useState(null);
