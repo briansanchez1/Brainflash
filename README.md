@@ -70,6 +70,12 @@ This project was built in fulfillment of the requirements of COMP4960 - Software
 5. [Project Overview Video](https://youtu.be/gSdTbS8PrfQ)
 6. [Project Build and Demo Video](https://youtu.be/A7gPzTj3EQI)
 
+## Authors
+- [Bismarck Nunez](https://github.com/nunezbatwit)  
+- [Brian Sanchez](https://github.com/briansanchez1)  
+- [Josh Gifford](https://github.com/giffordj1atwit)  
+- [Brian Morillo](https://github.com/BrianMorillo)  
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
